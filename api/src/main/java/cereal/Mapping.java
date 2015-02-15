@@ -23,13 +23,44 @@ import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 import org.apache.hadoop.io.Text;
 
+/**
+ * The control over how a simple object is serialized and deserialized.
+ *
+ * @param <T>
+ *          The class which this {@link Mapping} describes and controls
+ */
 public interface Mapping<T> {
-  
+
+  /**
+   * The primary key for this object. Must be unique for this object.
+   *
+   * @param obj
+   *          The object to act upon
+   * @return The primary key for this object
+   */
   public Text getRowId(T obj);
-  
+
+  /**
+   * The {@link Field}s, attributes, for this object.
+   *
+   * @param obj
+   *          THe object to act upon
+   * @return A list of the {@link Field}s for this object.
+   */
   public List<Field> getFields(T obj);
-  
+
+  /**
+   * Update the provided object with the given {@link Key} {@link Value} pair.
+   *
+   * @param entry
+   *          The serialized representation for a {@link Field}.
+   * @param obj
+   *          The object to update
+   */
   public void update(Entry<Key,Value> entry, T obj);
-  
+
+  /**
+   * @return The class for which this {@link Mapping} is designed to act upon.
+   */
   public Class<T> objectType();
 }

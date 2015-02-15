@@ -17,10 +17,24 @@
 package cereal;
 
 /**
- *
+ * Manages the means, a {@link Mapping}, by which an object is serialized to a {@link Store}
  */
 public interface Registry {
+
+  /**
+   * Add a new {@link Mapping} to the registry. Will replace any existing {@link Mapping} for {@code T}.
+   *
+   * @param mapping
+   *          The {@link Mapping} for {@code T}
+   */
   <T> void add(Mapping<T> mapping);
-  
+
+  /**
+   * Fetch the current {@link Mapping} for the class {@code T}.
+   * 
+   * @param obj
+   *          The object to fetch the {@link Mapping} for
+   * @return The {@link Mapping} for {@code T}
+   */
   <T> Mapping<T> get(T obj);
 }

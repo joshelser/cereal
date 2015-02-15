@@ -20,13 +20,36 @@ import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 
+/**
+ * An attribute on some simple object being serialized.
+ */
 public interface Field {
-  
+
+  /**
+   * The name of this field. Identifies it among other fields in an object.
+   *
+   * @return The name of this field.
+   */
   public Text name();
-  
+
+  /**
+   * An optional grouping, a logical value to colocate this field with other fields.
+   *
+   * @return A grouping for this field, null if there is no grouping.
+   */
   public Text grouping();
-  
+
+  /**
+   * The optional {@link ColumnVisibility} for this field.
+   *
+   * @return The {@link ColumnVisibility} or null if there is no visibility defined.
+   */
   public ColumnVisibility visibility();
-  
+
+  /**
+   * The value of this field.
+   * 
+   * @return The value of this field.
+   */
   public Value value();
 }
