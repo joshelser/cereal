@@ -28,7 +28,9 @@ import cereal.Store;
 import cereal.StoreImpl;
 import cereal.protobuf.PersonOuter.Person;
 
-public class PersonExample {
+import com.google.protobuf.TextFormat;
+
+public class ProtobufExample {
 
   public static void main(String[] args) throws Exception {
     Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();
@@ -42,14 +44,14 @@ public class PersonExample {
       conn.tableOperations().create(tableName);
     }
 
-    System.out.println("Person: " + p);
+    System.out.println("Person: [" + TextFormat.shortDebugString(p) + "]");
 
     try (Store store = new StoreImpl(registry, conn, tableName)) {
       store.write(Collections.singleton(p));
       store.flush();
 
       Person pCopy = store.read("Bob_Joe_Franklin", Person.class);
-      System.out.println("Copy: " + pCopy);
+      System.out.println("Copy: [" + TextFormat.shortDebugString(pCopy) + "]");
     }
   }
 }
