@@ -119,14 +119,14 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
   }
 
   @Override
-  public void update(Entry<Key,Value> entry, E obj) {
+  public void update(Entry<Key,Value> entry, InstanceOrBuilder<E> instOrBuilder) {
     try {
       @SuppressWarnings("rawtypes")
-      Class<? extends TBase> tbaseClz = obj.getClass();
+      Class<? extends TBase> tbaseClz = instOrBuilder.getWrappedClass();
       if (null == setFieldValue) {
         synchronized (this) {
           if (null == setFieldValue) {
-            Class<?> fieldsClz = Class.forName(obj.getClass().getName() + "$_Fields");
+            Class<?> fieldsClz = Class.forName(instOrBuilder.getWrappedClass().getName() + "$_Fields");
             setFieldValue = tbaseClz.getMethod("setFieldValue", fieldsClz, Object.class);
           }
         }
@@ -139,6 +139,7 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
         if (fieldName.equals(fieldId.getFieldName())) {
           FieldValueMetaData fvMetaData = fieldEntry.getValue().valueMetaData;
           Value v = entry.getValue();
+          Object obj = instOrBuilder.get();
           switch (fvMetaData.type) {
             case TType.BOOL:
               Boolean booleanVal = Boolean.parseBoolean(v.toString());

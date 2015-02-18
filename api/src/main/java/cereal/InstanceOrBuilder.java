@@ -16,25 +16,32 @@
  */
 package cereal;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- *
+ * A wrapper around the message of type {@code T}. Protobuf messages (among others) are immutable. Therefore,
+ * {@link Mapping#update(java.util.Map.Entry, InstanceOrBuilder)} needs to be able to handle either and instance of the message to update or some builder class
+ * for the message.
  */
-public class RegistryImpl implements Registry {
+public interface InstanceOrBuilder<T> {
 
-  Map<Class<?>,Mapping<?>> mappings = new HashMap<>();
-
-  @Override
-  public <T> void add(Mapping<T> mapping) {
-    mappings.put(mapping.objectType(), mapping);
+  /**
+   * The type of the Object being wrapped. Informs the implementation whether to treat it as a message builder or an instance of the message
+   */
+  public enum Type {
+    INSTANCE, BUILDER
   }
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public <T> Mapping<T> get(InstanceOrBuilder<T> obj) {
-    return (Mapping<T>) mappings.get(obj.getWrappedClass());
-  }
+  /**
+   * The {@link Type} of the object being wrapped
+   */
+  Type getType();
 
+  /**
+   * The wrapped object. See {@link #getType()} for what the object actually is.
+   */
+  Object get();
+
+  /**
+   * The class of the object being wrapped
+   */
+  Class<T> getWrappedClass();
 }

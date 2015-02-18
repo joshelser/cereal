@@ -14,27 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.protobuf;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.hadoop.io.Text;
 
-/**
- *
- */
-public class RegistryImpl implements Registry {
+import cereal.ProtobufMessageMapping;
+import cereal.protobuf.PersonOuter.Person;
 
-  Map<Class<?>,Mapping<?>> mappings = new HashMap<>();
+public class PersonMapping extends ProtobufMessageMapping<Person> {
 
   @Override
-  public <T> void add(Mapping<T> mapping) {
-    mappings.put(mapping.objectType(), mapping);
+  public Text getRowId(Person obj) {
+    StringBuilder sb = new StringBuilder(32);
+    if (obj.hasFirstName()) {
+      sb.append(obj.getFirstName());
+    }
+    if (obj.hasMiddleName()) {
+      if (0 < sb.length()) {
+        sb.append("_");
+      }
+      sb.append(obj.getMiddleName());
+    }
+    if (obj.hasLastName()) {
+      if (0 < sb.length()) {
+        sb.append("_");
+      }
+      sb.append(obj.getLastName());
+    }
+    return new Text(sb.toString());
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public <T> Mapping<T> get(InstanceOrBuilder<T> obj) {
-    return (Mapping<T>) mappings.get(obj.getWrappedClass());
+  public Class<Person> objectType() {
+    return Person.class;
   }
 
 }

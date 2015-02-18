@@ -16,6 +16,7 @@
  */
 package cereal;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -28,6 +29,10 @@ import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
+import org.apache.thrift.TBase;
+
+import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.Message;
 
 public class StoreImpl implements Store {
   Registry reg;
@@ -52,7 +57,7 @@ public class StoreImpl implements Store {
   public <T> void write(Collection<T> msgs) throws Exception {
     BatchWriter bw = getBatchWriter();
     for (T m : msgs) {
-      Mapping<T> mapping = reg.get(m);
+      Mapping<T> mapping = reg.get(toInstanceOrBuilder(m));
       Mutation mut = new Mutation(mapping.getRowId(m));
       for (Field f : mapping.getFields(m)) {
         mut.put(f.grouping(), f.name(), f.visibility(), f.value());
@@ -72,12 +77,66 @@ public class StoreImpl implements Store {
   public <T> T read(String id, Class<T> clz) throws Exception {
     Scanner s = conn.createScanner(table, Authorizations.EMPTY);
     s.setRange(Range.exact(id));
-    T obj = clz.newInstance();
-    Mapping<T> mapping = reg.get(obj);
+    InstanceOrBuilder<T> instOrBuilder = toInstanceOrBuilder(clz);
+    Mapping<T> mapping = reg.get(instOrBuilder);
     for (Entry<Key,Value> entry : s) {
-      mapping.update(entry, obj);
+      mapping.update(entry, instOrBuilder);
     }
-    return obj;
+
+    switch (instOrBuilder.getType()) {
+      case INSTANCE:
+        @SuppressWarnings("unchecked")
+        T obj = (T) instOrBuilder.get();
+        return obj;
+      case BUILDER:
+        GeneratedMessage.Builder<?> builder = (GeneratedMessage.Builder<?>) instOrBuilder.get();
+        @SuppressWarnings("unchecked")
+        T pb = (T) builder.build();
+        return pb;
+      default:
+        throw new IllegalArgumentException("Cannot handle unknown InstanceOrBuilder.Type");
+    }
+  }
+
+  protected <T> InstanceOrBuilder<T> toInstanceOrBuilder(T instance) {
+    if (instance instanceof GeneratedMessage) {
+      try {
+        Message.Builder builder = ((GeneratedMessage) instance).newBuilderForType();
+        @SuppressWarnings("unchecked")
+        Class<T> typedClz = (Class<T>) instance.getClass();
+        return new InstanceOrBuilderImpl<T>(builder, typedClz);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    } else if (TBase.class.isAssignableFrom(instance.getClass())) {
+      return new InstanceOrBuilderImpl<T>((TBase<?,?>) instance);
+    } else {
+      return new InstanceOrBuilderImpl<T>(instance);
+    }
+  }
+
+  protected <T> InstanceOrBuilder<T> toInstanceOrBuilder(Class<T> clz) {
+    try {
+      if (GeneratedMessage.class.isAssignableFrom(clz)) {
+        // Protobuf Message
+        @SuppressWarnings("unchecked")
+        Class<? extends GeneratedMessage> msgClz = (Class<GeneratedMessage>) clz;
+        Method newBuilderMethod = msgClz.getMethod("newBuilder");
+        Message.Builder builder = (Message.Builder) newBuilderMethod.invoke(null);
+        return new InstanceOrBuilderImpl<T>(builder, clz);
+      } else if (TBase.class.isAssignableFrom(clz)) {
+        // Thrift message
+        @SuppressWarnings("unchecked")
+        Class<TBase<?,?>> typedClz = (Class<TBase<?,?>>) clz;
+        TBase<?,?> instance = typedClz.newInstance();
+        return new InstanceOrBuilderImpl<T>(instance);
+      } else {
+        // A POJO
+        return new InstanceOrBuilderImpl<T>(clz.newInstance());
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

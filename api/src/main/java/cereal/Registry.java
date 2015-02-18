@@ -31,10 +31,10 @@ public interface Registry {
 
   /**
    * Fetch the current {@link Mapping} for the class {@code T}.
-   * 
+   *
    * @param obj
    *          The object to fetch the {@link Mapping} for
    * @return The {@link Mapping} for {@code T}
    */
-  <T> Mapping<T> get(T obj);
+  <T> Mapping<T> get(InstanceOrBuilder<T> obj);
 }

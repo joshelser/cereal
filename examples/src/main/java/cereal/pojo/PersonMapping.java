@@ -28,6 +28,7 @@ import org.apache.hadoop.io.Text;
 
 import cereal.Field;
 import cereal.FieldImpl;
+import cereal.InstanceOrBuilder;
 import cereal.Mapping;
 
 public class PersonMapping implements Mapping<Person> {
@@ -87,7 +88,8 @@ public class PersonMapping implements Mapping<Person> {
   }
 
   @Override
-  public void update(Entry<Key,Value> entry, Person obj) {
+  public void update(Entry<Key,Value> entry, InstanceOrBuilder<Person> instOrBuilder) {
+    Person obj = (Person) instOrBuilder.get();
     Key k = entry.getKey();
     String colq = k.getColumnQualifier().toString();
     switch (colq) {

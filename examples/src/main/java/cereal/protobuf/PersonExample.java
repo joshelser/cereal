@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal.pojo;
+package cereal.protobuf;
 
 import java.util.Collections;
 
@@ -26,21 +26,16 @@ import cereal.Registry;
 import cereal.RegistryImpl;
 import cereal.Store;
 import cereal.StoreImpl;
+import cereal.protobuf.PersonOuter.Person;
 
-public class PojoExample {
+public class PersonExample {
 
   public static void main(String[] args) throws Exception {
-    Person p = new Person();
-    p.setFirstName("Bob");
-    p.setMiddleName("Joe");
-    p.setLastName("Franklin");
-    p.setAge(30);
-    p.setHeight(72);
-    p.setWeight(220);
+    Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();
 
     Registry registry = new RegistryImpl();
     registry.add(new PersonMapping());
-    String tableName = "pojo_people";
+    String tableName = "pb_people";
     ZooKeeperInstance inst = new ZooKeeperInstance("accumulo", "127.0.0.1");
     Connector conn = inst.getConnector("root", new PasswordToken("secret"));
     if (!conn.tableOperations().exists(tableName)) {
