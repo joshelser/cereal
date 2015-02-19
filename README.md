@@ -23,7 +23,11 @@ implementation that a developer must write to get basic serialization/deserializ
 Cereal Schema
 -------------
 
-asldkjf
+Cereal represents your simple objects in Accumulo, one per row. It attempts to follow the approach
+outlined in the BigTable paper: The row uniquely identifies the message, and the columns within that
+row represent attributes or fields of that message. For each column, the family serves to group similarly
+accessed fields together, the qualifier stores the name of the field, and the visibility restricts access
+to that field. The value is obvious.
 
 Making the cereal
 -----------------
@@ -45,17 +49,17 @@ With a Mapping defined for a message class, instances of that message can be pro
 to be serialized and instances can be retrieved from Accumulo in the message type.
 
 ```
-    Connector conn = getConnector();
-    Registry registry = new RegistryImpl();
-    registry.add(new PersonMapping());
+  Connector conn = getConnector();
+  Registry registry = new RegistryImpl();
+  registry.add(new PersonMapping());
 
-    try (Store store = new StoreImpl(registry, conn, tableName)) {
-      store.write(Collections.singleton(p));
-      store.flush();
+  try (Store store = new StoreImpl(registry, conn, tableName)) {
+    store.write(Collections.singleton(p));
+    store.flush();
 
-      Person pCopy = store.read("Bob_Joe_Franklin", Person.class);
-      System.out.println("Copy: " + pCopy);
-    }
+    Person pCopy = store.read("Bob_Joe_Franklin", Person.class);
+    System.out.println("Copy: " + pCopy);
+  }
 ```
 
 The developer can deal wholly in terms of the messages, not having be deal with Keys or Values. Hooray.
