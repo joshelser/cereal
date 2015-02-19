@@ -17,5 +17,59 @@ them to define the Accumulo row for a message, and, for each attribute in the re
 optional grouping (the column family), the name of the field (the column qualifier), and
 the visibility of the field (the column visibility, obviously).
 
-This mapping, along with the introspection provided by the generated classes provides a minimal
+This mapping, along with the introspection provided by the generated classes, provides a minimal
 implementation that a developer must write to get basic serialization/deserialization with Accumulo.
+
+Cereal Schema
+-------------
+
+asldkjf
+
+Making the cereal
+-----------------
+
+Cereal expects the developer to provide one implementation for each object/message to be serialized:
+a Mapping. A Mapping controls the serialization details for a message: the fields in the message,
+the Accumulo row ID, and how to rebuild the message from its serialized form (Key/Value pairs). A field
+in a message defines an optional grouping (the column family), an optional visibility (the column visibility)
+in addition to the required name and value for that field.
+
+For plain old Java objects (POJOs), the developer must implement both the methods that get the
+fields for a message and the deserialization back into the message. For Thrift and ProtocolBuffer
+messages, this is handled automatically through the abstract ThriftStructMapping and ProtocolBufferMapping.
+
+Eating the cereal
+-----------------
+
+With a Mapping defined for a message class, instances of that message can be provided to the Store
+to be serialized and instances can be retrieved from Accumulo in the message type.
+
+```
+    Connector conn = getConnector();
+    Registry registry = new RegistryImpl();
+    registry.add(new PersonMapping());
+
+    try (Store store = new StoreImpl(registry, conn, tableName)) {
+      store.write(Collections.singleton(p));
+      store.flush();
+
+      Person pCopy = store.read("Bob_Joe_Franklin", Person.class);
+      System.out.println("Copy: " + pCopy);
+    }
+```
+
+The developer can deal wholly in terms of the messages, not having be deal with Keys or Values. Hooray.
+
+Examples
+--------
+
+End to end examples exist for POJO, Thrift message and ProtocolBuffer messages, all representations
+of the same data: a person's name, age, height and weight.
+
+ * [POJO Example][1]
+ * [Thrift Example][2]
+ * [Protobuf Example][3]
+
+[1]: http://github.com/joshelser/cereal/examples/src/main/java/cereal/pojo
+[2]: http://github.com/joshelser/cereal/examples/src/main/java/cereal/thrift
+[3]: http://github.com/joshelser/cereal/examples/src/main/java/cereal/protobuf
