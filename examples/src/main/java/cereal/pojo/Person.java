@@ -1,10 +1,9 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Copyright 2015 Josh Elser
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -140,7 +139,7 @@ public class Person {
       } else if (!firstName.equals(other.getFirstName())) {
         return false;
       }
-      
+
       if (null == middleName) {
         if (null != other.getMiddleName()) {
           return false;
@@ -148,7 +147,7 @@ public class Person {
       } else if (!middleName.equals(other.getMiddleName())) {
         return false;
       }
-      
+
       if (null == lastName) {
         if (null != other.getLastName()) {
           return false;
@@ -156,7 +155,7 @@ public class Person {
       } else if (!lastName.equals(other.getLastName())) {
         return false;
       }
-      
+
       if (null == age) {
         if (null != other.getAge()) {
           return false;
@@ -164,7 +163,7 @@ public class Person {
       } else if (!age.equals(other.getAge())) {
         return false;
       }
-      
+
       if (null == height) {
         if (null != other.getHeight()) {
           return false;
@@ -172,7 +171,7 @@ public class Person {
       } else if (!height.equals(other.getHeight())) {
         return false;
       }
-      
+
       if (null == weight) {
         if (null != other.getWeight()) {
           return false;
