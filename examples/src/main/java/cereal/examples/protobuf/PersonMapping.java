@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal.protobuf;
+package cereal.examples.protobuf;
 
 import org.apache.hadoop.io.Text;
 
 import cereal.ProtobufMessageMapping;
-import cereal.protobuf.PersonOuter.Person;
+import cereal.examples.protobuf.PersonOuter.Person;
 
 public class PersonMapping extends ProtobufMessageMapping<Person> {
 

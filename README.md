@@ -74,6 +74,6 @@ of the same data: a person's name, age, height and weight.
  * [Thrift Example][2]
  * [Protobuf Example][3]
 
-[1]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/pojo/PojoExample.java
-[2]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/thrift/ThriftExample.java
-[3]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/protobuf/ProtobufExample.java
+[1]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/pojo/PojoExample.java
+[2]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/thrift/ThriftExample.java
+[3]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/protobuf/ProtobufExample.java

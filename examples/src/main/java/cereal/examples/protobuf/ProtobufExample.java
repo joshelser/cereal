@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal.protobuf;
+package cereal.examples.protobuf;
 
 import java.util.Collections;
 
@@ -25,7 +25,7 @@ import cereal.Registry;
 import cereal.RegistryImpl;
 import cereal.Store;
 import cereal.StoreImpl;
-import cereal.protobuf.PersonOuter.Person;
+import cereal.examples.protobuf.PersonOuter.Person;
 
 import com.google.protobuf.TextFormat;
 
