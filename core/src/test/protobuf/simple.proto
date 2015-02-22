@@ -1,0 +1,15 @@
+package cereal.protobuf;
+
+option java_package = "cereal.objects.protobuf";
+option java_outer_classname = "SimpleOuter";
+option optimize_for = SPEED;
+
+message Simple {
+  optional double dub = 1;
+  optional float flt = 2;
+  optional int32 int = 3;
+  optional int64 long = 4;
+  optional bool boolean = 5;
+  optional string str = 6;
+  optional bytes byte_str = 7;
+}
