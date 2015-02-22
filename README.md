@@ -1,7 +1,7 @@
 Accumulo Object Serialization
 =============================
 
-[![Build Status](https://travis-ci.org/joshelser/cereal.svg?branch=master)](https://travis-ci.org/joshelser/cereal) [![Coverage Status](https://coveralls.io/repos/joshelser/cereal/badge.svg?branch=master)](https://coveralls.io/r/joshelser/cereal?branch=master)
+[![Build Status](https://travis-ci.org/joshelser/cereal.svg?branch=master)](https://travis-ci.org/joshelser/cereal)
 
 Apache Accumulo is a sorted, distributed key/value store. As a developer, you
 don't deal with keys and value -- you deal with objects. At the very base, each
