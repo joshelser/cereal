@@ -22,7 +22,7 @@ import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 
 /**
- *
+ * Implementation of {@link Field}.
  */
 public class FieldImpl implements Field {
   private static final Text EMPTY = new Text();
@@ -67,4 +67,56 @@ public class FieldImpl implements Field {
     return value;
   }
 
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(32);
+    sb.append("FieldImpl[name=").append(name).append(", grouping=").append(null != grouping ? grouping : "").append(", visibility=")
+        .append(null != visibility ? visibility : "").append(", value=").append(value).append("]");
+    return sb.toString();
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = prime * 1 + name.hashCode();
+    result = prime * result + ((grouping == null) ? 0 : grouping.hashCode());
+    result = prime * result + ((visibility == null) ? 0 : visibility.hashCode());
+    result = prime * result + value.hashCode();
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof FieldImpl) {
+      FieldImpl other = (FieldImpl) o;
+
+      if (!name.equals(other.name)) {
+        return false;
+      }
+
+      if (null == grouping) {
+        if (null != other.grouping) {
+          return false;
+        }
+      } else if (!grouping.equals(other.grouping)) {
+        return false;
+      }
+
+      if (null == visibility) {
+        if (null != visibility) {
+          return false;
+        }
+      } else if (!visibility.equals(other.visibility)) {
+        return false;
+      }
+
+      if (!value.equals(other.value)) {
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
 }
