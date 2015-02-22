@@ -114,6 +114,25 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.eluder.coveralls</groupId>
+          <artifactId>coveralls-maven-plugin</artifactId>
+          <version>3.0.1</version>
+          <configuration>
+            <repoToken>nope</repoToken>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <format>xml</format>
+            <maxmem>256m</maxmem>
+            <!-- aggregated reports for multi-module projects -->
+            <aggregate>true</aggregate>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -127,6 +146,10 @@
           </dependency>
         </dependencies>
       </plugin>
+        <plugin>
+          <groupId>org.eluder.coveralls</groupId>
+          <artifactId>coveralls-maven-plugin</artifactId>
+        </plugin>
     </plugins>
   </build>
 </project>
