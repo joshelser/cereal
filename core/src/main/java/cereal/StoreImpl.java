@@ -22,7 +22,9 @@ import java.util.Map.Entry;
 import org.apache.accumulo.core.client.BatchWriter;
 import org.apache.accumulo.core.client.BatchWriterConfig;
 import org.apache.accumulo.core.client.Connector;
+import org.apache.accumulo.core.client.MutationsRejectedException;
 import org.apache.accumulo.core.client.Scanner;
+import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
@@ -45,7 +47,7 @@ public class StoreImpl implements Store {
     this.table = table;
   }
 
-  BatchWriter getBatchWriter() throws Exception {
+  BatchWriter getBatchWriter() throws TableNotFoundException {
     if (null == bw) {
       bw = conn.createBatchWriter(table, new BatchWriterConfig());
     }
@@ -139,8 +141,7 @@ public class StoreImpl implements Store {
   }
 
   @Override
-  public void close() throws Exception {
-    BatchWriter bw = getBatchWriter();
+  public void close() throws MutationsRejectedException {
     if (null != bw) {
       bw.close();
     }
