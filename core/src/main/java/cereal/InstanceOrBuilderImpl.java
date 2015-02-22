@@ -15,27 +15,25 @@
  */
 package cereal;
 
-import org.apache.thrift.TBase;
-
 import com.google.protobuf.MessageOrBuilder;
 
 /**
  * Implementation for {@link InstanceOrBuilder}.
  */
 public class InstanceOrBuilderImpl<T> implements InstanceOrBuilder<T> {
-
   private Type type;
   private Object wrappedObject;
   private Class<T> wrappedClass;
 
   /**
-   * Constructor for POJO-type messages
+   * Constructor for concrete messages (POJO or Thrift)
    *
    * @param instance
-   *          An instance of the POJO
+   *          A message
    */
   @SuppressWarnings("unchecked")
   public InstanceOrBuilderImpl(T instance) {
+    // Can't think of a good way to do a compile-time check to avoid Builders only -- should call the other constructor
     type = Type.INSTANCE;
     wrappedObject = instance;
     wrappedClass = (Class<T>) instance.getClass();
@@ -51,21 +49,6 @@ public class InstanceOrBuilderImpl<T> implements InstanceOrBuilder<T> {
     type = Type.BUILDER;
     wrappedObject = msgBuilder;
     wrappedClass = msg;
-  }
-
-  /**
-   * Constructor for Thrift {@link TBase} message
-   *
-   * @param tMsg
-   *          The Thrift message
-   */
-  // TODO is this right? Is it better to just do {@code TBase<?,? extends TFieldIdEnum>}?
-  @SuppressWarnings("unchecked")
-  public InstanceOrBuilderImpl(TBase<?,?> tMsg) {
-    type = Type.INSTANCE;
-    wrappedObject = tMsg;
-    // TODO This is definitely not right
-    wrappedClass = (Class<T>) tMsg.getClass();
   }
 
   @Override

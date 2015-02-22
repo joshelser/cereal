@@ -30,7 +30,6 @@ import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
-import org.apache.thrift.TBase;
 
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.Message;
@@ -109,9 +108,8 @@ public class StoreImpl implements Store {
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
-    } else if (TBase.class.isAssignableFrom(instance.getClass())) {
-      return new InstanceOrBuilderImpl<T>((TBase<?,?>) instance);
     } else {
+      // POJO or Thrift
       return new InstanceOrBuilderImpl<T>(instance);
     }
   }
@@ -125,14 +123,8 @@ public class StoreImpl implements Store {
         Method newBuilderMethod = msgClz.getMethod("newBuilder");
         Message.Builder builder = (Message.Builder) newBuilderMethod.invoke(null);
         return new InstanceOrBuilderImpl<T>(builder, clz);
-      } else if (TBase.class.isAssignableFrom(clz)) {
-        // Thrift message
-        @SuppressWarnings("unchecked")
-        Class<TBase<?,?>> typedClz = (Class<TBase<?,?>>) clz;
-        TBase<?,?> instance = typedClz.newInstance();
-        return new InstanceOrBuilderImpl<T>(instance);
       } else {
-        // A POJO
+        // A POJO or Thrift
         return new InstanceOrBuilderImpl<T>(clz.newInstance());
       }
     } catch (Exception e) {
