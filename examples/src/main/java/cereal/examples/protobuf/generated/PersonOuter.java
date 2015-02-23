@@ -3,6 +3,7 @@
 
 package cereal.examples.protobuf.generated;
 
+@SuppressWarnings("unused")
 public final class PersonOuter {
   private PersonOuter() {}
   public static void registerAllExtensions(
