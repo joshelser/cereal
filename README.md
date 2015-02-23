@@ -84,6 +84,7 @@ I believe there is much worth in what it can provide.
 
 - [x] Basic Thrift support
 - [x] Basic Protobuf support
+- [ ] Unit test coverage for core
 - [ ] Protobuf abstract control for grouping and visibility
 - [ ] Thrift abstract control for grouping and visibility
 - [ ] Protobuf complex types
