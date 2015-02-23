@@ -44,14 +44,18 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
   private static final Logger log = LoggerFactory.getLogger(ProtobufMessageMapping.class);
 
   @Override
-  public List<Field> getFields(T obj) {
-    checkNotNull(obj);
+  public List<Field> getFields(T msg) {
+    checkNotNull(msg, "Message was null");
 
-    final Map<FieldDescriptor,Object> pbFields = obj.getAllFields();
+    final Map<FieldDescriptor,Object> pbFields = msg.getAllFields();
     final List<Field> fields = new ArrayList<>(pbFields.size());
 
     for (Entry<FieldDescriptor,Object> entry : pbFields.entrySet()) {
       FieldDescriptor descriptor = entry.getKey();
+      // TODO implement repeated fields
+      if (descriptor.isRepeated()) {
+        continue;
+      }
       switch (descriptor.getJavaType()) {
         case INT:
         case LONG:
@@ -84,6 +88,8 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
 
   @Override
   public void update(Entry<Key,Value> entry, InstanceOrBuilder<T> obj) {
+    checkNotNull(entry, "Key-Value pair was null");
+    checkNotNull(obj, "InstanceOrBuilder was null");
     checkArgument(Type.BUILDER == obj.getType(), "Expected argument to be a builder");
 
     final GeneratedMessage.Builder<?> builder = (GeneratedMessage.Builder<?>) obj.get();
@@ -91,6 +97,10 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
 
     // Find the FieldDescriptor from the Key
     for (FieldDescriptor fieldDesc : builder.getDescriptorForType().getFields()) {
+      // TODO implement repeated fields
+      if (fieldDesc.isRepeated()) {
+        continue;
+      }
       if (fieldName.equals(fieldDesc.getName())) {
         Value value = entry.getValue();
         switch (fieldDesc.getJavaType()) {

@@ -13,3 +13,7 @@ message Simple {
   optional string str = 6;
   optional bytes byte_str = 7;
 }
+
+message Complex {
+  repeated string str_list = 1;
+}
