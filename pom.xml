@@ -126,6 +126,8 @@
   </build>
   <profiles>
     <profile>
+      <!-- Avoid warning about a missing pom
+           http://stackoverflow.com/questions/7905501/get-rid-of-pom-not-found-warning-for-org-eclipse-m2elifecycle-mapping -->
       <id>run-in-eclipse-only</id>
       <activation>
         <property>
