@@ -76,6 +76,28 @@ of the same data: a person's name, age, height and weight.
  * [Thrift Example][2]
  * [Protobuf Example][3]
 
+Work in Progress
+----------------
+
+This project should still be considered a work in progress, but I plan to see it through as
+I believe there is much worth in what it can provide.
+
+- [x] Basic Thrift support
+- [x] Basic Protobuf support
+- [ ] Protobuf abstract control for grouping and visibility
+- [ ] Thrift abstract control for grouping and visibility
+- [ ] Protobuf complex types
+  - [ ] Repeated fields
+  - [ ] Nested messages
+- [ ] Thrift complex types
+  - [ ] List fields
+  - [ ] Map fields
+  - [ ] Set fields
+  - [ ] Nested structs
+  - [ ] Enums
+- [ ] End-to-end tests with MiniAccumuloCluster
+- [ ] Performance benchmarks
+
 [1]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/pojo/PojoExample.java
 [2]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/thrift/ThriftExample.java
 [3]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/protobuf/ProtobufExample.java
