@@ -1,4 +1,4 @@
-namespace java cereal.thrift
+namespace java cereal.examples.thrift.generated
 
 struct Person {
   1:string firstName

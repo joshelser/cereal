@@ -25,6 +25,7 @@ import cereal.Registry;
 import cereal.RegistryImpl;
 import cereal.Store;
 import cereal.StoreImpl;
+import cereal.examples.thrift.generated.Person;
 
 public class ThriftExample {
 

@@ -19,6 +19,7 @@ import org.apache.hadoop.io.Text;
 
 import cereal.Mapping;
 import cereal.ThriftStructMapping;
+import cereal.examples.thrift.generated.Person;
 
 /**
  * A {@link Mapping} to the Thrift struct {@link Person}.

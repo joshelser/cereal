@@ -25,7 +25,7 @@ import cereal.Registry;
 import cereal.RegistryImpl;
 import cereal.Store;
 import cereal.StoreImpl;
-import cereal.examples.protobuf.PersonOuter.Person;
+import cereal.examples.protobuf.generated.PersonOuter.Person;
 
 import com.google.protobuf.TextFormat;
 

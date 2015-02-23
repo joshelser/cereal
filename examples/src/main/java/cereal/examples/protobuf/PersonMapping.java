@@ -18,7 +18,7 @@ package cereal.examples.protobuf;
 import org.apache.hadoop.io.Text;
 
 import cereal.ProtobufMessageMapping;
-import cereal.examples.protobuf.PersonOuter.Person;
+import cereal.examples.protobuf.generated.PersonOuter.Person;
 
 public class PersonMapping extends ProtobufMessageMapping<Person> {
 

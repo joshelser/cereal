@@ -1,6 +1,6 @@
 package cereal.protobuf;
 
-option java_package = "cereal.protobuf";
+option java_package = "cereal.examples.protobuf.generated";
 option java_outer_classname = "PersonOuter";
 option optimize_for = SPEED;
 
