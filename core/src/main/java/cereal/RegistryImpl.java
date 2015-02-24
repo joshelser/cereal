@@ -15,11 +15,13 @@
  */
 package cereal;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Simple Class to {@link Mapping} registry implemented with a {@link HashMap}
  */
 public class RegistryImpl implements Registry {
 
@@ -27,13 +29,18 @@ public class RegistryImpl implements Registry {
 
   @Override
   public <T> void add(Mapping<T> mapping) {
-    mappings.put(mapping.objectType(), mapping);
+    Class<T> type = mapping.objectType();
+    checkNotNull(type, "objectType on Mapping returned null");
+    mappings.put(type, mapping);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public <T> Mapping<T> get(InstanceOrBuilder<T> obj) {
-    return (Mapping<T>) mappings.get(obj.getWrappedClass());
+    checkNotNull(obj, "InstanceOrBuilder was null");
+    Class<T> wrappedClass = obj.getWrappedClass();
+    checkNotNull(wrappedClass, "wrappedClass on InstanceOrBuilder was null");
+    return (Mapping<T>) mappings.get(wrappedClass);
   }
 
 }
