@@ -15,9 +15,12 @@
  */
 package cereal;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +37,8 @@ import org.apache.thrift.protocol.TType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cereal.InstanceOrBuilder.Type;
+
 /**
  * A default {@link Mapping} implementation for Thrift structs.
  */
@@ -44,6 +49,8 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
 
   @Override
   public List<Field> getFields(E obj) {
+    checkNotNull(obj, "The struct was null");
+
     List<Field> fields;
     try {
       @SuppressWarnings("rawtypes")
@@ -93,8 +100,14 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
               fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(longVal.toString())));
               break;
             case TType.STRING:
-              String strVal = (String) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(strVal)));
+              byte[] bytes;
+              if (fvMetaData.isBinary()) {
+                bytes = (byte[]) value;
+              } else {
+                String strVal = (String) value;
+                bytes = strVal.getBytes(UTF_8);
+              }
+              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, new Value(bytes)));
               break;
             default:
               log.warn("Ignoring field: {}", field.getFieldName());
@@ -119,6 +132,10 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
 
   @Override
   public void update(Entry<Key,Value> entry, InstanceOrBuilder<E> instOrBuilder) {
+    checkNotNull(entry, "Key-Value pair is null");
+    checkNotNull(instOrBuilder, "InstOrBuilder is null");
+    checkArgument(Type.INSTANCE == instOrBuilder.getType(), "Expected INSTANCE in InstanceOrBuilder");
+
     try {
       @SuppressWarnings("rawtypes")
       Class<? extends TBase> tbaseClz = instOrBuilder.getWrappedClass();
@@ -165,8 +182,12 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
               setFieldValue.invoke(obj, fieldId, longVal);
               break;
             case TType.STRING:
-              String strVal = v.toString();
-              setFieldValue.invoke(obj, fieldId, strVal);
+              if (fvMetaData.isBinary()) {
+                setFieldValue.invoke(obj, fieldId, ByteBuffer.wrap(v.get()));
+              } else {
+                String strVal = v.toString();
+                setFieldValue.invoke(obj, fieldId, strVal);
+              }
               break;
             default:
               log.warn("Ignoring field: {}", fieldName);

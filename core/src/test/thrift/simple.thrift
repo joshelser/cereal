@@ -1,4 +1,4 @@
-namespace java cereal.thrift
+namespace java cereal.objects.thrift
 
 struct TSimple {
   1:string str
@@ -9,4 +9,9 @@ struct TSimple {
   5:bool bln
   6:byte single_byte
   7:double dub
+}
+
+struct TComplex {
+  1:TSimple simple
+  2:list<string> strings
 }
