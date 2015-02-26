@@ -15,6 +15,8 @@
  */
 package cereal;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -34,6 +36,9 @@ import org.apache.accumulo.core.security.Authorizations;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.Message;
 
+/**
+ * {@link Store} implementation that uses Accumulo.
+ */
 public class StoreImpl implements Store {
   Registry reg;
   Connector conn;
@@ -41,23 +46,41 @@ public class StoreImpl implements Store {
   BatchWriter bw;
 
   public StoreImpl(Registry reg, Connector conn, String table) {
+    checkNotNull(reg, "Registry was null");
+    checkNotNull(conn, "Connector was null");
+    checkNotNull(table, "Accumulo table was null");
     this.reg = reg;
     this.conn = conn;
     this.table = table;
   }
 
-  BatchWriter getBatchWriter() throws TableNotFoundException {
+  BatchWriter getOrCreateBatchWriter() throws TableNotFoundException {
     if (null == bw) {
       bw = conn.createBatchWriter(table, new BatchWriterConfig());
     }
     return bw;
   }
 
+  /**
+   * @return Get the internal {@link BatchWriter}, or null if it's not initialized.
+   */
+  BatchWriter getBatchWriter() {
+    return bw;
+  }
+
   @Override
   public <T> void write(Collection<T> msgs) throws Exception {
-    BatchWriter bw = getBatchWriter();
+    checkNotNull(msgs, "Message to write were null");
+    BatchWriter bw = getOrCreateBatchWriter();
+    Mapping<T> mapping = null;
     for (T m : msgs) {
-      Mapping<T> mapping = reg.get(toInstanceOrBuilder(m));
+      if (null == mapping) {
+        InstanceOrBuilder<T> instOrBuilder = toInstanceOrBuilder(m);
+        mapping = reg.get(instOrBuilder);
+        if (null == mapping) {
+          throw new IllegalStateException("Registry doesn't contain Mapping for " + instOrBuilder);
+        }
+      }
       Mutation mut = new Mutation(mapping.getRowId(m));
       for (Field f : mapping.getFields(m)) {
         mut.put(f.grouping(), f.name(), f.visibility(), f.value());
@@ -75,6 +98,8 @@ public class StoreImpl implements Store {
 
   @Override
   public <T> T read(String id, Class<T> clz) throws Exception {
+    checkNotNull(id, "ID was null");
+    checkNotNull(clz, "Target class was null");
     Scanner s = conn.createScanner(table, Authorizations.EMPTY);
     s.setRange(Range.exact(id));
     InstanceOrBuilder<T> instOrBuilder = toInstanceOrBuilder(clz);
@@ -136,6 +161,7 @@ public class StoreImpl implements Store {
   public void close() throws MutationsRejectedException {
     if (null != bw) {
       bw.close();
+      bw = null;
     }
   }
 }
