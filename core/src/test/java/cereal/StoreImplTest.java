@@ -120,7 +120,7 @@ public class StoreImplTest {
     store.close();
 
     verify(conn, bw);
-    
+
     assertNull(store.getBatchWriter());
   }
 
