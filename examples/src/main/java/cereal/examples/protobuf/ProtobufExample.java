@@ -20,12 +20,13 @@ import java.util.Collections;
 import org.apache.accumulo.core.client.Connector;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
+import org.apache.hadoop.io.Text;
 
 import cereal.Registry;
-import cereal.RegistryImpl;
 import cereal.Store;
-import cereal.StoreImpl;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
+import cereal.impl.RegistryImpl;
+import cereal.impl.StoreImpl;
 
 import com.google.protobuf.TextFormat;
 
@@ -35,7 +36,7 @@ public class ProtobufExample {
     Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();
 
     Registry registry = new RegistryImpl();
-    registry.add(new PersonMapping());
+    registry.add(new ProtobufPersonMapping());
     String tableName = "pb_people";
     ZooKeeperInstance inst = new ZooKeeperInstance("accumulo", "127.0.0.1");
     Connector conn = inst.getConnector("root", new PasswordToken("secret"));
@@ -49,7 +50,7 @@ public class ProtobufExample {
       store.write(Collections.singleton(p));
       store.flush();
 
-      Person pCopy = store.read("Bob_Joe_Franklin", Person.class);
+      Person pCopy = store.read(new Text("Bob_Joe_Franklin"), Person.class);
       System.out.println("Copy: [" + TextFormat.shortDebugString(pCopy) + "]");
     }
   }

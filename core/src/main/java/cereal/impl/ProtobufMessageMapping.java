@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,6 +30,9 @@ import org.apache.hadoop.io.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cereal.Field;
+import cereal.InstanceOrBuilder;
+import cereal.Mapping;
 import cereal.InstanceOrBuilder.Type;
 
 import com.google.protobuf.ByteString;

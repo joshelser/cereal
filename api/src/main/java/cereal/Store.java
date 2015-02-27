@@ -18,6 +18,7 @@ package cereal;
 import java.util.Collection;
 
 import org.apache.accumulo.core.client.MutationsRejectedException;
+import org.apache.hadoop.io.Text;
 
 /**
  * An interface designed to allow the storing of simple objects into some backing store.
@@ -53,8 +54,8 @@ public interface Store extends AutoCloseable {
    * @throws Exception
    *           If something went wrong.
    */
-  <T> T read(String id, Class<T> clz) throws Exception;
-  
+  <T> T read(Text id, Class<T> clz) throws Exception;
+
   @Override
   void close() throws MutationsRejectedException;
 }

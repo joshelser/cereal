@@ -1,6 +1,6 @@
 package cereal.protobuf;
 
-option java_package = "cereal.objects.protobuf";
+option java_package = "cereal.impl.objects.protobuf";
 option java_outer_classname = "SimpleOuter";
 option optimize_for = SPEED;
 

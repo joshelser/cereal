@@ -26,11 +26,11 @@ import org.apache.accumulo.core.data.Value;
 import org.apache.hadoop.io.Text;
 
 import cereal.Field;
-import cereal.FieldImpl;
 import cereal.InstanceOrBuilder;
 import cereal.Mapping;
+import cereal.impl.FieldImpl;
 
-public class PersonMapping implements Mapping<Person> {
+public class PojoPersonMapping implements Mapping<Person> {
 
   @Override
   public Text getRowId(Person obj) {

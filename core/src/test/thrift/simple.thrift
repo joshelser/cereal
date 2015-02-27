@@ -1,4 +1,4 @@
-namespace java cereal.objects.thrift
+namespace java cereal.impl.objects.thrift
 
 struct TSimple {
   1:string str

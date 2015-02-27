@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cereal.InstanceOrBuilder;
+import cereal.Mapping;
+import cereal.Registry;
 
 /**
  * Simple Class to {@link Mapping} registry implemented with a {@link HashMap}

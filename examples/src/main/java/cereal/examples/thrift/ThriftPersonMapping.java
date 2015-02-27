@@ -18,13 +18,13 @@ package cereal.examples.thrift;
 import org.apache.hadoop.io.Text;
 
 import cereal.Mapping;
-import cereal.ThriftStructMapping;
 import cereal.examples.thrift.generated.Person;
+import cereal.impl.ThriftStructMapping;
 
 /**
  * A {@link Mapping} to the Thrift struct {@link Person}.
  */
-public class PersonMapping extends ThriftStructMapping<Person> {
+public class ThriftPersonMapping extends ThriftStructMapping<Person> {
 
   @Override
   public Text getRowId(Person obj) {

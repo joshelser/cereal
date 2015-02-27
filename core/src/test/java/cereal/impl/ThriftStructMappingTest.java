@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
@@ -34,8 +34,13 @@ import org.apache.hadoop.io.Text;
 import org.junit.Before;
 import org.junit.Test;
 
-import cereal.objects.thrift.TComplex;
-import cereal.objects.thrift.TSimple;
+import cereal.Field;
+import cereal.InstanceOrBuilder;
+import cereal.impl.FieldImpl;
+import cereal.impl.InstanceOrBuilderImpl;
+import cereal.impl.ThriftStructMapping;
+import cereal.impl.objects.thrift.TComplex;
+import cereal.impl.objects.thrift.TSimple;
 
 import com.google.common.collect.Maps;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,6 +32,13 @@ import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
+import org.apache.hadoop.io.Text;
+
+import cereal.Field;
+import cereal.InstanceOrBuilder;
+import cereal.Mapping;
+import cereal.Registry;
+import cereal.Store;
 
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.Message;
@@ -97,7 +104,7 @@ public class StoreImpl implements Store {
   }
 
   @Override
-  public <T> T read(String id, Class<T> clz) throws Exception {
+  public <T> T read(Text id, Class<T> clz) throws Exception {
     checkNotNull(id, "ID was null");
     checkNotNull(clz, "Target class was null");
     Scanner s = conn.createScanner(table, Authorizations.EMPTY);

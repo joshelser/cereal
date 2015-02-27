@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.easymock.EasyMock.anyObject;
@@ -43,8 +43,9 @@ import org.apache.hadoop.io.Text;
 import org.junit.Before;
 import org.junit.Test;
 
-import cereal.objects.pojo.SimplePojo;
-import cereal.objects.protobuf.SimpleOuter.Simple;
+import cereal.Registry;
+import cereal.impl.objects.pojo.SimplePojo;
+import cereal.impl.objects.protobuf.SimpleOuter.Simple;
 
 import com.google.protobuf.ByteString;
 
@@ -89,7 +90,7 @@ public class StoreImplTest {
 
   @Test(expected = NullPointerException.class)
   public void testNullReadClass() throws Exception {
-    store.read("id", null);
+    store.read(new Text("id"), null);
   }
 
   @Test
@@ -142,13 +143,13 @@ public class StoreImplTest {
   @Test
   public void testRead() throws Exception {
     Simple msg = Simple.newBuilder().setBoolean(true).setInt(42).setByteStr(ByteString.copyFromUtf8("string")).setDub(3.14159d).build();
-    final String row = "read";
+    final Text row = new Text("read");
 
     TreeMap<Key,Value> entries = new TreeMap<>();
-    entries.put(new Key(row, "", "dub"), new Value("3.14159".getBytes(UTF_8)));
-    entries.put(new Key(row, "", "int"), new Value("42".getBytes(UTF_8)));
-    entries.put(new Key(row, "", "boolean"), new Value("true".getBytes(UTF_8)));
-    entries.put(new Key(row, "", "byte_str"), new Value("string".getBytes(UTF_8)));
+    entries.put(new Key(row.toString(), "", "dub"), new Value("3.14159".getBytes(UTF_8)));
+    entries.put(new Key(row.toString(), "", "int"), new Value("42".getBytes(UTF_8)));
+    entries.put(new Key(row.toString(), "", "boolean"), new Value("true".getBytes(UTF_8)));
+    entries.put(new Key(row.toString(), "", "byte_str"), new Value("string".getBytes(UTF_8)));
 
     Scanner scanner = createMock(Scanner.class);
     expect(conn.createScanner(table, Authorizations.EMPTY)).andReturn(scanner);
@@ -167,7 +168,7 @@ public class StoreImplTest {
   @Test
   public void testEmptyRead() throws Exception {
     Simple msg = Simple.newBuilder().build();
-    final String row = "read";
+    final Text row = new Text("read");
 
     Scanner scanner = createMock(Scanner.class);
     expect(conn.createScanner(table, Authorizations.EMPTY)).andReturn(scanner);

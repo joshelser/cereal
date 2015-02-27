@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import cereal.InstanceOrBuilder.Type;
-import cereal.objects.pojo.SimplePojo;
-import cereal.objects.protobuf.SimpleOuter.Simple;
-import cereal.objects.thrift.TSimple;
+import cereal.impl.InstanceOrBuilderImpl;
+import cereal.impl.objects.pojo.SimplePojo;
+import cereal.impl.objects.protobuf.SimpleOuter.Simple;
+import cereal.impl.objects.thrift.TSimple;
 
 import com.google.protobuf.ByteString;
 

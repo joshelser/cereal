@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal;
+package cereal.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -27,7 +27,13 @@ import org.apache.hadoop.io.Text;
 import org.junit.Before;
 import org.junit.Test;
 
-import cereal.objects.pojo.SimplePojo;
+import cereal.Field;
+import cereal.InstanceOrBuilder;
+import cereal.Mapping;
+import cereal.Registry;
+import cereal.impl.InstanceOrBuilderImpl;
+import cereal.impl.RegistryImpl;
+import cereal.impl.objects.pojo.SimplePojo;
 
 public class RegistryImplTest {
 

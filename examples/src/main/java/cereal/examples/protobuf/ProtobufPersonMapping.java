@@ -17,10 +17,10 @@ package cereal.examples.protobuf;
 
 import org.apache.hadoop.io.Text;
 
-import cereal.ProtobufMessageMapping;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
+import cereal.impl.ProtobufMessageMapping;
 
-public class PersonMapping extends ProtobufMessageMapping<Person> {
+public class ProtobufPersonMapping extends ProtobufMessageMapping<Person> {
 
   @Override
   public Text getRowId(Person obj) {

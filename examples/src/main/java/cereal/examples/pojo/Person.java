@@ -179,6 +179,8 @@ public class Person {
       } else if (!weight.equals(other.getWeight())) {
         return false;
       }
+      
+      return true;
     }
 
     return false;

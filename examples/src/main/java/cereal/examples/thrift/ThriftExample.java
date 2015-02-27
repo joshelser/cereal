@@ -20,12 +20,13 @@ import java.util.Collections;
 import org.apache.accumulo.core.client.Connector;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
+import org.apache.hadoop.io.Text;
 
 import cereal.Registry;
-import cereal.RegistryImpl;
 import cereal.Store;
-import cereal.StoreImpl;
 import cereal.examples.thrift.generated.Person;
+import cereal.impl.RegistryImpl;
+import cereal.impl.StoreImpl;
 
 public class ThriftExample {
 
@@ -39,7 +40,7 @@ public class ThriftExample {
     p.setWeight(220);
 
     Registry registry = new RegistryImpl();
-    registry.add(new PersonMapping());
+    registry.add(new ThriftPersonMapping());
     String tableName = "thrift_people";
     ZooKeeperInstance inst = new ZooKeeperInstance("accumulo", "127.0.0.1");
     Connector conn = inst.getConnector("root", new PasswordToken("secret"));
@@ -53,7 +54,7 @@ public class ThriftExample {
       store.write(Collections.singleton(p));
       store.flush();
 
-      Person pCopy = store.read("Bob_Joe_Franklin", Person.class);
+      Person pCopy = store.read(new Text("Bob_Joe_Franklin"), Person.class);
       System.out.println("Copy: " + pCopy);
     }
   }

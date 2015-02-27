@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cereal.objects.pojo;
+package cereal.impl.objects.pojo;
 
 /**
  * A simple POJO for testing stuff
