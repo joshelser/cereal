@@ -121,6 +121,12 @@
             </instrumentation>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
