@@ -89,7 +89,7 @@ I believe there is much worth in what it can provide.
 - [x] Protobuf abstract control for grouping and visibility
 - [x] Thrift abstract control for grouping and visibility
 - [ ] Protobuf complex types
-  - [ ] Repeated fields
+  - [x] Repeated fields
   - [ ] Nested messages
 - [ ] Thrift complex types
   - [ ] List fields

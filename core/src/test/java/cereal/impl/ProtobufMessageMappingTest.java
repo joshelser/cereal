@@ -59,12 +59,12 @@ public class ProtobufMessageMappingTest {
     public Class<Simple> objectType() {
       return Simple.class;
     }
-    
+
     @Override
     public Text getGrouping(FieldDescriptor field) {
       return EMPTY;
     }
-    
+
     @Override
     public ColumnVisibility getVisibility(FieldDescriptor field) {
       return EMPTY_CV;
@@ -81,12 +81,12 @@ public class ProtobufMessageMappingTest {
     public Class<Complex> objectType() {
       return Complex.class;
     }
-    
+
     @Override
     public Text getGrouping(FieldDescriptor field) {
       return EMPTY;
     }
-    
+
     @Override
     public ColumnVisibility getVisibility(FieldDescriptor field) {
       return EMPTY_CV;
@@ -190,23 +190,28 @@ public class ProtobufMessageMappingTest {
   }
 
   @Test
-  public void testIgnoredTypes() {
-    Complex complexMsg = Complex.newBuilder().addStrList("string1").addStrList("value2").build();
+  public void testRepeatedFields() {
+    Complex complexMsg = Complex.newBuilder().addStrList("string1").addStrList("string2").build();
 
     ComplexMessageMapping complexMapping = new ComplexMessageMapping();
 
     // Serializing a message with a repeated field is just ignored
     List<Field> fields = complexMapping.getFields(complexMsg);
     assertNotNull(fields);
-    assertEquals(0, fields.size());
+    assertEquals(2, fields.size());
+
+    List<Field> expectedFields = new ArrayList<>();
+    expectedFields.add(new FieldImpl(text("str_list.0"), EMPTY, EMPTY_CV, value("string1")));
+    expectedFields.add(new FieldImpl(text("str_list.1"), EMPTY, EMPTY_CV, value("string2")));
 
     Complex.Builder builder = Complex.newBuilder();
-    // Unable to deserialize some hypothetical key-value
-    complexMapping.update(Maps.immutableEntry(new Key("id1", "", "str_list"), value("string1,string2")), new InstanceOrBuilderImpl<Complex>(builder,
-        Complex.class));
+    InstanceOrBuilder<Complex> iob = new InstanceOrBuilderImpl<Complex>(builder, Complex.class);
+    complexMapping.update(Maps.immutableEntry(new Key("id1", "", "str_list.0"), value("string1")), iob);
+    complexMapping.update(Maps.immutableEntry(new Key("id1", "", "str_list.1"), value("string2")), iob);
 
-    Complex emptyMsg = builder.build();
-    assertEquals(0, emptyMsg.getStrListCount());
+    Complex copyMsg = builder.build();
+    assertEquals(2, copyMsg.getStrListCount());
+    assertEquals(complexMsg, copyMsg);
   }
 
   @Test
