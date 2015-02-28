@@ -70,7 +70,7 @@ public class ThriftPersonTest {
     }
   }
 
-  @Test
+  @Test(timeout = 30 * 1000)
   public void testSerialization() throws Exception {
     Registry registry = new RegistryImpl();
     ThriftPersonMapping mapping = new ThriftPersonMapping();

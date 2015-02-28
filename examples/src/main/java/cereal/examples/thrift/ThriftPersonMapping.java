@@ -15,7 +15,9 @@
  */
 package cereal.examples.thrift;
 
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
+import org.apache.thrift.meta_data.FieldMetaData;
 
 import cereal.Mapping;
 import cereal.examples.thrift.generated.Person;
@@ -25,6 +27,8 @@ import cereal.impl.ThriftStructMapping;
  * A {@link Mapping} to the Thrift struct {@link Person}.
  */
 public class ThriftPersonMapping extends ThriftStructMapping<Person> {
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility EMPTY_CV = new ColumnVisibility("");
 
   @Override
   public Text getRowId(Person obj) {
@@ -50,5 +54,15 @@ public class ThriftPersonMapping extends ThriftStructMapping<Person> {
   @Override
   public Class<Person> objectType() {
     return Person.class;
+  }
+
+  @Override
+  public Text getGrouping(FieldMetaData field) {
+    return EMPTY;
+  }
+
+  @Override
+  public ColumnVisibility getVisibility(FieldMetaData field) {
+    return EMPTY_CV;
   }
 }

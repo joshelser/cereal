@@ -48,8 +48,6 @@ import cereal.Mapping;
  */
 public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,? extends TFieldIdEnum>> implements Mapping<E> {
   private static final Logger log = LoggerFactory.getLogger(ThriftStructMapping.class);
-  private static final Text EMPTY = new Text(new byte[0]);
-  private static final ColumnVisibility CV_EMPTY = new ColumnVisibility("");
 
   private volatile Method getFieldValue, isSet, setFieldValue;
 
@@ -129,26 +127,22 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
   }
 
   /**
-   * The grouping for a field. Intended for concrete instances to override. By default, no grouping (empty) is applied.
+   * The grouping for a field.
    *
    * @param field
    *          The protocol buffer field
    * @return The grouping for the field
    */
-  public Text getGrouping(FieldMetaData field) {
-    return EMPTY;
-  }
-  
+  public abstract Text getGrouping(FieldMetaData field);
+
   /**
-   * The visibility for a field. Intended for concrete instances to override. By default, no visibility (empty) is applied.
+   * The visibility for a field.
    *
    * @param field
    *          The protocol buffer field.
    * @return The visibility for the field
    */
-  public ColumnVisibility getVisibility(FieldMetaData field) {
-    return CV_EMPTY;
-  }
+  public abstract ColumnVisibility getVisibility(FieldMetaData field);
 
   private Text text(String str) {
     return new Text(str);

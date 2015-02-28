@@ -59,6 +59,16 @@ public class ProtobufMessageMappingTest {
     public Class<Simple> objectType() {
       return Simple.class;
     }
+    
+    @Override
+    public Text getGrouping(FieldDescriptor field) {
+      return EMPTY;
+    }
+    
+    @Override
+    public ColumnVisibility getVisibility(FieldDescriptor field) {
+      return EMPTY_CV;
+    }
   }
 
   private static class ComplexMessageMapping extends ProtobufMessageMapping<Complex> {
@@ -70,6 +80,16 @@ public class ProtobufMessageMappingTest {
     @Override
     public Class<Complex> objectType() {
       return Complex.class;
+    }
+    
+    @Override
+    public Text getGrouping(FieldDescriptor field) {
+      return EMPTY;
+    }
+    
+    @Override
+    public ColumnVisibility getVisibility(FieldDescriptor field) {
+      return EMPTY_CV;
     }
   }
 

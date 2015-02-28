@@ -60,6 +60,16 @@ public class ThriftStructMappingTest {
     public Class<TSimple> objectType() {
       return TSimple.class;
     }
+    
+    @Override
+    public Text getGrouping(FieldMetaData field) {
+      return EMPTY;
+    }
+    
+    @Override
+    public ColumnVisibility getVisibility(FieldMetaData field) {
+      return EMPTY_CV;
+    }
   }
 
   private static class TComplexMessageMapping extends ThriftStructMapping<TComplex> {
@@ -71,6 +81,16 @@ public class ThriftStructMappingTest {
     @Override
     public Class<TComplex> objectType() {
       return TComplex.class;
+    }
+    
+    @Override
+    public Text getGrouping(FieldMetaData field) {
+      return EMPTY;
+    }
+    
+    @Override
+    public ColumnVisibility getVisibility(FieldMetaData field) {
+      return EMPTY_CV;
     }
   }
 

@@ -69,7 +69,7 @@ public class PojoPersonTest {
     }
   }
 
-  @Test
+  @Test(timeout = 30 * 1000)
   public void testSerialization() throws Exception {
     Registry registry = new RegistryImpl();
     PojoPersonMapping mapping = new PojoPersonMapping();

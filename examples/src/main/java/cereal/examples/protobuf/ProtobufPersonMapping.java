@@ -15,12 +15,17 @@
  */
 package cereal.examples.protobuf;
 
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 
 import cereal.examples.protobuf.generated.PersonOuter.Person;
 import cereal.impl.ProtobufMessageMapping;
 
+import com.google.protobuf.Descriptors.FieldDescriptor;
+
 public class ProtobufPersonMapping extends ProtobufMessageMapping<Person> {
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility EMPTY_CV = new ColumnVisibility("");
 
   @Override
   public Text getRowId(Person obj) {
@@ -48,4 +53,13 @@ public class ProtobufPersonMapping extends ProtobufMessageMapping<Person> {
     return Person.class;
   }
 
+  @Override
+  public Text getGrouping(FieldDescriptor field) {
+    return EMPTY;
+  }
+  
+  @Override
+  public ColumnVisibility getVisibility(FieldDescriptor field) {
+    return EMPTY_CV;
+  }
 }

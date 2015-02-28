@@ -39,6 +39,7 @@ import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +49,11 @@ import cereal.impl.objects.pojo.SimplePojo;
 import cereal.impl.objects.protobuf.SimpleOuter.Simple;
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 
 public class StoreImplTest {
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility EMPTY_CV = new ColumnVisibility("");
 
   private StoreImpl store;
   private Registry registry;
@@ -67,6 +71,16 @@ public class StoreImplTest {
     @Override
     public Class<Simple> objectType() {
       return Simple.class;
+    }
+
+    @Override
+    public Text getGrouping(FieldDescriptor field) {
+      return EMPTY;
+    }
+
+    @Override
+    public ColumnVisibility getVisibility(FieldDescriptor field) {
+      return EMPTY_CV;
     }
   }
 

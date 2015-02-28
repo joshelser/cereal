@@ -46,8 +46,6 @@ import com.google.protobuf.Message;
  */
 public abstract class ProtobufMessageMapping<T extends GeneratedMessage> implements Mapping<T> {
   private static final Logger log = LoggerFactory.getLogger(ProtobufMessageMapping.class);
-  private static final Text EMPTY = new Text(new byte[0]);
-  private static final ColumnVisibility CV_EMPTY = new ColumnVisibility("");
 
   @Override
   public List<Field> getFields(T msg) {
@@ -85,26 +83,22 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
   }
 
   /**
-   * The grouping for a field. Intended for concrete instances to override. By default, no grouping (empty) is applied.
+   * The grouping for a field.
    *
    * @param field
    *          The protocol buffer field
    * @return The grouping for the field
    */
-  public Text getGrouping(FieldDescriptor field) {
-    return EMPTY;
-  }
+  public abstract Text getGrouping(FieldDescriptor field);
 
   /**
-   * The visibility for a field. Intended for concrete instances to override. By default, no visibility (empty) is applied.
+   * The visibility for a field.
    *
    * @param field
    *          The protocol buffer field.
    * @return The visibility for the field
    */
-  public ColumnVisibility getVisibility(FieldDescriptor field) {
-    return CV_EMPTY;
-  }
+  public abstract ColumnVisibility getVisibility(FieldDescriptor field);
 
   private Text text(String str) {
     return new Text(str);
