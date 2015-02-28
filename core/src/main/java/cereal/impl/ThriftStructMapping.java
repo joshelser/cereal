@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TFieldIdEnum;
@@ -39,14 +40,16 @@ import org.slf4j.LoggerFactory;
 
 import cereal.Field;
 import cereal.InstanceOrBuilder;
-import cereal.Mapping;
 import cereal.InstanceOrBuilder.Type;
+import cereal.Mapping;
 
 /**
  * A default {@link Mapping} implementation for Thrift structs.
  */
 public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,? extends TFieldIdEnum>> implements Mapping<E> {
   private static final Logger log = LoggerFactory.getLogger(ThriftStructMapping.class);
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility CV_EMPTY = new ColumnVisibility("");
 
   private volatile Method getFieldValue, isSet, setFieldValue;
 
@@ -80,27 +83,27 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
           switch (fvMetaData.type) {
             case TType.BOOL:
               Boolean booleanVal = (Boolean) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(booleanVal.toString())));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), value(booleanVal.toString())));
               break;
             case TType.BYTE:
               Byte byteVal = (Byte) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(byteVal.toString())));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), value(byteVal.toString())));
               break;
             case TType.DOUBLE:
               Double dblVal = (Double) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(dblVal.toString())));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), value(dblVal.toString())));
               break;
             case TType.I16:
               Short shortVal = (Short) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(shortVal.toString())));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), value(shortVal.toString())));
               break;
             case TType.I32:
               Integer intVal = (Integer) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(intVal.toString())));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), value(intVal.toString())));
               break;
             case TType.I64:
               Long longVal = (Long) value;
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, value(longVal.toString())));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), value(longVal.toString())));
               break;
             case TType.STRING:
               byte[] bytes;
@@ -110,7 +113,7 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
                 String strVal = (String) value;
                 bytes = strVal.getBytes(UTF_8);
               }
-              fields.add(new FieldImpl(text(fMetaData.fieldName), null, null, new Value(bytes)));
+              fields.add(new FieldImpl(text(fMetaData.fieldName), getGrouping(fMetaData), getVisibility(fMetaData), new Value(bytes)));
               break;
             default:
               log.warn("Ignoring field: {}", field.getFieldName());
@@ -123,6 +126,28 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
     }
 
     return fields;
+  }
+
+  /**
+   * The grouping for a field. Intended for concrete instances to override. By default, no grouping (empty) is applied.
+   *
+   * @param field
+   *          The protocol buffer field
+   * @return The grouping for the field
+   */
+  public Text getGrouping(FieldMetaData field) {
+    return EMPTY;
+  }
+  
+  /**
+   * The visibility for a field. Intended for concrete instances to override. By default, no visibility (empty) is applied.
+   *
+   * @param field
+   *          The protocol buffer field.
+   * @return The visibility for the field
+   */
+  public ColumnVisibility getVisibility(FieldMetaData field) {
+    return CV_EMPTY;
   }
 
   private Text text(String str) {

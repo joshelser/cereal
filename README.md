@@ -86,8 +86,8 @@ I believe there is much worth in what it can provide.
 - [x] Basic Protobuf support
 - [x] Unit test coverage
 - [ ] Pluggable serialization for primitives
-- [ ] Protobuf abstract control for grouping and visibility
-- [ ] Thrift abstract control for grouping and visibility
+- [x] Protobuf abstract control for grouping and visibility
+- [x] Thrift abstract control for grouping and visibility
 - [ ] Protobuf complex types
   - [ ] Repeated fields
   - [ ] Nested messages
@@ -97,7 +97,7 @@ I believe there is much worth in what it can provide.
   - [ ] Set fields
   - [ ] Nested structs
   - [ ] Enums
-- [ ] End-to-end tests with MiniAccumuloCluster
+- [x] End-to-end tests with MiniAccumuloCluster
 - [ ] Performance benchmarks
 
 [1]: http://github.com/joshelser/cereal/tree/master/examples/src/main/java/cereal/examples/pojo/PojoExample.java

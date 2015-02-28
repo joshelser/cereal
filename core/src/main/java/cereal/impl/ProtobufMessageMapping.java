@@ -26,14 +26,15 @@ import java.util.Map.Entry;
 
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cereal.Field;
 import cereal.InstanceOrBuilder;
-import cereal.Mapping;
 import cereal.InstanceOrBuilder.Type;
+import cereal.Mapping;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -45,6 +46,8 @@ import com.google.protobuf.Message;
  */
 public abstract class ProtobufMessageMapping<T extends GeneratedMessage> implements Mapping<T> {
   private static final Logger log = LoggerFactory.getLogger(ProtobufMessageMapping.class);
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility CV_EMPTY = new ColumnVisibility("");
 
   @Override
   public List<Field> getFields(T msg) {
@@ -66,11 +69,11 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
         case DOUBLE:
         case BOOLEAN:
         case STRING:
-          fields.add(new FieldImpl(text(descriptor.getName()), null, null, value(entry.getValue().toString())));
+          fields.add(new FieldImpl(text(descriptor.getName()), getGrouping(descriptor), getVisibility(descriptor), value(entry.getValue().toString())));
           break;
         case BYTE_STRING:
           ByteString bs = (ByteString) entry.getValue();
-          fields.add(new FieldImpl(text(descriptor.getName()), null, null, new Value(bs.toByteArray())));
+          fields.add(new FieldImpl(text(descriptor.getName()), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
           break;
         default:
           log.warn("Ignoring complex field type: " + descriptor.getJavaType());
@@ -79,6 +82,28 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
     }
 
     return fields;
+  }
+
+  /**
+   * The grouping for a field. Intended for concrete instances to override. By default, no grouping (empty) is applied.
+   *
+   * @param field
+   *          The protocol buffer field
+   * @return The grouping for the field
+   */
+  public Text getGrouping(FieldDescriptor field) {
+    return EMPTY;
+  }
+
+  /**
+   * The visibility for a field. Intended for concrete instances to override. By default, no visibility (empty) is applied.
+   *
+   * @param field
+   *          The protocol buffer field.
+   * @return The visibility for the field
+   */
+  public ColumnVisibility getVisibility(FieldDescriptor field) {
+    return CV_EMPTY;
   }
 
   private Text text(String str) {

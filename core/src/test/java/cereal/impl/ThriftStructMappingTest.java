@@ -30,21 +30,22 @@ import java.util.Map.Entry;
 
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
+import org.apache.thrift.meta_data.FieldMetaData;
 import org.junit.Before;
 import org.junit.Test;
 
 import cereal.Field;
 import cereal.InstanceOrBuilder;
-import cereal.impl.FieldImpl;
-import cereal.impl.InstanceOrBuilderImpl;
-import cereal.impl.ThriftStructMapping;
 import cereal.impl.objects.thrift.TComplex;
 import cereal.impl.objects.thrift.TSimple;
 
 import com.google.common.collect.Maps;
 
 public class ThriftStructMappingTest {
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility EMPTY_CV = new ColumnVisibility("");
 
   private TSimple msg;
   private TSimpleMessageMapping mapping;
@@ -73,8 +74,26 @@ public class ThriftStructMappingTest {
     }
   }
 
+  private static class TSpecialMessageMapping extends TSimpleMessageMapping {
+    @Override
+    public Text getGrouping(FieldMetaData field) {
+      // Grouping is the field character of the field name
+      return new Text(field.fieldName.substring(0, 1));
+    }
+
+    @Override
+    public ColumnVisibility getVisibility(FieldMetaData field) {
+      // Visibility is the java type name
+      return new ColumnVisibility(field.fieldName.substring(1, 2));
+    }
+  }
+
   private Text text(String str) {
     return new Text(str);
+  }
+
+  private ColumnVisibility visibility(String str) {
+    return new ColumnVisibility(str);
   }
 
   private Value value(String str) {
@@ -104,14 +123,14 @@ public class ThriftStructMappingTest {
     assertEquals(8, fields.size());
 
     List<Field> expectedFields = new ArrayList<>(fields.size());
-    expectedFields.add(new FieldImpl(text("bln"), null, null, value("true")));
-    expectedFields.add(new FieldImpl(text("bytes"), null, null, value("bytes")));
-    expectedFields.add(new FieldImpl(text("dub"), null, null, value("1.2")));
-    expectedFields.add(new FieldImpl(text("shrt"), null, null, value("8")));
-    expectedFields.add(new FieldImpl(text("integer"), null, null, value("1")));
-    expectedFields.add(new FieldImpl(text("lng"), null, null, value(Long.toString(Long.MAX_VALUE))));
-    expectedFields.add(new FieldImpl(text("str"), null, null, value("string")));
-    expectedFields.add(new FieldImpl(text("single_byte"), null, null, value("1")));
+    expectedFields.add(new FieldImpl(text("bln"), EMPTY, EMPTY_CV, value("true")));
+    expectedFields.add(new FieldImpl(text("bytes"), EMPTY, EMPTY_CV, value("bytes")));
+    expectedFields.add(new FieldImpl(text("dub"), EMPTY, EMPTY_CV, value("1.2")));
+    expectedFields.add(new FieldImpl(text("shrt"), EMPTY, EMPTY_CV, value("8")));
+    expectedFields.add(new FieldImpl(text("integer"), EMPTY, EMPTY_CV, value("1")));
+    expectedFields.add(new FieldImpl(text("lng"), EMPTY, EMPTY_CV, value(Long.toString(Long.MAX_VALUE))));
+    expectedFields.add(new FieldImpl(text("str"), EMPTY, EMPTY_CV, value("string")));
+    expectedFields.add(new FieldImpl(text("single_byte"), EMPTY, EMPTY_CV, value("1")));
 
     assertTrue("Fields were not changed", fields.removeAll(expectedFields));
     assertTrue("Leftover fields not removed: " + fields, fields.isEmpty());
@@ -196,6 +215,28 @@ public class ThriftStructMappingTest {
 
     assertEquals(0, newComplexMsg.getStringsSize());
     assertNull(newComplexMsg.getSimple());
+  }
+
+  @Test
+  public void testGroupingAndVisibility() {
+    TSpecialMessageMapping specialMapping = new TSpecialMessageMapping();
+    List<Field> fields = specialMapping.getFields(msg);
+
+    assertNotNull(fields);
+    assertEquals(8, fields.size());
+
+    List<Field> expectedFields = new ArrayList<>(fields.size());
+    expectedFields.add(new FieldImpl(text("bln"), text("b"), visibility("l"), value("true")));
+    expectedFields.add(new FieldImpl(text("bytes"), text("b"), visibility("y"), value("bytes")));
+    expectedFields.add(new FieldImpl(text("dub"), text("d"), visibility("u"), value("1.2")));
+    expectedFields.add(new FieldImpl(text("shrt"), text("s"), visibility("h"), value("8")));
+    expectedFields.add(new FieldImpl(text("integer"), text("i"), visibility("n"), value("1")));
+    expectedFields.add(new FieldImpl(text("lng"), text("l"), visibility("n"), value(Long.toString(Long.MAX_VALUE))));
+    expectedFields.add(new FieldImpl(text("str"), text("s"), visibility("t"), value("string")));
+    expectedFields.add(new FieldImpl(text("single_byte"), text("s"), visibility("i"), value("1")));
+
+    assertTrue("Fields were not changed", fields.removeAll(expectedFields));
+    assertTrue("Leftover fields not removed: " + fields, fields.isEmpty());
   }
 
 }

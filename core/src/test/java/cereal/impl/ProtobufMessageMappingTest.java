@@ -28,22 +28,23 @@ import java.util.Map.Entry;
 
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
+import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 import org.junit.Before;
 import org.junit.Test;
 
 import cereal.Field;
 import cereal.InstanceOrBuilder;
-import cereal.impl.FieldImpl;
-import cereal.impl.InstanceOrBuilderImpl;
-import cereal.impl.ProtobufMessageMapping;
 import cereal.impl.objects.protobuf.SimpleOuter.Complex;
 import cereal.impl.objects.protobuf.SimpleOuter.Simple;
 
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 
 public class ProtobufMessageMappingTest {
+  private static final Text EMPTY = new Text(new byte[0]);
+  private static final ColumnVisibility EMPTY_CV = new ColumnVisibility("");
 
   private Simple msg;
   private SimpleMessageMapping mapping;
@@ -72,8 +73,26 @@ public class ProtobufMessageMappingTest {
     }
   }
 
+  private static class SpecialMessageMapping extends SimpleMessageMapping {
+    @Override
+    public Text getGrouping(FieldDescriptor field) {
+      // Grouping is the field character of the field name
+      return new Text(field.getName().substring(0, 1));
+    }
+
+    @Override
+    public ColumnVisibility getVisibility(FieldDescriptor field) {
+      // Visibility is the java type name
+      return new ColumnVisibility(field.getJavaType().toString());
+    }
+  }
+
   private Text text(String str) {
     return new Text(str);
+  }
+
+  private ColumnVisibility visibility(String str) {
+    return new ColumnVisibility(str);
   }
 
   private Value value(String str) {
@@ -94,13 +113,13 @@ public class ProtobufMessageMappingTest {
     assertEquals(7, fields.size());
 
     List<Field> expectedFields = new ArrayList<>(fields.size());
-    expectedFields.add(new FieldImpl(text("boolean"), null, null, value("true")));
-    expectedFields.add(new FieldImpl(text("byte_str"), null, null, value("bytestring")));
-    expectedFields.add(new FieldImpl(text("dub"), null, null, value("1.2")));
-    expectedFields.add(new FieldImpl(text("flt"), null, null, value("2.1")));
-    expectedFields.add(new FieldImpl(text("int"), null, null, value("1")));
-    expectedFields.add(new FieldImpl(text("long"), null, null, value(Long.toString(Long.MAX_VALUE))));
-    expectedFields.add(new FieldImpl(text("str"), null, null, value("string")));
+    expectedFields.add(new FieldImpl(text("boolean"), EMPTY, EMPTY_CV, value("true")));
+    expectedFields.add(new FieldImpl(text("byte_str"), EMPTY, EMPTY_CV, value("bytestring")));
+    expectedFields.add(new FieldImpl(text("dub"), EMPTY, EMPTY_CV, value("1.2")));
+    expectedFields.add(new FieldImpl(text("flt"), EMPTY, EMPTY_CV, value("2.1")));
+    expectedFields.add(new FieldImpl(text("int"), EMPTY, EMPTY_CV, value("1")));
+    expectedFields.add(new FieldImpl(text("long"), EMPTY, EMPTY_CV, value(Long.toString(Long.MAX_VALUE))));
+    expectedFields.add(new FieldImpl(text("str"), EMPTY, EMPTY_CV, value("string")));
 
     assertTrue("Fields were not changed", fields.removeAll(expectedFields));
     assertTrue("Leftover fields not removed: " + fields, fields.isEmpty());
@@ -168,5 +187,25 @@ public class ProtobufMessageMappingTest {
 
     Complex emptyMsg = builder.build();
     assertEquals(0, emptyMsg.getStrListCount());
+  }
+
+  @Test
+  public void testGroupingAndVisibility() {
+    SpecialMessageMapping specialMapping = new SpecialMessageMapping();
+    List<Field> fields = specialMapping.getFields(msg);
+    assertNotNull(fields);
+    assertEquals(7, fields.size());
+
+    List<Field> expectedFields = new ArrayList<>(fields.size());
+    expectedFields.add(new FieldImpl(text("boolean"), text("b"), visibility("BOOLEAN"), value("true")));
+    expectedFields.add(new FieldImpl(text("byte_str"), text("b"), visibility("BYTE_STRING"), value("bytestring")));
+    expectedFields.add(new FieldImpl(text("dub"), text("d"), visibility("DOUBLE"), value("1.2")));
+    expectedFields.add(new FieldImpl(text("flt"), text("f"), visibility("FLOAT"), value("2.1")));
+    expectedFields.add(new FieldImpl(text("int"), text("i"), visibility("INT"), value("1")));
+    expectedFields.add(new FieldImpl(text("long"), text("l"), visibility("LONG"), value(Long.toString(Long.MAX_VALUE))));
+    expectedFields.add(new FieldImpl(text("str"), text("s"), visibility("STRING"), value("string")));
+
+    assertTrue("Fields were not changed", fields.removeAll(expectedFields));
+    assertTrue("Leftover fields not removed: " + fields, fields.isEmpty());
   }
 }
