@@ -19,7 +19,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,8 +40,10 @@ import cereal.InstanceOrBuilder.Type;
 import cereal.Mapping;
 import cereal.Registry;
 
+import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.Message;
 
@@ -74,58 +79,58 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
       final StringBuilder fieldName = new StringBuilder(32);
       fieldName.append(prefix).append(descriptor.getName());
 
-      if (com.google.protobuf.Descriptors.FieldDescriptor.Type.MESSAGE == descriptor.getType()) {
-        GeneratedMessage subMsg = (GeneratedMessage) entry.getValue();
-        InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
-        Mapping<GeneratedMessage> subMapping = registry.get(subIob);
-        if (subMapping instanceof ProtobufMessageMapping) {
-          fieldName.append(PERIOD);
-          ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, fieldName.toString());
-        } else {
-          throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
-        }
-      } else {
-        switch (descriptor.getJavaType()) {
-          case INT:
-          case LONG:
-          case FLOAT:
-          case DOUBLE:
-          case BOOLEAN:
-          case STRING:
-            if (descriptor.isRepeated()) {
-              @SuppressWarnings("unchecked")
-              List<Object> objects = (List<Object>) entry.getValue();
+      switch (descriptor.getJavaType()) {
+        case INT:
+        case LONG:
+        case FLOAT:
+        case DOUBLE:
+        case BOOLEAN:
+        case STRING:
+          if (descriptor.isRepeated()) {
+            @SuppressWarnings("unchecked")
+            List<Object> objects = (List<Object>) entry.getValue();
 
-              int repetition = 0;
-              for (Object obj : objects) {
-                fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
-                    value(obj.toString())));
-                repetition++;
-              }
-            } else {
-              fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), value(entry.getValue().toString())));
+            int repetition = 0;
+            for (Object obj : objects) {
+              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
+                  value(obj.toString())));
+              repetition++;
             }
-            break;
-          case BYTE_STRING:
-            if (descriptor.isRepeated()) {
-              @SuppressWarnings("unchecked")
-              List<ByteString> byteStrings = (List<ByteString>) entry.getValue();
+          } else {
+            fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), value(entry.getValue().toString())));
+          }
+          break;
+        case BYTE_STRING:
+          if (descriptor.isRepeated()) {
+            @SuppressWarnings("unchecked")
+            List<ByteString> byteStrings = (List<ByteString>) entry.getValue();
 
-              int repetition = 0;
-              for (ByteString bs : byteStrings) {
-                fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
-                    new Value(bs.toByteArray())));
-                repetition++;
-              }
-            } else {
-              ByteString bs = (ByteString) entry.getValue();
-              fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
+            int repetition = 0;
+            for (ByteString bs : byteStrings) {
+              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
+                  new Value(bs.toByteArray())));
+              repetition++;
             }
-            break;
-          default:
-            log.warn("Ignoring complex field type: " + descriptor.getJavaType());
-            break;
-        }
+          } else {
+            ByteString bs = (ByteString) entry.getValue();
+            fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
+          }
+          break;
+        case MESSAGE:
+          GeneratedMessage subMsg = (GeneratedMessage) entry.getValue();
+          InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
+          Mapping<GeneratedMessage> subMapping = registry.get(subIob);
+          if (subMapping instanceof ProtobufMessageMapping) {
+            fieldName.append(PERIOD);
+            ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, fieldName.toString());
+          } else {
+            throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
+          }
+
+          break;
+        default:
+          log.warn("Ignoring complex field type: " + descriptor.getJavaType());
+          break;
       }
     }
   }
@@ -167,8 +172,16 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
     checkArgument(Type.BUILDER == obj.getType(), "Expected argument to be a builder");
 
     final GeneratedMessage.Builder<?> builder = (GeneratedMessage.Builder<?>) obj.get();
+    final List<Entry<Key,Value>> leftoverFields = new LinkedList<>();
+
     for (Entry<Key,Value> entry : iter) {
       String fieldName = entry.getKey().getColumnQualifier().toString();
+
+      int index = fieldName.indexOf(PERIOD);
+      if (0 <= index) {
+        leftoverFields.add(entry);
+        continue;
+      }
 
       // Find the FieldDescriptor from the Key
       for (FieldDescriptor fieldDesc : builder.getDescriptorForType().getFields()) {
@@ -246,5 +259,69 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
         }
       }
     }
+
+    // All primitives in object should be filled out.
+    // Make sure nested messages get filled out too.
+
+    if (!leftoverFields.isEmpty()) {
+      for (FieldDescriptor fieldDesc : builder.getDescriptorForType().getFields()) {
+        if (JavaType.MESSAGE == fieldDesc.getJavaType()) {
+          // For each Key-Value pair which have this prefix as the fieldname (column qualifier)
+          String prefix = fieldDesc.getName() + PERIOD;
+
+          log.debug("Extracting Key-Value pairs for {}", prefix);
+
+          List<Entry<Key,Value>> fieldsForNestedMessage = new LinkedList<>();
+          final Text _holder = new Text();
+          Iterator<Entry<Key,Value>> leftoverFieldsIter = leftoverFields.iterator();
+          while (leftoverFieldsIter.hasNext()) {
+            final Entry<Key,Value> entry = leftoverFieldsIter.next();
+            final Key key = entry.getKey();
+            entry.getKey().getColumnQualifier(_holder);
+
+            String colqual = _holder.toString();
+            if (colqual.startsWith(prefix)) {
+              // Make a copy of the original Key, stripping the prefix off of the qualifier
+              Key copy = new Key(key.getRow(), key.getColumnFamily(), new Text(colqual.substring(prefix.length())), key.getColumnVisibility(),
+                  key.getTimestamp());
+              fieldsForNestedMessage.add(Maps.immutableEntry(copy, entry.getValue()));
+
+              // Remove it from the list as we should never have to reread this one again
+              leftoverFieldsIter.remove();
+            }
+          }
+
+          if (!fieldsForNestedMessage.isEmpty()) {
+            // We have keys, pass them down to the nested message
+            String nestedMsgClzName = fieldDesc.getMessageType().getFullName();
+
+            log.debug("Found {} Key-Value pairs for {}. Reconstituting the message.", fieldsForNestedMessage.size(), nestedMsgClzName);
+
+            try {
+              @SuppressWarnings("unchecked")
+              // Get the class, builder and InstanceOrBuilder for the nested message
+              Class<GeneratedMessage> msgClz = (Class<GeneratedMessage>) Class.forName(nestedMsgClzName);
+              Method newBuilderMethod = msgClz.getMethod("newBuilder");
+              Message.Builder subBuilder = (Message.Builder) newBuilderMethod.invoke(null);
+              InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subBuilder, msgClz);
+              // Get the mapping from the registry
+              ProtobufMessageMapping<GeneratedMessage> subMapping = (ProtobufMessageMapping<GeneratedMessage>) registry.get(subIob);
+              // Invoke update on the mapping with the subset of Key-Values
+              subMapping.update(fieldsForNestedMessage, subIob);
+            } catch (Exception e) {
+              throw new RuntimeException(e);
+            }
+          }
+          // No fields for the sub message, therefore it's empty
+          log.debug("Found no Key-Value pairs for {}", prefix);
+        }
+        // Not a message, so we can ignore it
+      }
+
+      if (!leftoverFields.isEmpty()) {
+        log.warn("Found {} leftover Key-Value pairs that were not consumed", leftoverFields.size());
+      }
+    }
   }
+
 }

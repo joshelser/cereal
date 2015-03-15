@@ -295,6 +295,21 @@ public class ProtobufMessageMappingTest {
 
     List<Field> fields = nestedMapping.getFields(nestedMsg);
 
-    System.out.println(fields);
+    assertEquals(9, fields.size());
+
+    List<Field> expectedFields = new ArrayList<>(fields.size());
+    expectedFields.add(new FieldImpl(text("simple.boolean"), EMPTY, EMPTY_CV, value("true")));
+    expectedFields.add(new FieldImpl(text("simple.byte_str"), EMPTY, EMPTY_CV, value("bytestring")));
+    expectedFields.add(new FieldImpl(text("simple.dub"), EMPTY, EMPTY_CV, value("1.2")));
+    expectedFields.add(new FieldImpl(text("simple.flt"), EMPTY, EMPTY_CV, value("2.1")));
+    expectedFields.add(new FieldImpl(text("simple.int"), EMPTY, EMPTY_CV, value("1")));
+    expectedFields.add(new FieldImpl(text("simple.long"), EMPTY, EMPTY_CV, value(Long.toString(Long.MAX_VALUE))));
+    expectedFields.add(new FieldImpl(text("simple.str"), EMPTY, EMPTY_CV, value("string")));
+    expectedFields.add(new FieldImpl(text("complex.str_list$0"), EMPTY, EMPTY_CV, value("string1")));
+    expectedFields.add(new FieldImpl(text("complex.str_list$1"), EMPTY, EMPTY_CV, value("string2")));
+
+    expectedFields.removeAll(fields);
+
+    assertTrue("Unexpected leftover fields: " + expectedFields, expectedFields.isEmpty());
   }
 }
