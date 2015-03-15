@@ -87,29 +87,31 @@ public class PojoPersonMapping implements Mapping<Person> {
   }
 
   @Override
-  public void update(Entry<Key,Value> entry, InstanceOrBuilder<Person> instOrBuilder) {
+  public void update(Iterable<Entry<Key,Value>> iter, InstanceOrBuilder<Person> instOrBuilder) {
     Person obj = (Person) instOrBuilder.get();
-    Key k = entry.getKey();
-    String colq = k.getColumnQualifier().toString();
-    switch (colq) {
-      case "first_name":
-        obj.setFirstName(entry.getValue().toString());
-        break;
-      case "middle_name":
-        obj.setMiddleName(entry.getValue().toString());
-        break;
-      case "last_name":
-        obj.setLastName(entry.getValue().toString());
-        break;
-      case "age":
-        obj.setAge(Integer.parseInt(entry.getValue().toString()));
-        break;
-      case "height":
-        obj.setHeight(Integer.parseInt(entry.getValue().toString()));
-        break;
-      case "weight":
-        obj.setWeight(Integer.parseInt(entry.getValue().toString()));
-        break;
+    for (Entry<Key,Value> entry : iter) {
+      Key k = entry.getKey();
+      String colq = k.getColumnQualifier().toString();
+      switch (colq) {
+        case "first_name":
+          obj.setFirstName(entry.getValue().toString());
+          break;
+        case "middle_name":
+          obj.setMiddleName(entry.getValue().toString());
+          break;
+        case "last_name":
+          obj.setLastName(entry.getValue().toString());
+          break;
+        case "age":
+          obj.setAge(Integer.parseInt(entry.getValue().toString()));
+          break;
+        case "height":
+          obj.setHeight(Integer.parseInt(entry.getValue().toString()));
+          break;
+        case "weight":
+          obj.setWeight(Integer.parseInt(entry.getValue().toString()));
+          break;
+      }
     }
   }
 

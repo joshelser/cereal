@@ -73,7 +73,7 @@ public class ProtobufPersonTest {
   @Test(timeout = 30 * 1000)
   public void testSerialization() throws Exception {
     Registry registry = new RegistryImpl();
-    ProtobufPersonMapping mapping = new ProtobufPersonMapping();
+    ProtobufPersonMapping mapping = new ProtobufPersonMapping(registry);
     registry.add(mapping);
 
     Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();

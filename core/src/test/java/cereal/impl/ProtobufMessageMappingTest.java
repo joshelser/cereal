@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +36,12 @@ import org.junit.Test;
 
 import cereal.Field;
 import cereal.InstanceOrBuilder;
+import cereal.Registry;
 import cereal.impl.objects.protobuf.SimpleOuter.Complex;
+import cereal.impl.objects.protobuf.SimpleOuter.Nested;
 import cereal.impl.objects.protobuf.SimpleOuter.Simple;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
@@ -48,8 +51,14 @@ public class ProtobufMessageMappingTest {
 
   private Simple msg;
   private SimpleMessageMapping mapping;
+  private Registry registry;
 
   private static class SimpleMessageMapping extends ProtobufMessageMapping<Simple> {
+
+    public SimpleMessageMapping(Registry reg) {
+      super(reg);
+    }
+
     @Override
     public Text getRowId(Simple obj) {
       throw new UnsupportedOperationException();
@@ -72,6 +81,11 @@ public class ProtobufMessageMappingTest {
   }
 
   private static class ComplexMessageMapping extends ProtobufMessageMapping<Complex> {
+
+    public ComplexMessageMapping(Registry reg) {
+      super(reg);
+    }
+
     @Override
     public Text getRowId(Complex obj) {
       throw new UnsupportedOperationException();
@@ -93,7 +107,38 @@ public class ProtobufMessageMappingTest {
     }
   }
 
+  private static class NestedMessageMapping extends ProtobufMessageMapping<Nested> {
+    public NestedMessageMapping(Registry reg) {
+      super(reg);
+    }
+
+    @Override
+    public Text getRowId(Nested obj) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Text getGrouping(FieldDescriptor field) {
+      return EMPTY;
+    }
+
+    @Override
+    public ColumnVisibility getVisibility(FieldDescriptor field) {
+      return EMPTY_CV;
+    }
+
+    @Override
+    public Class<Nested> objectType() {
+      return Nested.class;
+    }
+  }
+
   private static class SpecialMessageMapping extends SimpleMessageMapping {
+
+    public SpecialMessageMapping(Registry reg) {
+      super(reg);
+    }
+
     @Override
     public Text getGrouping(FieldDescriptor field) {
       // Grouping is the field character of the field name
@@ -123,7 +168,8 @@ public class ProtobufMessageMappingTest {
   public void setup() {
     msg = Simple.newBuilder().setBoolean(true).setByteStr(ByteString.copyFromUtf8("bytestring")).setDub(1.2d).setFlt(2.1f).setInt(1).setLong(Long.MAX_VALUE)
         .setStr("string").build();
-    mapping = new SimpleMessageMapping();
+    registry = new RegistryImpl();
+    mapping = new SimpleMessageMapping(registry);
   }
 
   @Test
@@ -148,7 +194,7 @@ public class ProtobufMessageMappingTest {
   @Test(expected = IllegalArgumentException.class)
   public void testRequiresBuilder() {
     InstanceOrBuilder<Simple> instOrBuilder = new InstanceOrBuilderImpl<>(msg);
-    mapping.update(Maps.immutableEntry(new Key(), new Value()), instOrBuilder);
+    mapping.update(Collections.<Entry<Key,Value>> emptyList(), instOrBuilder);
   }
 
   @Test(expected = NullPointerException.class)
@@ -158,7 +204,7 @@ public class ProtobufMessageMappingTest {
 
   @Test(expected = NullPointerException.class)
   public void testNullBuilder() {
-    mapping.update(Maps.immutableEntry(new Key(), new Value()), null);
+    mapping.update(Collections.<Entry<Key,Value>> emptyList(), null);
   }
 
   @Test(expected = NullPointerException.class)
@@ -182,9 +228,7 @@ public class ProtobufMessageMappingTest {
     data.put(new Key("id1", "", "long"), value(Long.toString(Long.MAX_VALUE)));
     data.put(new Key("id1", "", "str"), value("string"));
 
-    for (Entry<Key,Value> entry : data.entrySet()) {
-      mapping.update(entry, instOrBuilder);
-    }
+    mapping.update(data.entrySet(), instOrBuilder);
 
     assertEquals(msg, builder.build());
   }
@@ -193,7 +237,7 @@ public class ProtobufMessageMappingTest {
   public void testRepeatedFields() {
     Complex complexMsg = Complex.newBuilder().addStrList("string1").addStrList("string2").build();
 
-    ComplexMessageMapping complexMapping = new ComplexMessageMapping();
+    ComplexMessageMapping complexMapping = new ComplexMessageMapping(registry);
 
     // Serializing a message with a repeated field is just ignored
     List<Field> fields = complexMapping.getFields(complexMsg);
@@ -201,13 +245,16 @@ public class ProtobufMessageMappingTest {
     assertEquals(2, fields.size());
 
     List<Field> expectedFields = new ArrayList<>();
-    expectedFields.add(new FieldImpl(text("str_list.0"), EMPTY, EMPTY_CV, value("string1")));
-    expectedFields.add(new FieldImpl(text("str_list.1"), EMPTY, EMPTY_CV, value("string2")));
+    expectedFields.add(new FieldImpl(text("str_list$0"), EMPTY, EMPTY_CV, value("string1")));
+    expectedFields.add(new FieldImpl(text("str_list$1"), EMPTY, EMPTY_CV, value("string2")));
+
+    expectedFields.removeAll(fields);
+    assertTrue("Fields unexpectedly not generated by mapping: " + expectedFields, expectedFields.isEmpty());
 
     Complex.Builder builder = Complex.newBuilder();
     InstanceOrBuilder<Complex> iob = new InstanceOrBuilderImpl<Complex>(builder, Complex.class);
-    complexMapping.update(Maps.immutableEntry(new Key("id1", "", "str_list.0"), value("string1")), iob);
-    complexMapping.update(Maps.immutableEntry(new Key("id1", "", "str_list.1"), value("string2")), iob);
+    Map<Key,Value> data = ImmutableMap.of(new Key("id1", "", "str_list$0"), value("string1"), new Key("id1", "", "str_list$1"), value("string2"));
+    complexMapping.update(data.entrySet(), iob);
 
     Complex copyMsg = builder.build();
     assertEquals(2, copyMsg.getStrListCount());
@@ -216,7 +263,7 @@ public class ProtobufMessageMappingTest {
 
   @Test
   public void testGroupingAndVisibility() {
-    SpecialMessageMapping specialMapping = new SpecialMessageMapping();
+    SpecialMessageMapping specialMapping = new SpecialMessageMapping(registry);
     List<Field> fields = specialMapping.getFields(msg);
     assertNotNull(fields);
     assertEquals(7, fields.size());
@@ -232,5 +279,22 @@ public class ProtobufMessageMappingTest {
 
     assertTrue("Fields were not changed", fields.removeAll(expectedFields));
     assertTrue("Leftover fields not removed: " + fields, fields.isEmpty());
+  }
+
+  @Test
+  public void testNestedMapping() {
+    NestedMessageMapping nestedMapping = new NestedMessageMapping(registry);
+    ComplexMessageMapping complexMapping = new ComplexMessageMapping(registry);
+
+    registry.add(mapping);
+    registry.add(complexMapping);
+    registry.add(nestedMapping);
+
+    Complex complexMsg = Complex.newBuilder().addStrList("string1").addStrList("string2").build();
+    Nested nestedMsg = Nested.newBuilder().setComplex(complexMsg).setSimple(msg).build();
+
+    List<Field> fields = nestedMapping.getFields(nestedMsg);
+
+    System.out.println(fields);
   }
 }

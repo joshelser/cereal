@@ -17,3 +17,8 @@ message Simple {
 message Complex {
   repeated string str_list = 1;
 }
+
+message Nested {
+  optional Simple simple = 1;
+  optional Complex complex = 2;
+}

@@ -36,7 +36,7 @@ public class ProtobufExample {
     Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();
 
     Registry registry = new RegistryImpl();
-    registry.add(new ProtobufPersonMapping());
+    registry.add(new ProtobufPersonMapping(registry));
     String tableName = "pb_people";
     ZooKeeperInstance inst = new ZooKeeperInstance("accumulo", "127.0.0.1");
     Connector conn = inst.getConnector("root", new PasswordToken("secret"));

@@ -56,7 +56,7 @@ public interface Mapping<T> {
    * @param obj
    *          The object to update
    */
-  public void update(Entry<Key,Value> entry, InstanceOrBuilder<T> obj);
+  public void update(Iterable<Entry<Key,Value>> entry, InstanceOrBuilder<T> obj);
 
   /**
    * @return The class for which this {@link Mapping} is designed to act upon.

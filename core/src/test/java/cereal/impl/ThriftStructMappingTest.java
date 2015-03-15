@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import cereal.InstanceOrBuilder;
 import cereal.impl.objects.thrift.TComplex;
 import cereal.impl.objects.thrift.TSimple;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 
 public class ThriftStructMappingTest {
   private static final Text EMPTY = new Text(new byte[0]);
@@ -60,12 +61,12 @@ public class ThriftStructMappingTest {
     public Class<TSimple> objectType() {
       return TSimple.class;
     }
-    
+
     @Override
     public Text getGrouping(FieldMetaData field) {
       return EMPTY;
     }
-    
+
     @Override
     public ColumnVisibility getVisibility(FieldMetaData field) {
       return EMPTY_CV;
@@ -82,12 +83,12 @@ public class ThriftStructMappingTest {
     public Class<TComplex> objectType() {
       return TComplex.class;
     }
-    
+
     @Override
     public Text getGrouping(FieldMetaData field) {
       return EMPTY;
     }
-    
+
     @Override
     public ColumnVisibility getVisibility(FieldMetaData field) {
       return EMPTY_CV;
@@ -174,7 +175,7 @@ public class ThriftStructMappingTest {
         return null;
       }
     };
-    mapping.update(Maps.immutableEntry(new Key(), new Value()), instOrBuilder);
+    mapping.update(Collections.<Entry<Key,Value>> emptyList(), instOrBuilder);
   }
 
   @Test(expected = NullPointerException.class)
@@ -184,7 +185,7 @@ public class ThriftStructMappingTest {
 
   @Test(expected = NullPointerException.class)
   public void testNullBuilder() {
-    mapping.update(Maps.immutableEntry(new Key(), new Value()), null);
+    mapping.update(Collections.<Entry<Key,Value>> emptyList(), null);
   }
 
   @Test(expected = NullPointerException.class)
@@ -208,9 +209,7 @@ public class ThriftStructMappingTest {
     data.put(new Key("id1", "", "str"), value("string"));
     data.put(new Key("id1", "", "single_byte"), value("1"));
 
-    for (Entry<Key,Value> entry : data.entrySet()) {
-      mapping.update(entry, instOrBuilder);
-    }
+    mapping.update(data.entrySet(), instOrBuilder);
 
     assertEquals(msg, newMsg);
   }
@@ -231,7 +230,8 @@ public class ThriftStructMappingTest {
 
     TComplex newComplexMsg = new TComplex();
     // Unable to deserialize some hypothetical key-value
-    complexMapping.update(Maps.immutableEntry(new Key("id1", "", "str_list"), value("string1,string2")), new InstanceOrBuilderImpl<TComplex>(newComplexMsg));
+    complexMapping.update(ImmutableMap.of(new Key("id1", "", "str_list"), value("string1,string2")).entrySet(), new InstanceOrBuilderImpl<TComplex>(
+        newComplexMsg));
 
     assertEquals(0, newComplexMsg.getStringsSize());
     assertNull(newComplexMsg.getSimple());

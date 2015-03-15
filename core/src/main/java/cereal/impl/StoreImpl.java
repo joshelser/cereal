@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map.Entry;
 
 import org.apache.accumulo.core.client.BatchWriter;
 import org.apache.accumulo.core.client.BatchWriterConfig;
@@ -27,10 +26,8 @@ import org.apache.accumulo.core.client.Connector;
 import org.apache.accumulo.core.client.MutationsRejectedException;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.client.TableNotFoundException;
-import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Range;
-import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
 
@@ -111,9 +108,7 @@ public class StoreImpl implements Store {
     s.setRange(Range.exact(id));
     InstanceOrBuilder<T> instOrBuilder = toInstanceOrBuilder(clz);
     Mapping<T> mapping = reg.get(instOrBuilder);
-    for (Entry<Key,Value> entry : s) {
-      mapping.update(entry, instOrBuilder);
-    }
+    mapping.update(s, instOrBuilder);
 
     switch (instOrBuilder.getType()) {
       case INSTANCE:

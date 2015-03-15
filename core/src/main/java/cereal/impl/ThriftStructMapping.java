@@ -153,8 +153,8 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
   }
 
   @Override
-  public void update(Entry<Key,Value> entry, InstanceOrBuilder<E> instOrBuilder) {
-    checkNotNull(entry, "Key-Value pair is null");
+  public void update(Iterable<Entry<Key,Value>> iter, InstanceOrBuilder<E> instOrBuilder) {
+    checkNotNull(iter, "Iterator is null");
     checkNotNull(instOrBuilder, "InstOrBuilder is null");
     checkArgument(Type.INSTANCE == instOrBuilder.getType(), "Expected INSTANCE in InstanceOrBuilder");
 
@@ -170,50 +170,52 @@ public abstract class ThriftStructMapping<E extends TBase<? extends TBase<?,?>,?
         }
       }
 
-      String fieldName = entry.getKey().getColumnQualifier().toString();
-      Map<? extends TFieldIdEnum,FieldMetaData> thriftFields = FieldMetaData.getStructMetaDataMap(tbaseClz);
-      for (Entry<? extends TFieldIdEnum,FieldMetaData> fieldEntry : thriftFields.entrySet()) {
-        TFieldIdEnum fieldId = fieldEntry.getKey();
-        if (fieldName.equals(fieldId.getFieldName())) {
-          FieldValueMetaData fvMetaData = fieldEntry.getValue().valueMetaData;
-          Value v = entry.getValue();
-          Object obj = instOrBuilder.get();
-          switch (fvMetaData.type) {
-            case TType.BOOL:
-              Boolean booleanVal = Boolean.parseBoolean(v.toString());
-              setFieldValue.invoke(obj, fieldId, booleanVal);
-              break;
-            case TType.BYTE:
-              Byte byteVal = Byte.parseByte(v.toString());
-              setFieldValue.invoke(obj, fieldId, byteVal);
-              break;
-            case TType.DOUBLE:
-              Double dblVal = Double.parseDouble(v.toString());
-              setFieldValue.invoke(obj, fieldId, dblVal);
-              break;
-            case TType.I16:
-              Short shortVal = Short.parseShort(v.toString());
-              setFieldValue.invoke(obj, fieldId, shortVal);
-              break;
-            case TType.I32:
-              Integer intVal = Integer.parseInt(v.toString());
-              setFieldValue.invoke(obj, fieldId, intVal);
-              break;
-            case TType.I64:
-              Long longVal = Long.parseLong(v.toString());
-              setFieldValue.invoke(obj, fieldId, longVal);
-              break;
-            case TType.STRING:
-              if (fvMetaData.isBinary()) {
-                setFieldValue.invoke(obj, fieldId, ByteBuffer.wrap(v.get()));
-              } else {
-                String strVal = v.toString();
-                setFieldValue.invoke(obj, fieldId, strVal);
-              }
-              break;
-            default:
-              log.warn("Ignoring field: {}", fieldName);
-              break;
+      for (Entry<Key,Value> entry : iter) {
+        String fieldName = entry.getKey().getColumnQualifier().toString();
+        Map<? extends TFieldIdEnum,FieldMetaData> thriftFields = FieldMetaData.getStructMetaDataMap(tbaseClz);
+        for (Entry<? extends TFieldIdEnum,FieldMetaData> fieldEntry : thriftFields.entrySet()) {
+          TFieldIdEnum fieldId = fieldEntry.getKey();
+          if (fieldName.equals(fieldId.getFieldName())) {
+            FieldValueMetaData fvMetaData = fieldEntry.getValue().valueMetaData;
+            Value v = entry.getValue();
+            Object obj = instOrBuilder.get();
+            switch (fvMetaData.type) {
+              case TType.BOOL:
+                Boolean booleanVal = Boolean.parseBoolean(v.toString());
+                setFieldValue.invoke(obj, fieldId, booleanVal);
+                break;
+              case TType.BYTE:
+                Byte byteVal = Byte.parseByte(v.toString());
+                setFieldValue.invoke(obj, fieldId, byteVal);
+                break;
+              case TType.DOUBLE:
+                Double dblVal = Double.parseDouble(v.toString());
+                setFieldValue.invoke(obj, fieldId, dblVal);
+                break;
+              case TType.I16:
+                Short shortVal = Short.parseShort(v.toString());
+                setFieldValue.invoke(obj, fieldId, shortVal);
+                break;
+              case TType.I32:
+                Integer intVal = Integer.parseInt(v.toString());
+                setFieldValue.invoke(obj, fieldId, intVal);
+                break;
+              case TType.I64:
+                Long longVal = Long.parseLong(v.toString());
+                setFieldValue.invoke(obj, fieldId, longVal);
+                break;
+              case TType.STRING:
+                if (fvMetaData.isBinary()) {
+                  setFieldValue.invoke(obj, fieldId, ByteBuffer.wrap(v.get()));
+                } else {
+                  String strVal = v.toString();
+                  setFieldValue.invoke(obj, fieldId, strVal);
+                }
+                break;
+              default:
+                log.warn("Ignoring field: {}", fieldName);
+                break;
+            }
           }
         }
       }

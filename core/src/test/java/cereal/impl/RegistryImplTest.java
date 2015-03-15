@@ -31,8 +31,6 @@ import cereal.Field;
 import cereal.InstanceOrBuilder;
 import cereal.Mapping;
 import cereal.Registry;
-import cereal.impl.InstanceOrBuilderImpl;
-import cereal.impl.RegistryImpl;
 import cereal.impl.objects.pojo.SimplePojo;
 
 public class RegistryImplTest {
@@ -60,7 +58,7 @@ public class RegistryImplTest {
       }
 
       @Override
-      public void update(Entry<Key,Value> entry, InstanceOrBuilder<SimplePojo> obj) {}
+      public void update(Iterable<Entry<Key,Value>> entry, InstanceOrBuilder<SimplePojo> obj) {}
 
       @Override
       public Class<SimplePojo> objectType() {
@@ -89,7 +87,7 @@ public class RegistryImplTest {
       }
 
       @Override
-      public void update(Entry<Key,Value> entry, InstanceOrBuilder<SimplePojo> obj) {}
+      public void update(Iterable<Entry<Key,Value>> entry, InstanceOrBuilder<SimplePojo> obj) {}
 
       @Override
       public Class<SimplePojo> objectType() {
@@ -112,18 +110,18 @@ public class RegistryImplTest {
       public cereal.InstanceOrBuilder.Type getType() {
         return null;
       }
-      
+
       @Override
       public Object get() {
         return null;
       }
-      
+
       @Override
       public Class<SimplePojo> getWrappedClass() {
         return null;
       }
     };
-    
+
     registry.get(iob);
   }
 

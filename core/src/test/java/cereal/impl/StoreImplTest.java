@@ -58,11 +58,15 @@ public class StoreImplTest {
   private StoreImpl store;
   private Registry registry;
   private Connector conn;
+  private SimpleMapping mapping;
   private final String table = "table";
 
-  private static final SimpleMapping INSTANCE = new SimpleMapping();
-
   private static class SimpleMapping extends ProtobufMessageMapping<Simple> {
+
+    public SimpleMapping(Registry reg) {
+      super(reg);
+    }
+
     @Override
     public Text getRowId(Simple msg) {
       return new Text(msg.getByteStr().toStringUtf8());
@@ -88,7 +92,8 @@ public class StoreImplTest {
   public void setup() {
     conn = createMock(Connector.class);
     registry = new RegistryImpl();
-    registry.add(INSTANCE);
+    mapping = new SimpleMapping(registry);
+    registry.add(mapping);
     store = new StoreImpl(registry, conn, table);
   }
 
@@ -112,7 +117,7 @@ public class StoreImplTest {
     Simple msg = Simple.newBuilder().setBoolean(true).setInt(42).setByteStr(ByteString.copyFromUtf8("string")).setDub(3.14159d).build();
 
     // The order of put()'s correlates to the equals() on Mutation (horribly). Therefore order here has to match iteration of the msg
-    Mutation m = new Mutation(INSTANCE.getRowId(msg));
+    Mutation m = new Mutation(mapping.getRowId(msg));
     m.put("", "dub", "3.14159");
     m.put("", "int", "42");
     m.put("", "boolean", "true");

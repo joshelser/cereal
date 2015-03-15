@@ -35,6 +35,7 @@ import cereal.Field;
 import cereal.InstanceOrBuilder;
 import cereal.InstanceOrBuilder.Type;
 import cereal.Mapping;
+import cereal.Registry;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -46,63 +47,87 @@ import com.google.protobuf.Message;
  */
 public abstract class ProtobufMessageMapping<T extends GeneratedMessage> implements Mapping<T> {
   private static final Logger log = LoggerFactory.getLogger(ProtobufMessageMapping.class);
-  private static final char PERIOD = '.';
+  private static final char PERIOD = '.', DOLLAR = '$';
+  private static final String EMPTY = "";
+
+  private final Registry registry;
+
+  public ProtobufMessageMapping(Registry registry) {
+    this.registry = registry;
+  }
 
   @Override
   public List<Field> getFields(T msg) {
     checkNotNull(msg, "Message was null");
 
+    final List<Field> fields = new ArrayList<>(32);
+    _getFields(msg, fields, EMPTY);
+
+    return fields;
+  }
+
+  void _getFields(GeneratedMessage msg, List<Field> fields, String prefix) {
     final Map<FieldDescriptor,Object> pbFields = msg.getAllFields();
-    final List<Field> fields = new ArrayList<>(pbFields.size());
 
     for (Entry<FieldDescriptor,Object> entry : pbFields.entrySet()) {
       final FieldDescriptor descriptor = entry.getKey();
-      final String fieldName = descriptor.getName();
-      switch (descriptor.getJavaType()) {
-        case INT:
-        case LONG:
-        case FLOAT:
-        case DOUBLE:
-        case BOOLEAN:
-        case STRING:
-          if (descriptor.isRepeated()) {
-            @SuppressWarnings("unchecked")
-            List<Object> objects = (List<Object>) entry.getValue();
+      final StringBuilder fieldName = new StringBuilder(32);
+      fieldName.append(prefix).append(descriptor.getName());
 
-            int repetition = 0;
-            for (Object obj : objects) {
-              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName, repetition)), getGrouping(descriptor), getVisibility(descriptor), value(obj
-                  .toString())));
-              repetition++;
+      if (com.google.protobuf.Descriptors.FieldDescriptor.Type.MESSAGE == descriptor.getType()) {
+        GeneratedMessage subMsg = (GeneratedMessage) entry.getValue();
+        InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
+        Mapping<GeneratedMessage> subMapping = registry.get(subIob);
+        if (subMapping instanceof ProtobufMessageMapping) {
+          fieldName.append(PERIOD);
+          ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, fieldName.toString());
+        } else {
+          throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
+        }
+      } else {
+        switch (descriptor.getJavaType()) {
+          case INT:
+          case LONG:
+          case FLOAT:
+          case DOUBLE:
+          case BOOLEAN:
+          case STRING:
+            if (descriptor.isRepeated()) {
+              @SuppressWarnings("unchecked")
+              List<Object> objects = (List<Object>) entry.getValue();
+
+              int repetition = 0;
+              for (Object obj : objects) {
+                fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
+                    value(obj.toString())));
+                repetition++;
+              }
+            } else {
+              fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), value(entry.getValue().toString())));
             }
-          } else {
-            fields.add(new FieldImpl(text(fieldName), getGrouping(descriptor), getVisibility(descriptor), value(entry.getValue().toString())));
-          }
-          break;
-        case BYTE_STRING:
-          if (descriptor.isRepeated()) {
-            @SuppressWarnings("unchecked")
-            List<ByteString> byteStrings = (List<ByteString>) entry.getValue();
+            break;
+          case BYTE_STRING:
+            if (descriptor.isRepeated()) {
+              @SuppressWarnings("unchecked")
+              List<ByteString> byteStrings = (List<ByteString>) entry.getValue();
 
-            int repetition = 0;
-            for (ByteString bs : byteStrings) {
-              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName, repetition)), getGrouping(descriptor), getVisibility(descriptor), new Value(bs
-                  .toByteArray())));
-              repetition++;
+              int repetition = 0;
+              for (ByteString bs : byteStrings) {
+                fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
+                    new Value(bs.toByteArray())));
+                repetition++;
+              }
+            } else {
+              ByteString bs = (ByteString) entry.getValue();
+              fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
             }
-          } else {
-            ByteString bs = (ByteString) entry.getValue();
-            fields.add(new FieldImpl(text(fieldName), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
-
-          }
-          break;
-        default:
-          log.warn("Ignoring complex field type: " + descriptor.getJavaType());
-          break;
+            break;
+          default:
+            log.warn("Ignoring complex field type: " + descriptor.getJavaType());
+            break;
+        }
       }
     }
-
-    return fields;
   }
 
   /**
@@ -132,88 +157,93 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
   }
 
   private String qualifyWithRepetition(String fieldName, Integer repetition) {
-    return fieldName + PERIOD + repetition;
+    return fieldName + DOLLAR + repetition;
   }
 
   @Override
-  public void update(Entry<Key,Value> entry, InstanceOrBuilder<T> obj) {
-    checkNotNull(entry, "Key-Value pair was null");
+  public void update(Iterable<Entry<Key,Value>> iter, InstanceOrBuilder<T> obj) {
+    checkNotNull(iter, "Iterable was null");
     checkNotNull(obj, "InstanceOrBuilder was null");
     checkArgument(Type.BUILDER == obj.getType(), "Expected argument to be a builder");
 
     final GeneratedMessage.Builder<?> builder = (GeneratedMessage.Builder<?>) obj.get();
-    String fieldName = entry.getKey().getColumnQualifier().toString();
+    for (Entry<Key,Value> entry : iter) {
+      String fieldName = entry.getKey().getColumnQualifier().toString();
 
-    // Find the FieldDescriptor from the Key
-    for (FieldDescriptor fieldDesc : builder.getDescriptorForType().getFields()) {
-      if (fieldDesc.isRepeated()) {
-        int offset = fieldName.lastIndexOf(PERIOD);
-        fieldName = fieldName.substring(0, offset);
-      }
-      if (fieldName.equals(fieldDesc.getName())) {
-        Value value = entry.getValue();
-        switch (fieldDesc.getJavaType()) {
-          case INT:
-            Integer intVal = Integer.parseInt(value.toString());
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, intVal);
-            } else {
-              builder.setField(fieldDesc, intVal);
-            }
-            break;
-          case LONG:
-            Long longVal = Long.parseLong(value.toString());
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, longVal);
-            } else {
-              builder.setField(fieldDesc, longVal);
-            }
-            break;
-          case FLOAT:
-            Float floatVal = Float.parseFloat(value.toString());
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, floatVal);
-            } else {
-              builder.setField(fieldDesc, floatVal);
-            }
-            break;
-          case DOUBLE:
-            Double doubleVal = Double.parseDouble(value.toString());
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, doubleVal);
-            } else {
-              builder.setField(fieldDesc, doubleVal);
-            }
-            break;
-          case BOOLEAN:
-            Boolean booleanVal = Boolean.parseBoolean(value.toString());
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, booleanVal);
-            } else {
-              builder.setField(fieldDesc, booleanVal);
-            }
-            break;
-          case STRING:
-            String strVal = value.toString();
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, strVal);
-            } else {
-              builder.setField(fieldDesc, strVal);
-            }
-            break;
-          case BYTE_STRING:
-            ByteString byteStrVal = ByteString.copyFrom(entry.getValue().get());
-            if (fieldDesc.isRepeated()) {
-              builder.addRepeatedField(fieldDesc, byteStrVal);
-            } else {
-              builder.setField(fieldDesc, byteStrVal);
-            }
-            break;
-          default:
-            log.warn("Ignoring unknown serialized type {}", fieldDesc.getJavaType());
-            break;
+      // Find the FieldDescriptor from the Key
+      for (FieldDescriptor fieldDesc : builder.getDescriptorForType().getFields()) {
+        if (fieldDesc.isRepeated()) {
+          int offset = fieldName.lastIndexOf(DOLLAR);
+          if (offset < 0) {
+            throw new RuntimeException("Could not find offset of separator for repeated field count in " + fieldName);
+          }
+          fieldName = fieldName.substring(0, offset);
         }
-        return;
+        if (fieldName.equals(fieldDesc.getName())) {
+          Value value = entry.getValue();
+          switch (fieldDesc.getJavaType()) {
+            case INT:
+              Integer intVal = Integer.parseInt(value.toString());
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, intVal);
+              } else {
+                builder.setField(fieldDesc, intVal);
+              }
+              break;
+            case LONG:
+              Long longVal = Long.parseLong(value.toString());
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, longVal);
+              } else {
+                builder.setField(fieldDesc, longVal);
+              }
+              break;
+            case FLOAT:
+              Float floatVal = Float.parseFloat(value.toString());
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, floatVal);
+              } else {
+                builder.setField(fieldDesc, floatVal);
+              }
+              break;
+            case DOUBLE:
+              Double doubleVal = Double.parseDouble(value.toString());
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, doubleVal);
+              } else {
+                builder.setField(fieldDesc, doubleVal);
+              }
+              break;
+            case BOOLEAN:
+              Boolean booleanVal = Boolean.parseBoolean(value.toString());
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, booleanVal);
+              } else {
+                builder.setField(fieldDesc, booleanVal);
+              }
+              break;
+            case STRING:
+              String strVal = value.toString();
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, strVal);
+              } else {
+                builder.setField(fieldDesc, strVal);
+              }
+              break;
+            case BYTE_STRING:
+              ByteString byteStrVal = ByteString.copyFrom(entry.getValue().get());
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, byteStrVal);
+              } else {
+                builder.setField(fieldDesc, byteStrVal);
+              }
+              break;
+            default:
+              log.warn("Ignoring unknown serialized type {}", fieldDesc.getJavaType());
+              break;
+          }
+          break;
+        }
       }
     }
   }
