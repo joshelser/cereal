@@ -35,7 +35,9 @@ import org.junit.rules.TestName;
 
 import cereal.Registry;
 import cereal.Store;
+import cereal.examples.protobuf.generated.PersonOuter.Engine;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
+import cereal.examples.protobuf.generated.PersonOuter.Vehicle;
 import cereal.impl.RegistryImpl;
 import cereal.impl.StoreImpl;
 
@@ -75,8 +77,30 @@ public class ProtobufPersonTest {
     Registry registry = new RegistryImpl();
     ProtobufPersonMapping mapping = new ProtobufPersonMapping(registry);
     registry.add(mapping);
+    registry.add(new ProtobufVehicleMapping(registry));
+    registry.add(new ProtobufEngineMapping(registry));
 
-    Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();
+    Person.Builder builder = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220);
+
+    Person brother = Person.newBuilder().setFirstName("Steve").setMiddleName("Michael").setLastName("Franklin").setAge(28).setHeight(71).setWeight(230).build();
+    Person sister = Person.newBuilder().setFirstName("Mary").setMiddleName("Lou").setLastName("Franklin").setAge(33).setHeight(68).setWeight(180).build();
+    Person father = Person.newBuilder().setFirstName("Harry").setMiddleName("Daniel").setLastName("Franklin").setAge(58).setHeight(70).setWeight(250).build();
+    Person mother = Person.newBuilder().setFirstName("Loretta").setMiddleName("Anne").setLastName("Franklin").setAge(59).setHeight(66).setWeight(190).build();
+
+    Engine civicEngine = Engine.newBuilder().setCylinders(4).setDisplacement(1.8).setHorsepower(160).setTorque(180).build();
+    Engine accordEngine = Engine.newBuilder().setCylinders(6).setDisplacement(2.0).setHorsepower(180).setTorque(150).build();
+
+    Vehicle civic = Vehicle.newBuilder().setMake("Honda").setModel("Civic").setWheels(4).setEngine(civicEngine).build();
+    Vehicle accord = Vehicle.newBuilder().setMake("Honda").setModel("Accord").setWheels(4).setEngine(accordEngine).build();
+
+    builder.addVehicles(civic);
+    builder.addVehicles(accord);
+    builder.addParents(father);
+    builder.addParents(mother);
+    builder.addSiblings(sister);
+    builder.addSiblings(brother);
+
+    Person p = builder.build();
 
     String tableName = test.getMethodName();
     Connector conn = mac.getConnector("root", PASSWORD);

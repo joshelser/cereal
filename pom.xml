@@ -16,6 +16,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <protobuf.version>2.5.0</protobuf.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -57,7 +58,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>2.6.0</version>
+      <version>${protobuf.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>

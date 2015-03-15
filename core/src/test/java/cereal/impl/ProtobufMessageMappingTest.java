@@ -39,6 +39,7 @@ import cereal.InstanceOrBuilder;
 import cereal.Registry;
 import cereal.impl.objects.protobuf.SimpleOuter.Complex;
 import cereal.impl.objects.protobuf.SimpleOuter.Nested;
+import cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested;
 import cereal.impl.objects.protobuf.SimpleOuter.Simple;
 
 import com.google.common.collect.ImmutableMap;
@@ -150,6 +151,34 @@ public class ProtobufMessageMappingTest {
       // Visibility is the java type name
       return new ColumnVisibility(field.getJavaType().toString());
     }
+  }
+
+  private static class RepeatedNestedMessageMapping extends ProtobufMessageMapping<RepeatedNested> {
+
+    public RepeatedNestedMessageMapping(Registry registry) {
+      super(registry);
+    }
+
+    @Override
+    public Text getRowId(RepeatedNested obj) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Class<RepeatedNested> objectType() {
+      return RepeatedNested.class;
+    }
+
+    @Override
+    public Text getGrouping(FieldDescriptor field) {
+      return null;
+    }
+
+    @Override
+    public ColumnVisibility getVisibility(FieldDescriptor field) {
+      return null;
+    }
+
   }
 
   private Text text(String str) {
@@ -311,5 +340,37 @@ public class ProtobufMessageMappingTest {
     expectedFields.removeAll(fields);
 
     assertTrue("Unexpected leftover fields: " + expectedFields, expectedFields.isEmpty());
+  }
+
+  @Test
+  public void testNestedClass() throws Exception {
+    NestedMessageMapping nestedMapping = new NestedMessageMapping(registry);
+
+    FieldDescriptor fieldDesc = Nested.getDescriptor().findFieldByName("simple");
+    assertNotNull("Could not FieldDescriptor for 'simple'", fieldDesc);
+
+    String clzName = nestedMapping.getClassName(fieldDesc);
+    Class<?> clz = Class.forName(clzName);
+    assertEquals(Simple.class, clz);
+  }
+
+  @Test
+  public void testRepeatedNestedClasses() throws Exception {
+    RepeatedNestedMessageMapping rnMapping = new RepeatedNestedMessageMapping(registry);
+    registry.add(rnMapping);
+    registry.add(new ComplexMessageMapping(registry));
+
+    RepeatedNested msg = RepeatedNested.newBuilder().addComplexes(Complex.newBuilder().addStrList("a1").addStrList("a2").build())
+        .addComplexes(Complex.newBuilder().addStrList("b1").addStrList("b2").build()).build();
+
+    List<Field> fields = rnMapping.getFields(msg);
+
+    List<Field> expectedFields = new ArrayList<>(fields.size());
+    expectedFields.add(new FieldImpl(text("complexes$0.str_list$0"), EMPTY, EMPTY_CV, value("a1")));
+    expectedFields.add(new FieldImpl(text("complexes$0.str_list$1"), EMPTY, EMPTY_CV, value("a2")));
+    expectedFields.add(new FieldImpl(text("complexes$1.str_list$0"), EMPTY, EMPTY_CV, value("b1")));
+    expectedFields.add(new FieldImpl(text("complexes$1.str_list$1"), EMPTY, EMPTY_CV, value("b2")));
+
+    assertEquals(expectedFields, fields);
   }
 }

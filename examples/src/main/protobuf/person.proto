@@ -1,4 +1,4 @@
-package cereal.protobuf;
+package cereal.examples;
 
 option java_package = "cereal.examples.protobuf.generated";
 option java_outer_classname = "PersonOuter";
@@ -11,4 +11,21 @@ message Person {
   optional int32 age = 4;
   optional int32 height = 5;
   optional int32 weight = 6;
+  repeated Person siblings = 7;
+  repeated Person parents = 8;
+  repeated Vehicle vehicles = 9;
+}
+
+message Vehicle {
+  optional string make = 1;
+  optional string model = 2;
+  optional int32 wheels = 3;
+  optional Engine engine = 4;
+}
+
+message Engine {
+  optional int32 cylinders = 1;
+  optional double displacement = 2;
+  optional int32 horsepower = 3;
+  optional int32 torque = 4;
 }

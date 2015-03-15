@@ -26,10 +26,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.ColumnVisibility;
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.io.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +42,13 @@ import cereal.InstanceOrBuilder.Type;
 import cereal.Mapping;
 import cereal.Registry;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.DescriptorProtos.FileOptions;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
+import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.Message;
 
@@ -117,14 +122,37 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
           }
           break;
         case MESSAGE:
-          GeneratedMessage subMsg = (GeneratedMessage) entry.getValue();
-          InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
-          Mapping<GeneratedMessage> subMapping = registry.get(subIob);
-          if (subMapping instanceof ProtobufMessageMapping) {
-            fieldName.append(PERIOD);
-            ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, fieldName.toString());
+          if (descriptor.isRepeated()) {
+            @SuppressWarnings("unchecked")
+            List<GeneratedMessage> subMsgs = (List<GeneratedMessage>) entry.getValue();
+            int repetition = 0;
+
+            for (GeneratedMessage subMsg : subMsgs) {
+              InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
+              Mapping<GeneratedMessage> subMapping = registry.get(subIob);
+              if (null == subMapping) {
+                throw new RuntimeException("No Mapping in Registry for " + subMsg.getClass());
+              }
+
+              if (subMapping instanceof ProtobufMessageMapping) {
+                String finalName = qualifyWithRepetition(fieldName.toString(), repetition) + PERIOD;
+                ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, finalName);
+              } else {
+                throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
+              }
+
+              repetition++;
+            }
           } else {
-            throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
+            GeneratedMessage subMsg = (GeneratedMessage) entry.getValue();
+            InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
+            Mapping<GeneratedMessage> subMapping = registry.get(subIob);
+            if (subMapping instanceof ProtobufMessageMapping) {
+              fieldName.append(PERIOD);
+              ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, fieldName.toString());
+            } else {
+              throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
+            }
           }
 
           break;
@@ -267,11 +295,14 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
       for (FieldDescriptor fieldDesc : builder.getDescriptorForType().getFields()) {
         if (JavaType.MESSAGE == fieldDesc.getJavaType()) {
           // For each Key-Value pair which have this prefix as the fieldname (column qualifier)
-          String prefix = fieldDesc.getName() + PERIOD;
+          final String fieldName = fieldDesc.getName();
+          final String singularPrefix = fieldName + PERIOD, repeatedPrefix = fieldName + DOLLAR;
 
-          log.debug("Extracting Key-Value pairs for {}", prefix);
+          log.debug("Extracting Key-Value pairs for {}", fieldDesc.getName());
 
-          List<Entry<Key,Value>> fieldsForNestedMessage = new LinkedList<>();
+          // Use a TreeMap to ensure the correct repetition order is preserved
+          Map<Integer,List<Entry<Key,Value>>> fieldsForNestedMessage = new TreeMap<>();
+
           final Text _holder = new Text();
           Iterator<Entry<Key,Value>> leftoverFieldsIter = leftoverFields.iterator();
           while (leftoverFieldsIter.hasNext()) {
@@ -280,11 +311,38 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
             entry.getKey().getColumnQualifier(_holder);
 
             String colqual = _holder.toString();
-            if (colqual.startsWith(prefix)) {
+            if (colqual.startsWith(singularPrefix)) {
               // Make a copy of the original Key, stripping the prefix off of the qualifier
-              Key copy = new Key(key.getRow(), key.getColumnFamily(), new Text(colqual.substring(prefix.length())), key.getColumnVisibility(),
+              Key copy = new Key(key.getRow(), key.getColumnFamily(), new Text(colqual.substring(singularPrefix.length())), key.getColumnVisibility(),
                   key.getTimestamp());
-              fieldsForNestedMessage.add(Maps.immutableEntry(copy, entry.getValue()));
+
+              List<Entry<Key,Value>> kvPairs = fieldsForNestedMessage.get(-1);
+              if (null == kvPairs) {
+                kvPairs = new LinkedList<>();
+                fieldsForNestedMessage.put(-1, kvPairs);
+              }
+              kvPairs.add(Maps.immutableEntry(copy, entry.getValue()));
+
+              // Remove it from the list as we should never have to reread this one again
+              leftoverFieldsIter.remove();
+            } else if (colqual.startsWith(repeatedPrefix)) {
+              // Make a copy of the original Key, stripping the prefix off of the qualifier
+              int index = colqual.indexOf(PERIOD, repeatedPrefix.length());
+              if (0 > index) {
+                throw new RuntimeException("Could not find period after dollar sign: " + colqual);
+              }
+
+              Integer repetition = Integer.parseInt(colqual.substring(repeatedPrefix.length(), index));
+
+              Key copy = new Key(key.getRow(), key.getColumnFamily(), new Text(colqual.substring(index + 1)), key.getColumnVisibility(),
+                  key.getTimestamp());
+
+              List<Entry<Key,Value>> kvPairs = fieldsForNestedMessage.get(repetition);
+              if (null == kvPairs) {
+                kvPairs = new LinkedList<>();
+                fieldsForNestedMessage.put(repetition, kvPairs);
+              }
+              kvPairs.add(Maps.immutableEntry(copy, entry.getValue()));
 
               // Remove it from the list as we should never have to reread this one again
               leftoverFieldsIter.remove();
@@ -293,7 +351,7 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
 
           if (!fieldsForNestedMessage.isEmpty()) {
             // We have keys, pass them down to the nested message
-            String nestedMsgClzName = fieldDesc.getMessageType().getFullName();
+            String nestedMsgClzName = getClassName(fieldDesc);
 
             log.debug("Found {} Key-Value pairs for {}. Reconstituting the message.", fieldsForNestedMessage.size(), nestedMsgClzName);
 
@@ -302,18 +360,30 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
               // Get the class, builder and InstanceOrBuilder for the nested message
               Class<GeneratedMessage> msgClz = (Class<GeneratedMessage>) Class.forName(nestedMsgClzName);
               Method newBuilderMethod = msgClz.getMethod("newBuilder");
-              Message.Builder subBuilder = (Message.Builder) newBuilderMethod.invoke(null);
-              InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subBuilder, msgClz);
-              // Get the mapping from the registry
-              ProtobufMessageMapping<GeneratedMessage> subMapping = (ProtobufMessageMapping<GeneratedMessage>) registry.get(subIob);
-              // Invoke update on the mapping with the subset of Key-Values
-              subMapping.update(fieldsForNestedMessage, subIob);
+
+              for (Entry<Integer,List<Entry<Key,Value>>> pairsPerRepetition : fieldsForNestedMessage.entrySet()) {
+                Message.Builder subBuilder = (Message.Builder) newBuilderMethod.invoke(null);
+                InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subBuilder, msgClz);
+
+                // Get the mapping from the registry
+                ProtobufMessageMapping<GeneratedMessage> subMapping = (ProtobufMessageMapping<GeneratedMessage>) registry.get(subIob);
+
+                // Invoke update on the mapping with the subset of Key-Values
+                subMapping.update(pairsPerRepetition.getValue(), subIob);
+
+                // Set the result on the top-level obj
+                if (fieldDesc.isRepeated()) {
+                  builder.addRepeatedField(fieldDesc, subBuilder.build());
+                } else {
+                  builder.setField(fieldDesc, subBuilder.build());
+                }
+              }
             } catch (Exception e) {
               throw new RuntimeException(e);
             }
           }
           // No fields for the sub message, therefore it's empty
-          log.debug("Found no Key-Value pairs for {}", prefix);
+          log.debug("Found no Key-Value pairs for {}", fieldName);
         }
         // Not a message, so we can ignore it
       }
@@ -324,4 +394,34 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
     }
   }
 
+  protected String getClassName(FieldDescriptor fieldDesc) {
+    FileDescriptor fileDesc = fieldDesc.getFile();
+    FileOptions fileOptions = fileDesc.getOptions();
+
+    String pkg;
+    String baseJavaClassName;
+
+    // Use the java package when present, the pb package when not.
+    if (fileOptions.hasJavaPackage()) {
+      pkg = fileOptions.getJavaPackage();
+    } else {
+      pkg = fileDesc.getPackage();
+    }
+
+    // Use the provided outer class name, or the pb file name
+    if (fileOptions.hasJavaOuterClassname()) {
+      baseJavaClassName = fileOptions.getJavaOuterClassname();
+    } else {
+      Iterable<String> pieces = Splitter.on('_').split(fileDesc.getName());
+      StringBuilder sb = new StringBuilder(16);
+      for (String piece : pieces) {
+        if (!piece.isEmpty()) {
+          sb.append(StringUtils.capitalize(piece));
+        }
+      }
+      baseJavaClassName = sb.toString();
+    }
+
+    return pkg + "." + baseJavaClassName + "$" + fieldDesc.getMessageType().getName();
+  }
 }

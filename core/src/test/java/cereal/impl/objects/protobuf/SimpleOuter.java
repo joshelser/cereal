@@ -8,10 +8,10 @@ public final class SimpleOuter {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface SimpleOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cereal.protobuf.Simple)
-      com.google.protobuf.MessageOrBuilder {
+  public interface SimpleOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // optional double dub = 1;
     /**
      * <code>optional double dub = 1;</code>
      */
@@ -21,6 +21,7 @@ public final class SimpleOuter {
      */
     double getDub();
 
+    // optional float flt = 2;
     /**
      * <code>optional float flt = 2;</code>
      */
@@ -30,6 +31,7 @@ public final class SimpleOuter {
      */
     float getFlt();
 
+    // optional int32 int = 3;
     /**
      * <code>optional int32 int = 3;</code>
      */
@@ -39,6 +41,7 @@ public final class SimpleOuter {
      */
     int getInt();
 
+    // optional int64 long = 4;
     /**
      * <code>optional int64 long = 4;</code>
      */
@@ -48,6 +51,7 @@ public final class SimpleOuter {
      */
     long getLong();
 
+    // optional bool boolean = 5;
     /**
      * <code>optional bool boolean = 5;</code>
      */
@@ -57,6 +61,7 @@ public final class SimpleOuter {
      */
     boolean getBoolean();
 
+    // optional string str = 6;
     /**
      * <code>optional string str = 6;</code>
      */
@@ -71,6 +76,7 @@ public final class SimpleOuter {
     com.google.protobuf.ByteString
         getStrBytes();
 
+    // optional bytes byte_str = 7;
     /**
      * <code>optional bytes byte_str = 7;</code>
      */
@@ -81,12 +87,11 @@ public final class SimpleOuter {
     com.google.protobuf.ByteString getByteStr();
   }
   /**
-   * Protobuf type {@code cereal.protobuf.Simple}
+   * Protobuf type {@code cereal.impl.Simple}
    */
   public static final class Simple extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:cereal.protobuf.Simple)
-      SimpleOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements SimpleOrBuilder {
     // Use Simple.newBuilder() to construct.
     private Simple(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -158,9 +163,8 @@ public final class SimpleOuter {
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              str_ = bs;
+              str_ = input.readBytes();
               break;
             }
             case 58: {
@@ -182,12 +186,12 @@ public final class SimpleOuter {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Simple_descriptor;
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Simple_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Simple_fieldAccessorTable
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Simple_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               cereal.impl.objects.protobuf.SimpleOuter.Simple.class, cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder.class);
     }
@@ -208,6 +212,7 @@ public final class SimpleOuter {
     }
 
     private int bitField0_;
+    // optional double dub = 1;
     public static final int DUB_FIELD_NUMBER = 1;
     private double dub_;
     /**
@@ -223,6 +228,7 @@ public final class SimpleOuter {
       return dub_;
     }
 
+    // optional float flt = 2;
     public static final int FLT_FIELD_NUMBER = 2;
     private float flt_;
     /**
@@ -238,6 +244,7 @@ public final class SimpleOuter {
       return flt_;
     }
 
+    // optional int32 int = 3;
     public static final int INT_FIELD_NUMBER = 3;
     private int int_;
     /**
@@ -253,6 +260,7 @@ public final class SimpleOuter {
       return int_;
     }
 
+    // optional int64 long = 4;
     public static final int LONG_FIELD_NUMBER = 4;
     private long long_;
     /**
@@ -268,6 +276,7 @@ public final class SimpleOuter {
       return long_;
     }
 
+    // optional bool boolean = 5;
     public static final int BOOLEAN_FIELD_NUMBER = 5;
     private boolean boolean_;
     /**
@@ -283,6 +292,7 @@ public final class SimpleOuter {
       return boolean_;
     }
 
+    // optional string str = 6;
     public static final int STR_FIELD_NUMBER = 6;
     private java.lang.Object str_;
     /**
@@ -325,6 +335,7 @@ public final class SimpleOuter {
       }
     }
 
+    // optional bytes byte_str = 7;
     public static final int BYTE_STR_FIELD_NUMBER = 7;
     private com.google.protobuf.ByteString byteStr_;
     /**
@@ -352,8 +363,7 @@ public final class SimpleOuter {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       memoizedIsInitialized = 1;
       return true;
@@ -499,20 +509,19 @@ public final class SimpleOuter {
       return builder;
     }
     /**
-     * Protobuf type {@code cereal.protobuf.Simple}
+     * Protobuf type {@code cereal.impl.Simple}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cereal.protobuf.Simple)
-        cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Simple_descriptor;
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Simple_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Simple_fieldAccessorTable
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Simple_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 cereal.impl.objects.protobuf.SimpleOuter.Simple.class, cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder.class);
       }
@@ -560,7 +569,7 @@ public final class SimpleOuter {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Simple_descriptor;
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Simple_descriptor;
       }
 
       public cereal.impl.objects.protobuf.SimpleOuter.Simple getDefaultInstanceForType() {
@@ -673,6 +682,7 @@ public final class SimpleOuter {
       }
       private int bitField0_;
 
+      // optional double dub = 1;
       private double dub_ ;
       /**
        * <code>optional double dub = 1;</code>
@@ -705,6 +715,7 @@ public final class SimpleOuter {
         return this;
       }
 
+      // optional float flt = 2;
       private float flt_ ;
       /**
        * <code>optional float flt = 2;</code>
@@ -737,6 +748,7 @@ public final class SimpleOuter {
         return this;
       }
 
+      // optional int32 int = 3;
       private int int_ ;
       /**
        * <code>optional int32 int = 3;</code>
@@ -769,6 +781,7 @@ public final class SimpleOuter {
         return this;
       }
 
+      // optional int64 long = 4;
       private long long_ ;
       /**
        * <code>optional int64 long = 4;</code>
@@ -801,6 +814,7 @@ public final class SimpleOuter {
         return this;
       }
 
+      // optional bool boolean = 5;
       private boolean boolean_ ;
       /**
        * <code>optional bool boolean = 5;</code>
@@ -833,6 +847,7 @@ public final class SimpleOuter {
         return this;
       }
 
+      // optional string str = 6;
       private java.lang.Object str_ = "";
       /**
        * <code>optional string str = 6;</code>
@@ -846,12 +861,9 @@ public final class SimpleOuter {
       public java.lang.String getStr() {
         java.lang.Object ref = str_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            str_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          str_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -909,6 +921,7 @@ public final class SimpleOuter {
         return this;
       }
 
+      // optional bytes byte_str = 7;
       private com.google.protobuf.ByteString byteStr_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes byte_str = 7;</code>
@@ -944,7 +957,7 @@ public final class SimpleOuter {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:cereal.protobuf.Simple)
+      // @@protoc_insertion_point(builder_scope:cereal.impl.Simple)
     }
 
     static {
@@ -952,18 +965,18 @@ public final class SimpleOuter {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:cereal.protobuf.Simple)
+    // @@protoc_insertion_point(class_scope:cereal.impl.Simple)
   }
 
-  public interface ComplexOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cereal.protobuf.Complex)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ComplexOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // repeated string str_list = 1;
     /**
      * <code>repeated string str_list = 1;</code>
      */
-    com.google.protobuf.ProtocolStringList
-        getStrListList();
+    java.util.List<java.lang.String>
+    getStrListList();
     /**
      * <code>repeated string str_list = 1;</code>
      */
@@ -979,12 +992,11 @@ public final class SimpleOuter {
         getStrListBytes(int index);
   }
   /**
-   * Protobuf type {@code cereal.protobuf.Complex}
+   * Protobuf type {@code cereal.impl.Complex}
    */
   public static final class Complex extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:cereal.protobuf.Complex)
-      ComplexOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ComplexOrBuilder {
     // Use Complex.newBuilder() to construct.
     private Complex(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1031,12 +1043,11 @@ public final class SimpleOuter {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
                 strList_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000001;
               }
-              strList_.add(bs);
+              strList_.add(input.readBytes());
               break;
             }
           }
@@ -1048,7 +1059,7 @@ public final class SimpleOuter {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          strList_ = strList_.getUnmodifiableView();
+          strList_ = new com.google.protobuf.UnmodifiableLazyStringList(strList_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1056,12 +1067,12 @@ public final class SimpleOuter {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Complex_descriptor;
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Complex_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Complex_fieldAccessorTable
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Complex_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               cereal.impl.objects.protobuf.SimpleOuter.Complex.class, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder.class);
     }
@@ -1081,12 +1092,13 @@ public final class SimpleOuter {
       return PARSER;
     }
 
+    // repeated string str_list = 1;
     public static final int STR_LIST_FIELD_NUMBER = 1;
     private com.google.protobuf.LazyStringList strList_;
     /**
      * <code>repeated string str_list = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
+    public java.util.List<java.lang.String>
         getStrListList() {
       return strList_;
     }
@@ -1116,8 +1128,7 @@ public final class SimpleOuter {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       memoizedIsInitialized = 1;
       return true;
@@ -1226,20 +1237,19 @@ public final class SimpleOuter {
       return builder;
     }
     /**
-     * Protobuf type {@code cereal.protobuf.Complex}
+     * Protobuf type {@code cereal.impl.Complex}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cereal.protobuf.Complex)
-        cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Complex_descriptor;
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Complex_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Complex_fieldAccessorTable
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Complex_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 cereal.impl.objects.protobuf.SimpleOuter.Complex.class, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder.class);
       }
@@ -1275,7 +1285,7 @@ public final class SimpleOuter {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Complex_descriptor;
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Complex_descriptor;
       }
 
       public cereal.impl.objects.protobuf.SimpleOuter.Complex getDefaultInstanceForType() {
@@ -1294,7 +1304,8 @@ public final class SimpleOuter {
         cereal.impl.objects.protobuf.SimpleOuter.Complex result = new cereal.impl.objects.protobuf.SimpleOuter.Complex(this);
         int from_bitField0_ = bitField0_;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          strList_ = strList_.getUnmodifiableView();
+          strList_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              strList_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.strList_ = strList_;
@@ -1350,6 +1361,7 @@ public final class SimpleOuter {
       }
       private int bitField0_;
 
+      // repeated string str_list = 1;
       private com.google.protobuf.LazyStringList strList_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureStrListIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1360,9 +1372,9 @@ public final class SimpleOuter {
       /**
        * <code>repeated string str_list = 1;</code>
        */
-      public com.google.protobuf.ProtocolStringList
+      public java.util.List<java.lang.String>
           getStrListList() {
-        return strList_.getUnmodifiableView();
+        return java.util.Collections.unmodifiableList(strList_);
       }
       /**
        * <code>repeated string str_list = 1;</code>
@@ -1415,8 +1427,7 @@ public final class SimpleOuter {
       public Builder addAllStrList(
           java.lang.Iterable<java.lang.String> values) {
         ensureStrListIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, strList_);
+        super.addAll(values, strList_);
         onChanged();
         return this;
       }
@@ -1443,7 +1454,7 @@ public final class SimpleOuter {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:cereal.protobuf.Complex)
+      // @@protoc_insertion_point(builder_scope:cereal.impl.Complex)
     }
 
     static {
@@ -1451,46 +1462,46 @@ public final class SimpleOuter {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:cereal.protobuf.Complex)
+    // @@protoc_insertion_point(class_scope:cereal.impl.Complex)
   }
 
-  public interface NestedOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cereal.protobuf.Nested)
-      com.google.protobuf.MessageOrBuilder {
+  public interface NestedOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // optional .cereal.impl.Simple simple = 1;
     /**
-     * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+     * <code>optional .cereal.impl.Simple simple = 1;</code>
      */
     boolean hasSimple();
     /**
-     * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+     * <code>optional .cereal.impl.Simple simple = 1;</code>
      */
     cereal.impl.objects.protobuf.SimpleOuter.Simple getSimple();
     /**
-     * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+     * <code>optional .cereal.impl.Simple simple = 1;</code>
      */
     cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder getSimpleOrBuilder();
 
+    // optional .cereal.impl.Complex complex = 2;
     /**
-     * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+     * <code>optional .cereal.impl.Complex complex = 2;</code>
      */
     boolean hasComplex();
     /**
-     * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+     * <code>optional .cereal.impl.Complex complex = 2;</code>
      */
     cereal.impl.objects.protobuf.SimpleOuter.Complex getComplex();
     /**
-     * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+     * <code>optional .cereal.impl.Complex complex = 2;</code>
      */
     cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder getComplexOrBuilder();
   }
   /**
-   * Protobuf type {@code cereal.protobuf.Nested}
+   * Protobuf type {@code cereal.impl.Nested}
    */
   public static final class Nested extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:cereal.protobuf.Nested)
-      NestedOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements NestedOrBuilder {
     // Use Nested.newBuilder() to construct.
     private Nested(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1576,12 +1587,12 @@ public final class SimpleOuter {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Nested_descriptor;
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Nested_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Nested_fieldAccessorTable
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Nested_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               cereal.impl.objects.protobuf.SimpleOuter.Nested.class, cereal.impl.objects.protobuf.SimpleOuter.Nested.Builder.class);
     }
@@ -1602,43 +1613,45 @@ public final class SimpleOuter {
     }
 
     private int bitField0_;
+    // optional .cereal.impl.Simple simple = 1;
     public static final int SIMPLE_FIELD_NUMBER = 1;
     private cereal.impl.objects.protobuf.SimpleOuter.Simple simple_;
     /**
-     * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+     * <code>optional .cereal.impl.Simple simple = 1;</code>
      */
     public boolean hasSimple() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+     * <code>optional .cereal.impl.Simple simple = 1;</code>
      */
     public cereal.impl.objects.protobuf.SimpleOuter.Simple getSimple() {
       return simple_;
     }
     /**
-     * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+     * <code>optional .cereal.impl.Simple simple = 1;</code>
      */
     public cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder getSimpleOrBuilder() {
       return simple_;
     }
 
+    // optional .cereal.impl.Complex complex = 2;
     public static final int COMPLEX_FIELD_NUMBER = 2;
     private cereal.impl.objects.protobuf.SimpleOuter.Complex complex_;
     /**
-     * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+     * <code>optional .cereal.impl.Complex complex = 2;</code>
      */
     public boolean hasComplex() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+     * <code>optional .cereal.impl.Complex complex = 2;</code>
      */
     public cereal.impl.objects.protobuf.SimpleOuter.Complex getComplex() {
       return complex_;
     }
     /**
-     * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+     * <code>optional .cereal.impl.Complex complex = 2;</code>
      */
     public cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder getComplexOrBuilder() {
       return complex_;
@@ -1651,8 +1664,7 @@ public final class SimpleOuter {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       memoizedIsInitialized = 1;
       return true;
@@ -1763,20 +1775,19 @@ public final class SimpleOuter {
       return builder;
     }
     /**
-     * Protobuf type {@code cereal.protobuf.Nested}
+     * Protobuf type {@code cereal.impl.Nested}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cereal.protobuf.Nested)
-        cereal.impl.objects.protobuf.SimpleOuter.NestedOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements cereal.impl.objects.protobuf.SimpleOuter.NestedOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Nested_descriptor;
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Nested_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Nested_fieldAccessorTable
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Nested_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 cereal.impl.objects.protobuf.SimpleOuter.Nested.class, cereal.impl.objects.protobuf.SimpleOuter.Nested.Builder.class);
       }
@@ -1824,7 +1835,7 @@ public final class SimpleOuter {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_protobuf_Nested_descriptor;
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_Nested_descriptor;
       }
 
       public cereal.impl.objects.protobuf.SimpleOuter.Nested getDefaultInstanceForType() {
@@ -1908,17 +1919,18 @@ public final class SimpleOuter {
       }
       private int bitField0_;
 
+      // optional .cereal.impl.Simple simple = 1;
       private cereal.impl.objects.protobuf.SimpleOuter.Simple simple_ = cereal.impl.objects.protobuf.SimpleOuter.Simple.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           cereal.impl.objects.protobuf.SimpleOuter.Simple, cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder, cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder> simpleBuilder_;
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public boolean hasSimple() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public cereal.impl.objects.protobuf.SimpleOuter.Simple getSimple() {
         if (simpleBuilder_ == null) {
@@ -1928,7 +1940,7 @@ public final class SimpleOuter {
         }
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public Builder setSimple(cereal.impl.objects.protobuf.SimpleOuter.Simple value) {
         if (simpleBuilder_ == null) {
@@ -1944,7 +1956,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public Builder setSimple(
           cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder builderForValue) {
@@ -1958,7 +1970,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public Builder mergeSimple(cereal.impl.objects.protobuf.SimpleOuter.Simple value) {
         if (simpleBuilder_ == null) {
@@ -1977,7 +1989,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public Builder clearSimple() {
         if (simpleBuilder_ == null) {
@@ -1990,7 +2002,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder getSimpleBuilder() {
         bitField0_ |= 0x00000001;
@@ -1998,7 +2010,7 @@ public final class SimpleOuter {
         return getSimpleFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       public cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder getSimpleOrBuilder() {
         if (simpleBuilder_ != null) {
@@ -2008,7 +2020,7 @@ public final class SimpleOuter {
         }
       }
       /**
-       * <code>optional .cereal.protobuf.Simple simple = 1;</code>
+       * <code>optional .cereal.impl.Simple simple = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           cereal.impl.objects.protobuf.SimpleOuter.Simple, cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder, cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder> 
@@ -2016,7 +2028,7 @@ public final class SimpleOuter {
         if (simpleBuilder_ == null) {
           simpleBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               cereal.impl.objects.protobuf.SimpleOuter.Simple, cereal.impl.objects.protobuf.SimpleOuter.Simple.Builder, cereal.impl.objects.protobuf.SimpleOuter.SimpleOrBuilder>(
-                  getSimple(),
+                  simple_,
                   getParentForChildren(),
                   isClean());
           simple_ = null;
@@ -2024,17 +2036,18 @@ public final class SimpleOuter {
         return simpleBuilder_;
       }
 
+      // optional .cereal.impl.Complex complex = 2;
       private cereal.impl.objects.protobuf.SimpleOuter.Complex complex_ = cereal.impl.objects.protobuf.SimpleOuter.Complex.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           cereal.impl.objects.protobuf.SimpleOuter.Complex, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder, cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> complexBuilder_;
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public boolean hasComplex() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public cereal.impl.objects.protobuf.SimpleOuter.Complex getComplex() {
         if (complexBuilder_ == null) {
@@ -2044,7 +2057,7 @@ public final class SimpleOuter {
         }
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public Builder setComplex(cereal.impl.objects.protobuf.SimpleOuter.Complex value) {
         if (complexBuilder_ == null) {
@@ -2060,7 +2073,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public Builder setComplex(
           cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder builderForValue) {
@@ -2074,7 +2087,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public Builder mergeComplex(cereal.impl.objects.protobuf.SimpleOuter.Complex value) {
         if (complexBuilder_ == null) {
@@ -2093,7 +2106,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public Builder clearComplex() {
         if (complexBuilder_ == null) {
@@ -2106,7 +2119,7 @@ public final class SimpleOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder getComplexBuilder() {
         bitField0_ |= 0x00000002;
@@ -2114,7 +2127,7 @@ public final class SimpleOuter {
         return getComplexFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       public cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder getComplexOrBuilder() {
         if (complexBuilder_ != null) {
@@ -2124,7 +2137,7 @@ public final class SimpleOuter {
         }
       }
       /**
-       * <code>optional .cereal.protobuf.Complex complex = 2;</code>
+       * <code>optional .cereal.impl.Complex complex = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           cereal.impl.objects.protobuf.SimpleOuter.Complex, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder, cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> 
@@ -2132,7 +2145,7 @@ public final class SimpleOuter {
         if (complexBuilder_ == null) {
           complexBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               cereal.impl.objects.protobuf.SimpleOuter.Complex, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder, cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder>(
-                  getComplex(),
+                  complex_,
                   getParentForChildren(),
                   isClean());
           complex_ = null;
@@ -2140,7 +2153,7 @@ public final class SimpleOuter {
         return complexBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:cereal.protobuf.Nested)
+      // @@protoc_insertion_point(builder_scope:cereal.impl.Nested)
     }
 
     static {
@@ -2148,24 +2161,703 @@ public final class SimpleOuter {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:cereal.protobuf.Nested)
+    // @@protoc_insertion_point(class_scope:cereal.impl.Nested)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cereal_protobuf_Simple_descriptor;
+  public interface RepeatedNestedOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // repeated .cereal.impl.Complex complexes = 1;
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    java.util.List<cereal.impl.objects.protobuf.SimpleOuter.Complex> 
+        getComplexesList();
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    cereal.impl.objects.protobuf.SimpleOuter.Complex getComplexes(int index);
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    int getComplexesCount();
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    java.util.List<? extends cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> 
+        getComplexesOrBuilderList();
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder getComplexesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code cereal.impl.RepeatedNested}
+   */
+  public static final class RepeatedNested extends
+      com.google.protobuf.GeneratedMessage
+      implements RepeatedNestedOrBuilder {
+    // Use RepeatedNested.newBuilder() to construct.
+    private RepeatedNested(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RepeatedNested(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RepeatedNested defaultInstance;
+    public static RepeatedNested getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RepeatedNested getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RepeatedNested(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                complexes_ = new java.util.ArrayList<cereal.impl.objects.protobuf.SimpleOuter.Complex>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              complexes_.add(input.readMessage(cereal.impl.objects.protobuf.SimpleOuter.Complex.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          complexes_ = java.util.Collections.unmodifiableList(complexes_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_RepeatedNested_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_RepeatedNested_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.class, cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RepeatedNested> PARSER =
+        new com.google.protobuf.AbstractParser<RepeatedNested>() {
+      public RepeatedNested parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RepeatedNested(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RepeatedNested> getParserForType() {
+      return PARSER;
+    }
+
+    // repeated .cereal.impl.Complex complexes = 1;
+    public static final int COMPLEXES_FIELD_NUMBER = 1;
+    private java.util.List<cereal.impl.objects.protobuf.SimpleOuter.Complex> complexes_;
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    public java.util.List<cereal.impl.objects.protobuf.SimpleOuter.Complex> getComplexesList() {
+      return complexes_;
+    }
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    public java.util.List<? extends cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> 
+        getComplexesOrBuilderList() {
+      return complexes_;
+    }
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    public int getComplexesCount() {
+      return complexes_.size();
+    }
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    public cereal.impl.objects.protobuf.SimpleOuter.Complex getComplexes(int index) {
+      return complexes_.get(index);
+    }
+    /**
+     * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+     */
+    public cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder getComplexesOrBuilder(
+        int index) {
+      return complexes_.get(index);
+    }
+
+    private void initFields() {
+      complexes_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < complexes_.size(); i++) {
+        output.writeMessage(1, complexes_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < complexes_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, complexes_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cereal.impl.RepeatedNested}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements cereal.impl.objects.protobuf.SimpleOuter.RepeatedNestedOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_RepeatedNested_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_RepeatedNested_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.class, cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.Builder.class);
+      }
+
+      // Construct using cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getComplexesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (complexesBuilder_ == null) {
+          complexes_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          complexesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cereal.impl.objects.protobuf.SimpleOuter.internal_static_cereal_impl_RepeatedNested_descriptor;
+      }
+
+      public cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested getDefaultInstanceForType() {
+        return cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.getDefaultInstance();
+      }
+
+      public cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested build() {
+        cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested buildPartial() {
+        cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested result = new cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested(this);
+        int from_bitField0_ = bitField0_;
+        if (complexesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            complexes_ = java.util.Collections.unmodifiableList(complexes_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.complexes_ = complexes_;
+        } else {
+          result.complexes_ = complexesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested) {
+          return mergeFrom((cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested other) {
+        if (other == cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested.getDefaultInstance()) return this;
+        if (complexesBuilder_ == null) {
+          if (!other.complexes_.isEmpty()) {
+            if (complexes_.isEmpty()) {
+              complexes_ = other.complexes_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureComplexesIsMutable();
+              complexes_.addAll(other.complexes_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.complexes_.isEmpty()) {
+            if (complexesBuilder_.isEmpty()) {
+              complexesBuilder_.dispose();
+              complexesBuilder_ = null;
+              complexes_ = other.complexes_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              complexesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getComplexesFieldBuilder() : null;
+            } else {
+              complexesBuilder_.addAllMessages(other.complexes_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // repeated .cereal.impl.Complex complexes = 1;
+      private java.util.List<cereal.impl.objects.protobuf.SimpleOuter.Complex> complexes_ =
+        java.util.Collections.emptyList();
+      private void ensureComplexesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          complexes_ = new java.util.ArrayList<cereal.impl.objects.protobuf.SimpleOuter.Complex>(complexes_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          cereal.impl.objects.protobuf.SimpleOuter.Complex, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder, cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> complexesBuilder_;
+
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public java.util.List<cereal.impl.objects.protobuf.SimpleOuter.Complex> getComplexesList() {
+        if (complexesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(complexes_);
+        } else {
+          return complexesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public int getComplexesCount() {
+        if (complexesBuilder_ == null) {
+          return complexes_.size();
+        } else {
+          return complexesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public cereal.impl.objects.protobuf.SimpleOuter.Complex getComplexes(int index) {
+        if (complexesBuilder_ == null) {
+          return complexes_.get(index);
+        } else {
+          return complexesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder setComplexes(
+          int index, cereal.impl.objects.protobuf.SimpleOuter.Complex value) {
+        if (complexesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureComplexesIsMutable();
+          complexes_.set(index, value);
+          onChanged();
+        } else {
+          complexesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder setComplexes(
+          int index, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder builderForValue) {
+        if (complexesBuilder_ == null) {
+          ensureComplexesIsMutable();
+          complexes_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          complexesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder addComplexes(cereal.impl.objects.protobuf.SimpleOuter.Complex value) {
+        if (complexesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureComplexesIsMutable();
+          complexes_.add(value);
+          onChanged();
+        } else {
+          complexesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder addComplexes(
+          int index, cereal.impl.objects.protobuf.SimpleOuter.Complex value) {
+        if (complexesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureComplexesIsMutable();
+          complexes_.add(index, value);
+          onChanged();
+        } else {
+          complexesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder addComplexes(
+          cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder builderForValue) {
+        if (complexesBuilder_ == null) {
+          ensureComplexesIsMutable();
+          complexes_.add(builderForValue.build());
+          onChanged();
+        } else {
+          complexesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder addComplexes(
+          int index, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder builderForValue) {
+        if (complexesBuilder_ == null) {
+          ensureComplexesIsMutable();
+          complexes_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          complexesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder addAllComplexes(
+          java.lang.Iterable<? extends cereal.impl.objects.protobuf.SimpleOuter.Complex> values) {
+        if (complexesBuilder_ == null) {
+          ensureComplexesIsMutable();
+          super.addAll(values, complexes_);
+          onChanged();
+        } else {
+          complexesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder clearComplexes() {
+        if (complexesBuilder_ == null) {
+          complexes_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          complexesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public Builder removeComplexes(int index) {
+        if (complexesBuilder_ == null) {
+          ensureComplexesIsMutable();
+          complexes_.remove(index);
+          onChanged();
+        } else {
+          complexesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder getComplexesBuilder(
+          int index) {
+        return getComplexesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder getComplexesOrBuilder(
+          int index) {
+        if (complexesBuilder_ == null) {
+          return complexes_.get(index);  } else {
+          return complexesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public java.util.List<? extends cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> 
+           getComplexesOrBuilderList() {
+        if (complexesBuilder_ != null) {
+          return complexesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(complexes_);
+        }
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder addComplexesBuilder() {
+        return getComplexesFieldBuilder().addBuilder(
+            cereal.impl.objects.protobuf.SimpleOuter.Complex.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder addComplexesBuilder(
+          int index) {
+        return getComplexesFieldBuilder().addBuilder(
+            index, cereal.impl.objects.protobuf.SimpleOuter.Complex.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .cereal.impl.Complex complexes = 1;</code>
+       */
+      public java.util.List<cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder> 
+           getComplexesBuilderList() {
+        return getComplexesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          cereal.impl.objects.protobuf.SimpleOuter.Complex, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder, cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder> 
+          getComplexesFieldBuilder() {
+        if (complexesBuilder_ == null) {
+          complexesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              cereal.impl.objects.protobuf.SimpleOuter.Complex, cereal.impl.objects.protobuf.SimpleOuter.Complex.Builder, cereal.impl.objects.protobuf.SimpleOuter.ComplexOrBuilder>(
+                  complexes_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          complexes_ = null;
+        }
+        return complexesBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:cereal.impl.RepeatedNested)
+    }
+
+    static {
+      defaultInstance = new RepeatedNested(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:cereal.impl.RepeatedNested)
+  }
+
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_cereal_impl_Simple_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_cereal_protobuf_Simple_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cereal_protobuf_Complex_descriptor;
+      internal_static_cereal_impl_Simple_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_cereal_impl_Complex_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_cereal_protobuf_Complex_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cereal_protobuf_Nested_descriptor;
+      internal_static_cereal_impl_Complex_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_cereal_impl_Nested_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_cereal_protobuf_Nested_fieldAccessorTable;
+      internal_static_cereal_impl_Nested_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_cereal_impl_RepeatedNested_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_cereal_impl_RepeatedNested_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2175,46 +2867,53 @@ public final class SimpleOuter {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\036src/test/protobuf/simple.proto\022\017cereal" +
-      ".protobuf\"m\n\006Simple\022\013\n\003dub\030\001 \001(\001\022\013\n\003flt\030" +
-      "\002 \001(\002\022\013\n\003int\030\003 \001(\005\022\014\n\004long\030\004 \001(\003\022\017\n\007bool" +
-      "ean\030\005 \001(\010\022\013\n\003str\030\006 \001(\t\022\020\n\010byte_str\030\007 \001(\014" +
-      "\"\033\n\007Complex\022\020\n\010str_list\030\001 \003(\t\"\\\n\006Nested\022" +
-      "\'\n\006simple\030\001 \001(\0132\027.cereal.protobuf.Simple" +
-      "\022)\n\007complex\030\002 \001(\0132\030.cereal.protobuf.Comp" +
-      "lexB-\n\034cereal.impl.objects.protobufB\013Sim" +
-      "pleOuterH\001"
+      "\n\036src/test/protobuf/simple.proto\022\013cereal" +
+      ".impl\"m\n\006Simple\022\013\n\003dub\030\001 \001(\001\022\013\n\003flt\030\002 \001(" +
+      "\002\022\013\n\003int\030\003 \001(\005\022\014\n\004long\030\004 \001(\003\022\017\n\007boolean\030" +
+      "\005 \001(\010\022\013\n\003str\030\006 \001(\t\022\020\n\010byte_str\030\007 \001(\014\"\033\n\007" +
+      "Complex\022\020\n\010str_list\030\001 \003(\t\"T\n\006Nested\022#\n\006s" +
+      "imple\030\001 \001(\0132\023.cereal.impl.Simple\022%\n\007comp" +
+      "lex\030\002 \001(\0132\024.cereal.impl.Complex\"9\n\016Repea" +
+      "tedNested\022\'\n\tcomplexes\030\001 \003(\0132\024.cereal.im" +
+      "pl.ComplexB-\n\034cereal.impl.objects.protob" +
+      "ufB\013SimpleOuterH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_cereal_impl_Simple_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_cereal_impl_Simple_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_cereal_impl_Simple_descriptor,
+              new java.lang.String[] { "Dub", "Flt", "Int", "Long", "Boolean", "Str", "ByteStr", });
+          internal_static_cereal_impl_Complex_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_cereal_impl_Complex_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_cereal_impl_Complex_descriptor,
+              new java.lang.String[] { "StrList", });
+          internal_static_cereal_impl_Nested_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_cereal_impl_Nested_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_cereal_impl_Nested_descriptor,
+              new java.lang.String[] { "Simple", "Complex", });
+          internal_static_cereal_impl_RepeatedNested_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_cereal_impl_RepeatedNested_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_cereal_impl_RepeatedNested_descriptor,
+              new java.lang.String[] { "Complexes", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_cereal_protobuf_Simple_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_cereal_protobuf_Simple_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_cereal_protobuf_Simple_descriptor,
-        new java.lang.String[] { "Dub", "Flt", "Int", "Long", "Boolean", "Str", "ByteStr", });
-    internal_static_cereal_protobuf_Complex_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_cereal_protobuf_Complex_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_cereal_protobuf_Complex_descriptor,
-        new java.lang.String[] { "StrList", });
-    internal_static_cereal_protobuf_Nested_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_cereal_protobuf_Nested_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_cereal_protobuf_Nested_descriptor,
-        new java.lang.String[] { "Simple", "Complex", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
