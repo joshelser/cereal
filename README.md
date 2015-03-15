@@ -90,7 +90,8 @@ I believe there is much worth in what it can provide.
 - [x] Thrift abstract control for grouping and visibility
 - [ ] Protobuf complex types
   - [x] Repeated fields
-  - [ ] Nested messages
+  - [x] Nested messages
+  - [ ] Enums
 - [ ] Thrift complex types
   - [ ] List fields
   - [ ] Map fields
