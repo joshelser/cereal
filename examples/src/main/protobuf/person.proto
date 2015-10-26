@@ -21,6 +21,7 @@ message Vehicle {
   optional string model = 2;
   optional int32 wheels = 3;
   optional Engine engine = 4;
+  optional Radio radio = 5;
 }
 
 message Engine {
@@ -28,4 +29,10 @@ message Engine {
   optional double displacement = 2;
   optional int32 horsepower = 3;
   optional int32 torque = 4;
+}
+
+enum Radio {
+  AM = 0;
+  FM = 1;
+  SATELLITE = 2;
 }

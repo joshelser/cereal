@@ -46,6 +46,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.DescriptorProtos.FileOptions;
+import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.JavaType;
 import com.google.protobuf.Descriptors.FileDescriptor;
@@ -119,6 +120,23 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
           } else {
             ByteString bs = (ByteString) entry.getValue();
             fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
+          }
+          break;
+        case ENUM:
+          if (descriptor.isRepeated()) {
+            @SuppressWarnings("unchecked")
+            final List<EnumValueDescriptor> enumValues = (List<EnumValueDescriptor>) entry.getValue();
+
+            int repetition = 0;
+            for (EnumValueDescriptor enumValue : enumValues) {
+              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
+                  new Value(Integer.toString(enumValue.getNumber()).getBytes())));
+              repetition++;
+            }
+          } else {
+            final EnumValueDescriptor enumValue = (EnumValueDescriptor) entry.getValue();
+            fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor),
+                new Value(Integer.toString(enumValue.getNumber()).getBytes())));
           }
           break;
         case MESSAGE:
@@ -279,6 +297,16 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
                 builder.setField(fieldDesc, byteStrVal);
               }
               break;
+            case ENUM:
+              int enumValue = Integer.parseInt(new String(entry.getValue().get()));
+              EnumValueDescriptor valueDescriptor = fieldDesc.getEnumType().findValueByNumber(enumValue);
+
+              if (fieldDesc.isRepeated()) {
+                builder.addRepeatedField(fieldDesc, valueDescriptor);
+              } else {
+                builder.setField(fieldDesc, valueDescriptor);
+              }
+              break;
             default:
               log.warn("Ignoring unknown serialized type {}", fieldDesc.getJavaType());
               break;
@@ -392,6 +420,37 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
         log.warn("Found {} leftover Key-Value pairs that were not consumed", leftoverFields.size());
       }
     }
+  }
+
+  protected String getEnumName(FieldDescriptor fieldDesc) {
+    FileDescriptor fileDesc = fieldDesc.getFile();
+    FileOptions fileOptions = fileDesc.getOptions();
+
+    String pkg;
+    String baseJavaClassName;
+
+    // Use the java package when present, the pb package when not.
+    if (fileOptions.hasJavaPackage()) {
+      pkg = fileOptions.getJavaPackage();
+    } else {
+      pkg = fileDesc.getPackage();
+    }
+
+    // Use the provided outer class name, or the pb file name
+    if (fileOptions.hasJavaOuterClassname()) {
+      baseJavaClassName = fileOptions.getJavaOuterClassname();
+    } else {
+      Iterable<String> pieces = Splitter.on('_').split(fileDesc.getName());
+      StringBuilder sb = new StringBuilder(16);
+      for (String piece : pieces) {
+        if (!piece.isEmpty()) {
+          sb.append(StringUtils.capitalize(piece));
+        }
+      }
+      baseJavaClassName = sb.toString();
+    }
+
+    return pkg + "." + baseJavaClassName + "$" + fieldDesc.getEnumType().getName();
   }
 
   protected String getClassName(FieldDescriptor fieldDesc) {

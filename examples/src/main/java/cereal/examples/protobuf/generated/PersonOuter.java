@@ -8,6 +8,97 @@ public final class PersonOuter {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  /**
+   * Protobuf enum {@code cereal.examples.Radio}
+   */
+  public enum Radio
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>AM = 0;</code>
+     */
+    AM(0, 0),
+    /**
+     * <code>FM = 1;</code>
+     */
+    FM(1, 1),
+    /**
+     * <code>SATELLITE = 2;</code>
+     */
+    SATELLITE(2, 2),
+    ;
+
+    /**
+     * <code>AM = 0;</code>
+     */
+    public static final int AM_VALUE = 0;
+    /**
+     * <code>FM = 1;</code>
+     */
+    public static final int FM_VALUE = 1;
+    /**
+     * <code>SATELLITE = 2;</code>
+     */
+    public static final int SATELLITE_VALUE = 2;
+
+
+    public final int getNumber() { return value; }
+
+    public static Radio valueOf(int value) {
+      switch (value) {
+        case 0: return AM;
+        case 1: return FM;
+        case 2: return SATELLITE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Radio>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Radio>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Radio>() {
+            public Radio findValueByNumber(int number) {
+              return Radio.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return cereal.examples.protobuf.generated.PersonOuter.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final Radio[] VALUES = values();
+
+    public static Radio valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private Radio(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:cereal.examples.Radio)
+  }
+
   public interface PersonOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -86,83 +177,83 @@ public final class PersonOuter {
      */
     int getWeight();
 
-    // repeated .cereal.examples.protobuf.generated.Person siblings = 7;
+    // repeated .cereal.examples.Person siblings = 7;
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> 
         getSiblingsList();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.Person getSiblings(int index);
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     int getSiblingsCount();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> 
         getSiblingsOrBuilderList();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder getSiblingsOrBuilder(
         int index);
 
-    // repeated .cereal.examples.protobuf.generated.Person parents = 8;
+    // repeated .cereal.examples.Person parents = 8;
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> 
         getParentsList();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.Person getParents(int index);
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     int getParentsCount();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> 
         getParentsOrBuilderList();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder getParentsOrBuilder(
         int index);
 
-    // repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;
+    // repeated .cereal.examples.Vehicle vehicles = 9;
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     java.util.List<cereal.examples.protobuf.generated.PersonOuter.Vehicle> 
         getVehiclesList();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.Vehicle getVehicles(int index);
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     int getVehiclesCount();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder> 
         getVehiclesOrBuilderList();
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder getVehiclesOrBuilder(
         int index);
   }
   /**
-   * Protobuf type {@code cereal.examples.protobuf.generated.Person}
+   * Protobuf type {@code cereal.examples.Person}
    */
   public static final class Person extends
       com.google.protobuf.GeneratedMessage
@@ -289,12 +380,12 @@ public final class PersonOuter {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Person_descriptor;
+      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Person_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Person_fieldAccessorTable
+      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Person_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               cereal.examples.protobuf.generated.PersonOuter.Person.class, cereal.examples.protobuf.generated.PersonOuter.Person.Builder.class);
     }
@@ -492,108 +583,108 @@ public final class PersonOuter {
       return weight_;
     }
 
-    // repeated .cereal.examples.protobuf.generated.Person siblings = 7;
+    // repeated .cereal.examples.Person siblings = 7;
     public static final int SIBLINGS_FIELD_NUMBER = 7;
     private java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> siblings_;
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> getSiblingsList() {
       return siblings_;
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     public java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> 
         getSiblingsOrBuilderList() {
       return siblings_;
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     public int getSiblingsCount() {
       return siblings_.size();
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.Person getSiblings(int index) {
       return siblings_.get(index);
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+     * <code>repeated .cereal.examples.Person siblings = 7;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder getSiblingsOrBuilder(
         int index) {
       return siblings_.get(index);
     }
 
-    // repeated .cereal.examples.protobuf.generated.Person parents = 8;
+    // repeated .cereal.examples.Person parents = 8;
     public static final int PARENTS_FIELD_NUMBER = 8;
     private java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> parents_;
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> getParentsList() {
       return parents_;
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     public java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> 
         getParentsOrBuilderList() {
       return parents_;
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     public int getParentsCount() {
       return parents_.size();
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.Person getParents(int index) {
       return parents_.get(index);
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+     * <code>repeated .cereal.examples.Person parents = 8;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder getParentsOrBuilder(
         int index) {
       return parents_.get(index);
     }
 
-    // repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;
+    // repeated .cereal.examples.Vehicle vehicles = 9;
     public static final int VEHICLES_FIELD_NUMBER = 9;
     private java.util.List<cereal.examples.protobuf.generated.PersonOuter.Vehicle> vehicles_;
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Vehicle> getVehiclesList() {
       return vehicles_;
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     public java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder> 
         getVehiclesOrBuilderList() {
       return vehicles_;
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     public int getVehiclesCount() {
       return vehicles_.size();
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.Vehicle getVehicles(int index) {
       return vehicles_.get(index);
     }
     /**
-     * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+     * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder getVehiclesOrBuilder(
         int index) {
@@ -774,19 +865,19 @@ public final class PersonOuter {
       return builder;
     }
     /**
-     * Protobuf type {@code cereal.examples.protobuf.generated.Person}
+     * Protobuf type {@code cereal.examples.Person}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
        implements cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Person_descriptor;
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Person_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Person_fieldAccessorTable
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Person_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 cereal.examples.protobuf.generated.PersonOuter.Person.class, cereal.examples.protobuf.generated.PersonOuter.Person.Builder.class);
       }
@@ -853,7 +944,7 @@ public final class PersonOuter {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Person_descriptor;
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Person_descriptor;
       }
 
       public cereal.examples.protobuf.generated.PersonOuter.Person getDefaultInstanceForType() {
@@ -1389,7 +1480,7 @@ public final class PersonOuter {
         return this;
       }
 
-      // repeated .cereal.examples.protobuf.generated.Person siblings = 7;
+      // repeated .cereal.examples.Person siblings = 7;
       private java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> siblings_ =
         java.util.Collections.emptyList();
       private void ensureSiblingsIsMutable() {
@@ -1403,7 +1494,7 @@ public final class PersonOuter {
           cereal.examples.protobuf.generated.PersonOuter.Person, cereal.examples.protobuf.generated.PersonOuter.Person.Builder, cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> siblingsBuilder_;
 
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> getSiblingsList() {
         if (siblingsBuilder_ == null) {
@@ -1413,7 +1504,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public int getSiblingsCount() {
         if (siblingsBuilder_ == null) {
@@ -1423,7 +1514,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person getSiblings(int index) {
         if (siblingsBuilder_ == null) {
@@ -1433,7 +1524,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder setSiblings(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person value) {
@@ -1450,7 +1541,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder setSiblings(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person.Builder builderForValue) {
@@ -1464,7 +1555,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder addSiblings(cereal.examples.protobuf.generated.PersonOuter.Person value) {
         if (siblingsBuilder_ == null) {
@@ -1480,7 +1571,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder addSiblings(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person value) {
@@ -1497,7 +1588,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder addSiblings(
           cereal.examples.protobuf.generated.PersonOuter.Person.Builder builderForValue) {
@@ -1511,7 +1602,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder addSiblings(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person.Builder builderForValue) {
@@ -1525,7 +1616,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder addAllSiblings(
           java.lang.Iterable<? extends cereal.examples.protobuf.generated.PersonOuter.Person> values) {
@@ -1539,7 +1630,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder clearSiblings() {
         if (siblingsBuilder_ == null) {
@@ -1552,7 +1643,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public Builder removeSiblings(int index) {
         if (siblingsBuilder_ == null) {
@@ -1565,14 +1656,14 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person.Builder getSiblingsBuilder(
           int index) {
         return getSiblingsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder getSiblingsOrBuilder(
           int index) {
@@ -1582,7 +1673,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> 
            getSiblingsOrBuilderList() {
@@ -1593,14 +1684,14 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person.Builder addSiblingsBuilder() {
         return getSiblingsFieldBuilder().addBuilder(
             cereal.examples.protobuf.generated.PersonOuter.Person.getDefaultInstance());
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person.Builder addSiblingsBuilder(
           int index) {
@@ -1608,7 +1699,7 @@ public final class PersonOuter {
             index, cereal.examples.protobuf.generated.PersonOuter.Person.getDefaultInstance());
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person siblings = 7;</code>
+       * <code>repeated .cereal.examples.Person siblings = 7;</code>
        */
       public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person.Builder> 
            getSiblingsBuilderList() {
@@ -1629,7 +1720,7 @@ public final class PersonOuter {
         return siblingsBuilder_;
       }
 
-      // repeated .cereal.examples.protobuf.generated.Person parents = 8;
+      // repeated .cereal.examples.Person parents = 8;
       private java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> parents_ =
         java.util.Collections.emptyList();
       private void ensureParentsIsMutable() {
@@ -1643,7 +1734,7 @@ public final class PersonOuter {
           cereal.examples.protobuf.generated.PersonOuter.Person, cereal.examples.protobuf.generated.PersonOuter.Person.Builder, cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> parentsBuilder_;
 
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person> getParentsList() {
         if (parentsBuilder_ == null) {
@@ -1653,7 +1744,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public int getParentsCount() {
         if (parentsBuilder_ == null) {
@@ -1663,7 +1754,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person getParents(int index) {
         if (parentsBuilder_ == null) {
@@ -1673,7 +1764,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder setParents(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person value) {
@@ -1690,7 +1781,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder setParents(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person.Builder builderForValue) {
@@ -1704,7 +1795,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder addParents(cereal.examples.protobuf.generated.PersonOuter.Person value) {
         if (parentsBuilder_ == null) {
@@ -1720,7 +1811,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder addParents(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person value) {
@@ -1737,7 +1828,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder addParents(
           cereal.examples.protobuf.generated.PersonOuter.Person.Builder builderForValue) {
@@ -1751,7 +1842,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder addParents(
           int index, cereal.examples.protobuf.generated.PersonOuter.Person.Builder builderForValue) {
@@ -1765,7 +1856,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder addAllParents(
           java.lang.Iterable<? extends cereal.examples.protobuf.generated.PersonOuter.Person> values) {
@@ -1779,7 +1870,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder clearParents() {
         if (parentsBuilder_ == null) {
@@ -1792,7 +1883,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public Builder removeParents(int index) {
         if (parentsBuilder_ == null) {
@@ -1805,14 +1896,14 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person.Builder getParentsBuilder(
           int index) {
         return getParentsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder getParentsOrBuilder(
           int index) {
@@ -1822,7 +1913,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.PersonOrBuilder> 
            getParentsOrBuilderList() {
@@ -1833,14 +1924,14 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person.Builder addParentsBuilder() {
         return getParentsFieldBuilder().addBuilder(
             cereal.examples.protobuf.generated.PersonOuter.Person.getDefaultInstance());
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Person.Builder addParentsBuilder(
           int index) {
@@ -1848,7 +1939,7 @@ public final class PersonOuter {
             index, cereal.examples.protobuf.generated.PersonOuter.Person.getDefaultInstance());
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Person parents = 8;</code>
+       * <code>repeated .cereal.examples.Person parents = 8;</code>
        */
       public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Person.Builder> 
            getParentsBuilderList() {
@@ -1869,7 +1960,7 @@ public final class PersonOuter {
         return parentsBuilder_;
       }
 
-      // repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;
+      // repeated .cereal.examples.Vehicle vehicles = 9;
       private java.util.List<cereal.examples.protobuf.generated.PersonOuter.Vehicle> vehicles_ =
         java.util.Collections.emptyList();
       private void ensureVehiclesIsMutable() {
@@ -1883,7 +1974,7 @@ public final class PersonOuter {
           cereal.examples.protobuf.generated.PersonOuter.Vehicle, cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder, cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder> vehiclesBuilder_;
 
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Vehicle> getVehiclesList() {
         if (vehiclesBuilder_ == null) {
@@ -1893,7 +1984,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public int getVehiclesCount() {
         if (vehiclesBuilder_ == null) {
@@ -1903,7 +1994,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Vehicle getVehicles(int index) {
         if (vehiclesBuilder_ == null) {
@@ -1913,7 +2004,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder setVehicles(
           int index, cereal.examples.protobuf.generated.PersonOuter.Vehicle value) {
@@ -1930,7 +2021,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder setVehicles(
           int index, cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder builderForValue) {
@@ -1944,7 +2035,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder addVehicles(cereal.examples.protobuf.generated.PersonOuter.Vehicle value) {
         if (vehiclesBuilder_ == null) {
@@ -1960,7 +2051,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder addVehicles(
           int index, cereal.examples.protobuf.generated.PersonOuter.Vehicle value) {
@@ -1977,7 +2068,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder addVehicles(
           cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder builderForValue) {
@@ -1991,7 +2082,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder addVehicles(
           int index, cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder builderForValue) {
@@ -2005,7 +2096,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder addAllVehicles(
           java.lang.Iterable<? extends cereal.examples.protobuf.generated.PersonOuter.Vehicle> values) {
@@ -2019,7 +2110,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder clearVehicles() {
         if (vehiclesBuilder_ == null) {
@@ -2032,7 +2123,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public Builder removeVehicles(int index) {
         if (vehiclesBuilder_ == null) {
@@ -2045,14 +2136,14 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder getVehiclesBuilder(
           int index) {
         return getVehiclesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder getVehiclesOrBuilder(
           int index) {
@@ -2062,7 +2153,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public java.util.List<? extends cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder> 
            getVehiclesOrBuilderList() {
@@ -2073,14 +2164,14 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder addVehiclesBuilder() {
         return getVehiclesFieldBuilder().addBuilder(
             cereal.examples.protobuf.generated.PersonOuter.Vehicle.getDefaultInstance());
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder addVehiclesBuilder(
           int index) {
@@ -2088,7 +2179,7 @@ public final class PersonOuter {
             index, cereal.examples.protobuf.generated.PersonOuter.Vehicle.getDefaultInstance());
       }
       /**
-       * <code>repeated .cereal.examples.protobuf.generated.Vehicle vehicles = 9;</code>
+       * <code>repeated .cereal.examples.Vehicle vehicles = 9;</code>
        */
       public java.util.List<cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder> 
            getVehiclesBuilderList() {
@@ -2109,7 +2200,7 @@ public final class PersonOuter {
         return vehiclesBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:cereal.examples.protobuf.generated.Person)
+      // @@protoc_insertion_point(builder_scope:cereal.examples.Person)
     }
 
     static {
@@ -2117,7 +2208,7 @@ public final class PersonOuter {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:cereal.examples.protobuf.generated.Person)
+    // @@protoc_insertion_point(class_scope:cereal.examples.Person)
   }
 
   public interface VehicleOrBuilder
@@ -2163,22 +2254,32 @@ public final class PersonOuter {
      */
     int getWheels();
 
-    // optional .cereal.examples.protobuf.generated.Engine engine = 4;
+    // optional .cereal.examples.Engine engine = 4;
     /**
-     * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+     * <code>optional .cereal.examples.Engine engine = 4;</code>
      */
     boolean hasEngine();
     /**
-     * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+     * <code>optional .cereal.examples.Engine engine = 4;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.Engine getEngine();
     /**
-     * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+     * <code>optional .cereal.examples.Engine engine = 4;</code>
      */
     cereal.examples.protobuf.generated.PersonOuter.EngineOrBuilder getEngineOrBuilder();
+
+    // optional .cereal.examples.Radio radio = 5;
+    /**
+     * <code>optional .cereal.examples.Radio radio = 5;</code>
+     */
+    boolean hasRadio();
+    /**
+     * <code>optional .cereal.examples.Radio radio = 5;</code>
+     */
+    cereal.examples.protobuf.generated.PersonOuter.Radio getRadio();
   }
   /**
-   * Protobuf type {@code cereal.examples.protobuf.generated.Vehicle}
+   * Protobuf type {@code cereal.examples.Vehicle}
    */
   public static final class Vehicle extends
       com.google.protobuf.GeneratedMessage
@@ -2256,6 +2357,17 @@ public final class PersonOuter {
               bitField0_ |= 0x00000008;
               break;
             }
+            case 40: {
+              int rawValue = input.readEnum();
+              cereal.examples.protobuf.generated.PersonOuter.Radio value = cereal.examples.protobuf.generated.PersonOuter.Radio.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(5, rawValue);
+              } else {
+                bitField0_ |= 0x00000010;
+                radio_ = value;
+              }
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2270,12 +2382,12 @@ public final class PersonOuter {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Vehicle_descriptor;
+      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Vehicle_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Vehicle_fieldAccessorTable
+      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Vehicle_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               cereal.examples.protobuf.generated.PersonOuter.Vehicle.class, cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder.class);
     }
@@ -2398,26 +2510,42 @@ public final class PersonOuter {
       return wheels_;
     }
 
-    // optional .cereal.examples.protobuf.generated.Engine engine = 4;
+    // optional .cereal.examples.Engine engine = 4;
     public static final int ENGINE_FIELD_NUMBER = 4;
     private cereal.examples.protobuf.generated.PersonOuter.Engine engine_;
     /**
-     * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+     * <code>optional .cereal.examples.Engine engine = 4;</code>
      */
     public boolean hasEngine() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+     * <code>optional .cereal.examples.Engine engine = 4;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.Engine getEngine() {
       return engine_;
     }
     /**
-     * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+     * <code>optional .cereal.examples.Engine engine = 4;</code>
      */
     public cereal.examples.protobuf.generated.PersonOuter.EngineOrBuilder getEngineOrBuilder() {
       return engine_;
+    }
+
+    // optional .cereal.examples.Radio radio = 5;
+    public static final int RADIO_FIELD_NUMBER = 5;
+    private cereal.examples.protobuf.generated.PersonOuter.Radio radio_;
+    /**
+     * <code>optional .cereal.examples.Radio radio = 5;</code>
+     */
+    public boolean hasRadio() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional .cereal.examples.Radio radio = 5;</code>
+     */
+    public cereal.examples.protobuf.generated.PersonOuter.Radio getRadio() {
+      return radio_;
     }
 
     private void initFields() {
@@ -2425,6 +2553,7 @@ public final class PersonOuter {
       model_ = "";
       wheels_ = 0;
       engine_ = cereal.examples.protobuf.generated.PersonOuter.Engine.getDefaultInstance();
+      radio_ = cereal.examples.protobuf.generated.PersonOuter.Radio.AM;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2450,6 +2579,9 @@ public final class PersonOuter {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeMessage(4, engine_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeEnum(5, radio_.getNumber());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -2474,6 +2606,10 @@ public final class PersonOuter {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, engine_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, radio_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2554,19 +2690,19 @@ public final class PersonOuter {
       return builder;
     }
     /**
-     * Protobuf type {@code cereal.examples.protobuf.generated.Vehicle}
+     * Protobuf type {@code cereal.examples.Vehicle}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
        implements cereal.examples.protobuf.generated.PersonOuter.VehicleOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Vehicle_descriptor;
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Vehicle_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Vehicle_fieldAccessorTable
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Vehicle_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 cereal.examples.protobuf.generated.PersonOuter.Vehicle.class, cereal.examples.protobuf.generated.PersonOuter.Vehicle.Builder.class);
       }
@@ -2604,6 +2740,8 @@ public final class PersonOuter {
           engineBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
+        radio_ = cereal.examples.protobuf.generated.PersonOuter.Radio.AM;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -2613,7 +2751,7 @@ public final class PersonOuter {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Vehicle_descriptor;
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Vehicle_descriptor;
       }
 
       public cereal.examples.protobuf.generated.PersonOuter.Vehicle getDefaultInstanceForType() {
@@ -2652,6 +2790,10 @@ public final class PersonOuter {
         } else {
           result.engine_ = engineBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.radio_ = radio_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2683,6 +2825,9 @@ public final class PersonOuter {
         }
         if (other.hasEngine()) {
           mergeEngine(other.getEngine());
+        }
+        if (other.hasRadio()) {
+          setRadio(other.getRadio());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2892,18 +3037,18 @@ public final class PersonOuter {
         return this;
       }
 
-      // optional .cereal.examples.protobuf.generated.Engine engine = 4;
+      // optional .cereal.examples.Engine engine = 4;
       private cereal.examples.protobuf.generated.PersonOuter.Engine engine_ = cereal.examples.protobuf.generated.PersonOuter.Engine.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           cereal.examples.protobuf.generated.PersonOuter.Engine, cereal.examples.protobuf.generated.PersonOuter.Engine.Builder, cereal.examples.protobuf.generated.PersonOuter.EngineOrBuilder> engineBuilder_;
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public boolean hasEngine() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Engine getEngine() {
         if (engineBuilder_ == null) {
@@ -2913,7 +3058,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public Builder setEngine(cereal.examples.protobuf.generated.PersonOuter.Engine value) {
         if (engineBuilder_ == null) {
@@ -2929,7 +3074,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public Builder setEngine(
           cereal.examples.protobuf.generated.PersonOuter.Engine.Builder builderForValue) {
@@ -2943,7 +3088,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public Builder mergeEngine(cereal.examples.protobuf.generated.PersonOuter.Engine value) {
         if (engineBuilder_ == null) {
@@ -2962,7 +3107,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public Builder clearEngine() {
         if (engineBuilder_ == null) {
@@ -2975,7 +3120,7 @@ public final class PersonOuter {
         return this;
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.Engine.Builder getEngineBuilder() {
         bitField0_ |= 0x00000008;
@@ -2983,7 +3128,7 @@ public final class PersonOuter {
         return getEngineFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       public cereal.examples.protobuf.generated.PersonOuter.EngineOrBuilder getEngineOrBuilder() {
         if (engineBuilder_ != null) {
@@ -2993,7 +3138,7 @@ public final class PersonOuter {
         }
       }
       /**
-       * <code>optional .cereal.examples.protobuf.generated.Engine engine = 4;</code>
+       * <code>optional .cereal.examples.Engine engine = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           cereal.examples.protobuf.generated.PersonOuter.Engine, cereal.examples.protobuf.generated.PersonOuter.Engine.Builder, cereal.examples.protobuf.generated.PersonOuter.EngineOrBuilder> 
@@ -3009,7 +3154,43 @@ public final class PersonOuter {
         return engineBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:cereal.examples.protobuf.generated.Vehicle)
+      // optional .cereal.examples.Radio radio = 5;
+      private cereal.examples.protobuf.generated.PersonOuter.Radio radio_ = cereal.examples.protobuf.generated.PersonOuter.Radio.AM;
+      /**
+       * <code>optional .cereal.examples.Radio radio = 5;</code>
+       */
+      public boolean hasRadio() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .cereal.examples.Radio radio = 5;</code>
+       */
+      public cereal.examples.protobuf.generated.PersonOuter.Radio getRadio() {
+        return radio_;
+      }
+      /**
+       * <code>optional .cereal.examples.Radio radio = 5;</code>
+       */
+      public Builder setRadio(cereal.examples.protobuf.generated.PersonOuter.Radio value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000010;
+        radio_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .cereal.examples.Radio radio = 5;</code>
+       */
+      public Builder clearRadio() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        radio_ = cereal.examples.protobuf.generated.PersonOuter.Radio.AM;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:cereal.examples.Vehicle)
     }
 
     static {
@@ -3017,7 +3198,7 @@ public final class PersonOuter {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:cereal.examples.protobuf.generated.Vehicle)
+    // @@protoc_insertion_point(class_scope:cereal.examples.Vehicle)
   }
 
   public interface EngineOrBuilder
@@ -3064,7 +3245,7 @@ public final class PersonOuter {
     int getTorque();
   }
   /**
-   * Protobuf type {@code cereal.examples.protobuf.generated.Engine}
+   * Protobuf type {@code cereal.examples.Engine}
    */
   public static final class Engine extends
       com.google.protobuf.GeneratedMessage
@@ -3148,12 +3329,12 @@ public final class PersonOuter {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Engine_descriptor;
+      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Engine_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Engine_fieldAccessorTable
+      return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Engine_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               cereal.examples.protobuf.generated.PersonOuter.Engine.class, cereal.examples.protobuf.generated.PersonOuter.Engine.Builder.class);
     }
@@ -3372,19 +3553,19 @@ public final class PersonOuter {
       return builder;
     }
     /**
-     * Protobuf type {@code cereal.examples.protobuf.generated.Engine}
+     * Protobuf type {@code cereal.examples.Engine}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
        implements cereal.examples.protobuf.generated.PersonOuter.EngineOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Engine_descriptor;
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Engine_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Engine_fieldAccessorTable
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Engine_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 cereal.examples.protobuf.generated.PersonOuter.Engine.class, cereal.examples.protobuf.generated.PersonOuter.Engine.Builder.class);
       }
@@ -3426,7 +3607,7 @@ public final class PersonOuter {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_protobuf_generated_Engine_descriptor;
+        return cereal.examples.protobuf.generated.PersonOuter.internal_static_cereal_examples_Engine_descriptor;
       }
 
       public cereal.examples.protobuf.generated.PersonOuter.Engine getDefaultInstanceForType() {
@@ -3648,7 +3829,7 @@ public final class PersonOuter {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:cereal.examples.protobuf.generated.Engine)
+      // @@protoc_insertion_point(builder_scope:cereal.examples.Engine)
     }
 
     static {
@@ -3656,24 +3837,24 @@ public final class PersonOuter {
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:cereal.examples.protobuf.generated.Engine)
+    // @@protoc_insertion_point(class_scope:cereal.examples.Engine)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_cereal_examples_protobuf_generated_Person_descriptor;
+    internal_static_cereal_examples_Person_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_cereal_examples_protobuf_generated_Person_fieldAccessorTable;
+      internal_static_cereal_examples_Person_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_cereal_examples_protobuf_generated_Vehicle_descriptor;
+    internal_static_cereal_examples_Vehicle_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_cereal_examples_protobuf_generated_Vehicle_fieldAccessorTable;
+      internal_static_cereal_examples_Vehicle_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_cereal_examples_protobuf_generated_Engine_descriptor;
+    internal_static_cereal_examples_Engine_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_cereal_examples_protobuf_generated_Engine_fieldAccessorTable;
+      internal_static_cereal_examples_Engine_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3683,45 +3864,45 @@ public final class PersonOuter {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\036src/main/protobuf/person.proto\022\"cereal" +
-      ".examples.protobuf.generated\"\253\002\n\006Person\022" +
-      "\022\n\nfirst_name\030\001 \001(\t\022\023\n\013middle_name\030\002 \001(\t" +
-      "\022\021\n\tlast_name\030\003 \001(\t\022\013\n\003age\030\004 \001(\005\022\016\n\006heig" +
-      "ht\030\005 \001(\005\022\016\n\006weight\030\006 \001(\005\022<\n\010siblings\030\007 \003" +
-      "(\0132*.cereal.examples.protobuf.generated." +
-      "Person\022;\n\007parents\030\010 \003(\0132*.cereal.example" +
-      "s.protobuf.generated.Person\022=\n\010vehicles\030" +
-      "\t \003(\0132+.cereal.examples.protobuf.generat" +
-      "ed.Vehicle\"r\n\007Vehicle\022\014\n\004make\030\001 \001(\t\022\r\n\005m",
-      "odel\030\002 \001(\t\022\016\n\006wheels\030\003 \001(\005\022:\n\006engine\030\004 \001" +
-      "(\0132*.cereal.examples.protobuf.generated." +
-      "Engine\"U\n\006Engine\022\021\n\tcylinders\030\001 \001(\005\022\024\n\014d" +
-      "isplacement\030\002 \001(\001\022\022\n\nhorsepower\030\003 \001(\005\022\016\n" +
-      "\006torque\030\004 \001(\005B3\n\"cereal.examples.protobu" +
-      "f.generatedB\013PersonOuterH\001"
+      "\n\036src/main/protobuf/person.proto\022\017cereal" +
+      ".examples\"\362\001\n\006Person\022\022\n\nfirst_name\030\001 \001(\t" +
+      "\022\023\n\013middle_name\030\002 \001(\t\022\021\n\tlast_name\030\003 \001(\t" +
+      "\022\013\n\003age\030\004 \001(\005\022\016\n\006height\030\005 \001(\005\022\016\n\006weight\030" +
+      "\006 \001(\005\022)\n\010siblings\030\007 \003(\0132\027.cereal.example" +
+      "s.Person\022(\n\007parents\030\010 \003(\0132\027.cereal.examp" +
+      "les.Person\022*\n\010vehicles\030\t \003(\0132\030.cereal.ex" +
+      "amples.Vehicle\"\206\001\n\007Vehicle\022\014\n\004make\030\001 \001(\t" +
+      "\022\r\n\005model\030\002 \001(\t\022\016\n\006wheels\030\003 \001(\005\022\'\n\006engin" +
+      "e\030\004 \001(\0132\027.cereal.examples.Engine\022%\n\005radi",
+      "o\030\005 \001(\0162\026.cereal.examples.Radio\"U\n\006Engin" +
+      "e\022\021\n\tcylinders\030\001 \001(\005\022\024\n\014displacement\030\002 \001" +
+      "(\001\022\022\n\nhorsepower\030\003 \001(\005\022\016\n\006torque\030\004 \001(\005*&" +
+      "\n\005Radio\022\006\n\002AM\020\000\022\006\n\002FM\020\001\022\r\n\tSATELLITE\020\002B3" +
+      "\n\"cereal.examples.protobuf.generatedB\013Pe" +
+      "rsonOuterH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_cereal_examples_protobuf_generated_Person_descriptor =
+          internal_static_cereal_examples_Person_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_cereal_examples_protobuf_generated_Person_fieldAccessorTable = new
+          internal_static_cereal_examples_Person_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_cereal_examples_protobuf_generated_Person_descriptor,
+              internal_static_cereal_examples_Person_descriptor,
               new java.lang.String[] { "FirstName", "MiddleName", "LastName", "Age", "Height", "Weight", "Siblings", "Parents", "Vehicles", });
-          internal_static_cereal_examples_protobuf_generated_Vehicle_descriptor =
+          internal_static_cereal_examples_Vehicle_descriptor =
             getDescriptor().getMessageTypes().get(1);
-          internal_static_cereal_examples_protobuf_generated_Vehicle_fieldAccessorTable = new
+          internal_static_cereal_examples_Vehicle_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_cereal_examples_protobuf_generated_Vehicle_descriptor,
-              new java.lang.String[] { "Make", "Model", "Wheels", "Engine", });
-          internal_static_cereal_examples_protobuf_generated_Engine_descriptor =
+              internal_static_cereal_examples_Vehicle_descriptor,
+              new java.lang.String[] { "Make", "Model", "Wheels", "Engine", "Radio", });
+          internal_static_cereal_examples_Engine_descriptor =
             getDescriptor().getMessageTypes().get(2);
-          internal_static_cereal_examples_protobuf_generated_Engine_fieldAccessorTable = new
+          internal_static_cereal_examples_Engine_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_cereal_examples_protobuf_generated_Engine_descriptor,
+              internal_static_cereal_examples_Engine_descriptor,
               new java.lang.String[] { "Cylinders", "Displacement", "Horsepower", "Torque", });
           return null;
         }

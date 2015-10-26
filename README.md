@@ -91,7 +91,7 @@ I believe there is much worth in what it can provide.
 - [ ] Protobuf complex types
   - [x] Repeated fields
   - [x] Nested messages
-  - [ ] Enums
+  - [x] Enums
 - [ ] Thrift complex types
   - [ ] List fields
   - [ ] Map fields

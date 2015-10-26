@@ -37,6 +37,7 @@ import cereal.Registry;
 import cereal.Store;
 import cereal.examples.protobuf.generated.PersonOuter.Engine;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
+import cereal.examples.protobuf.generated.PersonOuter.Radio;
 import cereal.examples.protobuf.generated.PersonOuter.Vehicle;
 import cereal.impl.RegistryImpl;
 import cereal.impl.StoreImpl;
@@ -72,7 +73,7 @@ public class ProtobufPersonTest {
     }
   }
 
-  @Test(timeout = 30 * 1000)
+  @Test//(timeout = 30 * 1000)
   public void testSerialization() throws Exception {
     Registry registry = new RegistryImpl();
     ProtobufPersonMapping mapping = new ProtobufPersonMapping(registry);
@@ -90,8 +91,8 @@ public class ProtobufPersonTest {
     Engine civicEngine = Engine.newBuilder().setCylinders(4).setDisplacement(1.8).setHorsepower(160).setTorque(180).build();
     Engine accordEngine = Engine.newBuilder().setCylinders(6).setDisplacement(2.0).setHorsepower(180).setTorque(150).build();
 
-    Vehicle civic = Vehicle.newBuilder().setMake("Honda").setModel("Civic").setWheels(4).setEngine(civicEngine).build();
-    Vehicle accord = Vehicle.newBuilder().setMake("Honda").setModel("Accord").setWheels(4).setEngine(accordEngine).build();
+    Vehicle civic = Vehicle.newBuilder().setMake("Honda").setModel("Civic").setWheels(4).setEngine(civicEngine).setRadio(Radio.FM).build();
+    Vehicle accord = Vehicle.newBuilder().setMake("Honda").setModel("Accord").setWheels(4).setEngine(accordEngine).setRadio(Radio.SATELLITE).build();
 
     builder.addVehicles(civic);
     builder.addVehicles(accord);
@@ -99,6 +100,7 @@ public class ProtobufPersonTest {
     builder.addParents(mother);
     builder.addSiblings(sister);
     builder.addSiblings(brother);
+    
 
     Person p = builder.build();
 
