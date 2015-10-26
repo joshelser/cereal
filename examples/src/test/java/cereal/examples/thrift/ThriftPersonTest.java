@@ -60,7 +60,7 @@ public class ThriftPersonTest {
     }
     MiniAccumuloConfigImpl cfg = new MiniAccumuloConfigImpl(macDir, PASSWORD);
     cfg.setNumTservers(1);
-    cfg.setZooKeeperStartupTime(40 * 1000);
+    cfg.setZooKeeperStartupTime(60 * 1000);
     mac = new MiniAccumuloClusterImpl(cfg);
     mac.start();
   }
