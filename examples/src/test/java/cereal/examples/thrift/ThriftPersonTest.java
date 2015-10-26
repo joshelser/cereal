@@ -24,8 +24,7 @@ import java.util.Collections;
 
 import org.apache.accumulo.core.client.Connector;
 import org.apache.accumulo.minicluster.MiniAccumuloCluster;
-import org.apache.accumulo.minicluster.impl.MiniAccumuloClusterImpl;
-import org.apache.accumulo.minicluster.impl.MiniAccumuloConfigImpl;
+import org.apache.accumulo.minicluster.MiniAccumuloConfig;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.io.Text;
 import org.junit.AfterClass;
@@ -41,7 +40,7 @@ import cereal.impl.RegistryImpl;
 import cereal.impl.StoreImpl;
 
 public class ThriftPersonTest {
-  private static MiniAccumuloClusterImpl mac;
+  private static MiniAccumuloCluster mac;
   private static final String PASSWORD = "password";
 
   @Rule
@@ -58,10 +57,9 @@ public class ThriftPersonTest {
     if (macDir.exists()) {
       FileUtils.deleteQuietly(macDir);
     }
-    MiniAccumuloConfigImpl cfg = new MiniAccumuloConfigImpl(macDir, PASSWORD);
+    MiniAccumuloConfig cfg = new MiniAccumuloConfig(macDir, PASSWORD);
     cfg.setNumTservers(1);
-    cfg.setZooKeeperStartupTime(60 * 1000);
-    mac = new MiniAccumuloClusterImpl(cfg);
+    mac = new MiniAccumuloCluster(cfg);
     mac.start();
   }
 
