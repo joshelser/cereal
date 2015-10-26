@@ -9,5 +9,5 @@ after_success:
     - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=${coveralls_token}
 
 after_failure: 
-    - find '/home/travis/build/joshelser/cereal/examples/target/minicluster/*/logs' -type f
+    - find /home/travis/build/joshelser/cereal/examples/target/minicluster/ -type f
     - cat /home/travis/build/joshelser/cereal/examples/target/minicluster/*/logs/*
