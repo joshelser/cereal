@@ -34,17 +34,18 @@ import org.apache.hadoop.io.Text;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.Descriptors.FieldDescriptor;
+
 import cereal.Field;
 import cereal.InstanceOrBuilder;
 import cereal.Registry;
+import cereal.Serialization;
 import cereal.impl.objects.protobuf.SimpleOuter.Complex;
 import cereal.impl.objects.protobuf.SimpleOuter.Nested;
 import cereal.impl.objects.protobuf.SimpleOuter.RepeatedNested;
 import cereal.impl.objects.protobuf.SimpleOuter.Simple;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.protobuf.ByteString;
-import com.google.protobuf.Descriptors.FieldDescriptor;
 
 public class ProtobufMessageMappingTest {
   private static final Text EMPTY = new Text(new byte[0]);
@@ -53,11 +54,12 @@ public class ProtobufMessageMappingTest {
   private Simple msg;
   private SimpleMessageMapping mapping;
   private Registry registry;
+  private Serialization serialization;
 
   private static class SimpleMessageMapping extends ProtobufMessageMapping<Simple> {
 
-    public SimpleMessageMapping(Registry reg) {
-      super(reg);
+    public SimpleMessageMapping(Registry reg, Serialization ser) {
+      super(reg, ser);
     }
 
     @Override
@@ -83,8 +85,8 @@ public class ProtobufMessageMappingTest {
 
   private static class ComplexMessageMapping extends ProtobufMessageMapping<Complex> {
 
-    public ComplexMessageMapping(Registry reg) {
-      super(reg);
+    public ComplexMessageMapping(Registry reg, Serialization ser) {
+      super(reg, ser);
     }
 
     @Override
@@ -109,8 +111,8 @@ public class ProtobufMessageMappingTest {
   }
 
   private static class NestedMessageMapping extends ProtobufMessageMapping<Nested> {
-    public NestedMessageMapping(Registry reg) {
-      super(reg);
+    public NestedMessageMapping(Registry reg, Serialization ser) {
+      super(reg, ser);
     }
 
     @Override
@@ -136,8 +138,8 @@ public class ProtobufMessageMappingTest {
 
   private static class SpecialMessageMapping extends SimpleMessageMapping {
 
-    public SpecialMessageMapping(Registry reg) {
-      super(reg);
+    public SpecialMessageMapping(Registry reg, Serialization ser) {
+      super(reg, ser);
     }
 
     @Override
@@ -155,8 +157,8 @@ public class ProtobufMessageMappingTest {
 
   private static class RepeatedNestedMessageMapping extends ProtobufMessageMapping<RepeatedNested> {
 
-    public RepeatedNestedMessageMapping(Registry registry) {
-      super(registry);
+    public RepeatedNestedMessageMapping(Registry registry, Serialization ser) {
+      super(registry, ser);
     }
 
     @Override
@@ -198,7 +200,8 @@ public class ProtobufMessageMappingTest {
     msg = Simple.newBuilder().setBoolean(true).setByteStr(ByteString.copyFromUtf8("bytestring")).setDub(1.2d).setFlt(2.1f).setInt(1).setLong(Long.MAX_VALUE)
         .setStr("string").build();
     registry = new RegistryImpl();
-    mapping = new SimpleMessageMapping(registry);
+    serialization = new StringSerialization();
+    mapping = new SimpleMessageMapping(registry, serialization);
   }
 
   @Test
@@ -266,7 +269,7 @@ public class ProtobufMessageMappingTest {
   public void testRepeatedFields() {
     Complex complexMsg = Complex.newBuilder().addStrList("string1").addStrList("string2").build();
 
-    ComplexMessageMapping complexMapping = new ComplexMessageMapping(registry);
+    ComplexMessageMapping complexMapping = new ComplexMessageMapping(registry, serialization);
 
     // Serializing a message with a repeated field is just ignored
     List<Field> fields = complexMapping.getFields(complexMsg);
@@ -292,7 +295,7 @@ public class ProtobufMessageMappingTest {
 
   @Test
   public void testGroupingAndVisibility() {
-    SpecialMessageMapping specialMapping = new SpecialMessageMapping(registry);
+    SpecialMessageMapping specialMapping = new SpecialMessageMapping(registry, serialization);
     List<Field> fields = specialMapping.getFields(msg);
     assertNotNull(fields);
     assertEquals(7, fields.size());
@@ -312,8 +315,8 @@ public class ProtobufMessageMappingTest {
 
   @Test
   public void testNestedMapping() {
-    NestedMessageMapping nestedMapping = new NestedMessageMapping(registry);
-    ComplexMessageMapping complexMapping = new ComplexMessageMapping(registry);
+    NestedMessageMapping nestedMapping = new NestedMessageMapping(registry, serialization);
+    ComplexMessageMapping complexMapping = new ComplexMessageMapping(registry, serialization);
 
     registry.add(mapping);
     registry.add(complexMapping);
@@ -344,7 +347,7 @@ public class ProtobufMessageMappingTest {
 
   @Test
   public void testNestedClass() throws Exception {
-    NestedMessageMapping nestedMapping = new NestedMessageMapping(registry);
+    NestedMessageMapping nestedMapping = new NestedMessageMapping(registry, serialization);
 
     FieldDescriptor fieldDesc = Nested.getDescriptor().findFieldByName("simple");
     assertNotNull("Could not FieldDescriptor for 'simple'", fieldDesc);
@@ -356,9 +359,9 @@ public class ProtobufMessageMappingTest {
 
   @Test
   public void testRepeatedNestedClasses() throws Exception {
-    RepeatedNestedMessageMapping rnMapping = new RepeatedNestedMessageMapping(registry);
+    RepeatedNestedMessageMapping rnMapping = new RepeatedNestedMessageMapping(registry, serialization);
     registry.add(rnMapping);
-    registry.add(new ComplexMessageMapping(registry));
+    registry.add(new ComplexMessageMapping(registry, serialization));
 
     RepeatedNested msg = RepeatedNested.newBuilder().addComplexes(Complex.newBuilder().addStrList("a1").addStrList("a2").build())
         .addComplexes(Complex.newBuilder().addStrList("b1").addStrList("b2").build()).build();

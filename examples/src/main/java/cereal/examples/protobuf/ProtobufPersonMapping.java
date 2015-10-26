@@ -19,6 +19,7 @@ import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.hadoop.io.Text;
 
 import cereal.Registry;
+import cereal.Serialization;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
 import cereal.impl.ProtobufMessageMapping;
 
@@ -28,8 +29,8 @@ public class ProtobufPersonMapping extends ProtobufMessageMapping<Person> {
   private static final Text EMPTY = new Text(new byte[0]);
   private static final ColumnVisibility EMPTY_CV = new ColumnVisibility("");
 
-  public ProtobufPersonMapping(Registry registry) {
-    super(registry);
+  public ProtobufPersonMapping(Registry registry, Serialization serialization) {
+    super(registry, serialization);
   }
 
   @Override

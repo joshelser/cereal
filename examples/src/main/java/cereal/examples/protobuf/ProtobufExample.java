@@ -23,10 +23,12 @@ import org.apache.accumulo.core.client.security.tokens.PasswordToken;
 import org.apache.hadoop.io.Text;
 
 import cereal.Registry;
+import cereal.Serialization;
 import cereal.Store;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
 import cereal.impl.RegistryImpl;
 import cereal.impl.StoreImpl;
+import cereal.impl.StringSerialization;
 
 import com.google.protobuf.TextFormat;
 
@@ -35,8 +37,9 @@ public class ProtobufExample {
   public static void main(String[] args) throws Exception {
     Person p = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220).build();
 
-    Registry registry = new RegistryImpl();
-    registry.add(new ProtobufPersonMapping(registry));
+    final Registry registry = new RegistryImpl();
+    final Serialization serialization = new StringSerialization();
+    registry.add(new ProtobufPersonMapping(registry, serialization));
     String tableName = "pb_people";
     ZooKeeperInstance inst = new ZooKeeperInstance("accumulo", "127.0.0.1");
     Connector conn = inst.getConnector("root", new PasswordToken("secret"));

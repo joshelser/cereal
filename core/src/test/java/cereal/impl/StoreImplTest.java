@@ -45,6 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cereal.Registry;
+import cereal.Serialization;
 import cereal.impl.objects.pojo.SimplePojo;
 import cereal.impl.objects.protobuf.SimpleOuter.Simple;
 
@@ -57,14 +58,15 @@ public class StoreImplTest {
 
   private StoreImpl store;
   private Registry registry;
+  private Serialization serialization;
   private Connector conn;
   private SimpleMapping mapping;
   private final String table = "table";
 
   private static class SimpleMapping extends ProtobufMessageMapping<Simple> {
 
-    public SimpleMapping(Registry reg) {
-      super(reg);
+    public SimpleMapping(Registry reg, Serialization ser) {
+      super(reg, ser);
     }
 
     @Override
@@ -92,7 +94,8 @@ public class StoreImplTest {
   public void setup() {
     conn = createMock(Connector.class);
     registry = new RegistryImpl();
-    mapping = new SimpleMapping(registry);
+    serialization = new StringSerialization();
+    mapping = new SimpleMapping(registry, serialization);
     registry.add(mapping);
     store = new StoreImpl(registry, conn, table);
   }

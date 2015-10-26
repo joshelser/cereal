@@ -17,7 +17,6 @@ package cereal.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ import cereal.InstanceOrBuilder;
 import cereal.InstanceOrBuilder.Type;
 import cereal.Mapping;
 import cereal.Registry;
+import cereal.Serialization;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
@@ -62,9 +62,11 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
   private static final String EMPTY = "";
 
   private final Registry registry;
+  private final Serialization serialization;
 
-  public ProtobufMessageMapping(Registry registry) {
+  public ProtobufMessageMapping(Registry registry, Serialization serialization) {
     this.registry = registry;
+    this.serialization = serialization;
   }
 
   @Override
@@ -85,99 +87,124 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
       final StringBuilder fieldName = new StringBuilder(32);
       fieldName.append(prefix).append(descriptor.getName());
 
-      switch (descriptor.getJavaType()) {
+      final JavaType javaType = descriptor.getJavaType();
+      switch (javaType) {
         case INT:
         case LONG:
         case FLOAT:
         case DOUBLE:
         case BOOLEAN:
         case STRING:
-          if (descriptor.isRepeated()) {
-            @SuppressWarnings("unchecked")
-            List<Object> objects = (List<Object>) entry.getValue();
-
-            int repetition = 0;
-            for (Object obj : objects) {
-              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
-                  value(obj.toString())));
-              repetition++;
-            }
-          } else {
-            fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), value(entry.getValue().toString())));
-          }
-          break;
         case BYTE_STRING:
-          if (descriptor.isRepeated()) {
-            @SuppressWarnings("unchecked")
-            List<ByteString> byteStrings = (List<ByteString>) entry.getValue();
-
-            int repetition = 0;
-            for (ByteString bs : byteStrings) {
-              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
-                  new Value(bs.toByteArray())));
-              repetition++;
-            }
-          } else {
-            ByteString bs = (ByteString) entry.getValue();
-            fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), new Value(bs.toByteArray())));
-          }
-          break;
         case ENUM:
-          if (descriptor.isRepeated()) {
-            @SuppressWarnings("unchecked")
-            final List<EnumValueDescriptor> enumValues = (List<EnumValueDescriptor>) entry.getValue();
-
-            int repetition = 0;
-            for (EnumValueDescriptor enumValue : enumValues) {
-              fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
-                  new Value(Integer.toString(enumValue.getNumber()).getBytes())));
-              repetition++;
-            }
-          } else {
-            final EnumValueDescriptor enumValue = (EnumValueDescriptor) entry.getValue();
-            fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor),
-                new Value(Integer.toString(enumValue.getNumber()).getBytes())));
-          }
+          addField(fields, fieldName, descriptor, javaType, entry.getValue());
           break;
         case MESSAGE:
           if (descriptor.isRepeated()) {
             @SuppressWarnings("unchecked")
             List<GeneratedMessage> subMsgs = (List<GeneratedMessage>) entry.getValue();
-            int repetition = 0;
 
-            for (GeneratedMessage subMsg : subMsgs) {
-              InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
-              Mapping<GeneratedMessage> subMapping = registry.get(subIob);
-              if (null == subMapping) {
-                throw new RuntimeException("No Mapping in Registry for " + subMsg.getClass());
-              }
-
-              if (subMapping instanceof ProtobufMessageMapping) {
-                String finalName = qualifyWithRepetition(fieldName.toString(), repetition) + PERIOD;
-                ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, finalName);
-              } else {
-                throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
-              }
-
-              repetition++;
-            }
+            addRepeatedMessage(fields, fieldName, subMsgs);
           } else {
-            GeneratedMessage subMsg = (GeneratedMessage) entry.getValue();
-            InstanceOrBuilder<GeneratedMessage> subIob = new InstanceOrBuilderImpl<>(subMsg);
-            Mapping<GeneratedMessage> subMapping = registry.get(subIob);
-            if (subMapping instanceof ProtobufMessageMapping) {
-              fieldName.append(PERIOD);
-              ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, fieldName.toString());
-            } else {
-              throw new RuntimeException("Expected ProtobufMessageMapping but got " + subMapping.getClass());
-            }
+            GeneratedMessage subMessage = (GeneratedMessage) entry.getValue();
+
+            addMessage(fields, fieldName, subMessage);
           }
 
           break;
         default:
-          log.warn("Ignoring complex field type: " + descriptor.getJavaType());
-          break;
+          throw new IllegalArgumentException("Unhandled JavaType: " + javaType);
       }
+    }
+  }
+
+  /**
+   * Serialize the given value and type into the list of fields, preserving repetition.
+   *
+   * @param fields List of fields, modified by this method.
+   * @param fieldName StringBuilder used for repetition counts on a base field name
+   * @param descriptor The Protobuf FieldDescriptor for hte message
+   * @param type The Protobuf JavaType.
+   * @param value The value of the field in the Protobuf message.
+   */
+  void addField(List<Field> fields, StringBuilder fieldName, FieldDescriptor descriptor, JavaType type, Object value) {
+    if (descriptor.isRepeated()) {
+      @SuppressWarnings("unchecked")
+      List<Object> objects = (List<Object>) value;
+
+      int repetition = 0;
+      for (Object obj : objects) {
+        fields.add(new FieldImpl(text(qualifyWithRepetition(fieldName.toString(), repetition)), getGrouping(descriptor), getVisibility(descriptor),
+            value(getBytes(type, obj))));
+        repetition++;
+      }
+    } else {
+      fields.add(new FieldImpl(text(fieldName.toString()), getGrouping(descriptor), getVisibility(descriptor), value(getBytes(type, value))));
+    }
+  }
+
+  void addRepeatedMessage(List<Field> fields, StringBuilder fieldName, List<GeneratedMessage> subMessages) {
+    int repetition = 0;
+
+    for (GeneratedMessage subMsg : subMessages) {
+      ProtobufMessageMapping<GeneratedMessage> subMapping = getMapping(subMsg);
+
+      String finalName = qualifyWithRepetition(fieldName.toString(), repetition) + PERIOD;
+      ((ProtobufMessageMapping<?>) subMapping)._getFields(subMsg, fields, finalName);
+
+      repetition++;
+    }
+  }
+
+  void addMessage(List<Field> fields, StringBuilder fieldName, GeneratedMessage subMessage) {
+    ProtobufMessageMapping<GeneratedMessage> subMapping = getMapping(subMessage);
+
+    fieldName.append(PERIOD);
+    subMapping._getFields(subMessage, fields, fieldName.toString());
+  }
+
+  private ProtobufMessageMapping<GeneratedMessage> getMapping(GeneratedMessage message) {
+    InstanceOrBuilder<GeneratedMessage> iob = new InstanceOrBuilderImpl<>(message);
+    Mapping<GeneratedMessage> mapping = registry.get(iob);
+    if (null == mapping) {
+      throw new RuntimeException("No Mapping in Registry for " + message.getClass());
+    }
+
+    if (!(mapping instanceof ProtobufMessageMapping)) {
+      throw new RuntimeException("Expected ProtobufMessageMapping but got " + mapping.getClass());
+    }
+
+    return (ProtobufMessageMapping<GeneratedMessage>) mapping;
+  }
+
+  /**
+   * Serialize the given value in a type per the implementation of {@link Serialization}.
+   *
+   * @param type The JavaType of the {@code value}.
+   * @param value The value, must match the {@code type}.
+   * @return A {@code byte[]} representation of {@code value}.
+   */
+  byte[] getBytes(JavaType type, Object value) {
+    switch (type) {
+      case INT:
+        return serialization.toBytes((int) value);
+      case LONG:
+        return serialization.toBytes((long) value);
+      case FLOAT:
+        return serialization.toBytes((float) value);
+      case DOUBLE:
+        return serialization.toBytes((double) value);
+      case BOOLEAN:
+        return serialization.toBytes((boolean) value);
+      case BYTE_STRING:
+        return ((ByteString) value).toByteArray();
+      case STRING:
+        return serialization.toBytes((String) value);
+      case ENUM:
+        final EnumValueDescriptor enumValue = (EnumValueDescriptor) value;
+        return serialization.toBytes((int) enumValue.getNumber());
+      default:
+        throw new IllegalArgumentException("Unhandled type: " + type);
     }
   }
 
@@ -203,8 +230,8 @@ public abstract class ProtobufMessageMapping<T extends GeneratedMessage> impleme
     return new Text(str);
   }
 
-  private Value value(String str) {
-    return new Value(str.getBytes(UTF_8));
+  private Value value(byte[] bytes) {
+    return new Value(bytes);
   }
 
   private String qualifyWithRepetition(String fieldName, Integer repetition) {

@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 
 import cereal.Registry;
+import cereal.Serialization;
 import cereal.Store;
 import cereal.examples.protobuf.generated.PersonOuter.Engine;
 import cereal.examples.protobuf.generated.PersonOuter.Person;
@@ -41,6 +42,7 @@ import cereal.examples.protobuf.generated.PersonOuter.Radio;
 import cereal.examples.protobuf.generated.PersonOuter.Vehicle;
 import cereal.impl.RegistryImpl;
 import cereal.impl.StoreImpl;
+import cereal.impl.StringSerialization;
 
 public class ProtobufPersonTest {
   private static MiniAccumuloCluster mac;
@@ -73,13 +75,14 @@ public class ProtobufPersonTest {
     }
   }
 
-  @Test//(timeout = 30 * 1000)
+  @Test(timeout = 30 * 1000)
   public void testSerialization() throws Exception {
     Registry registry = new RegistryImpl();
-    ProtobufPersonMapping mapping = new ProtobufPersonMapping(registry);
+    Serialization serialization = new StringSerialization();
+    ProtobufPersonMapping mapping = new ProtobufPersonMapping(registry, serialization);
     registry.add(mapping);
-    registry.add(new ProtobufVehicleMapping(registry));
-    registry.add(new ProtobufEngineMapping(registry));
+    registry.add(new ProtobufVehicleMapping(registry, serialization));
+    registry.add(new ProtobufEngineMapping(registry, serialization));
 
     Person.Builder builder = Person.newBuilder().setFirstName("Bob").setMiddleName("Joe").setLastName("Franklin").setAge(30).setHeight(72).setWeight(220);
 

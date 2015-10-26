@@ -85,7 +85,7 @@ I believe there is much worth in what it can provide.
 - [x] Basic Thrift support
 - [x] Basic Protobuf support
 - [x] Unit test coverage
-- [ ] Pluggable serialization for primitives
+- [x] Pluggable serialization for primitives
 - [x] Protobuf abstract control for grouping and visibility
 - [x] Thrift abstract control for grouping and visibility
 - [ ] Protobuf complex types
