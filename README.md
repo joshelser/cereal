@@ -88,7 +88,7 @@ I believe there is much worth in what it can provide.
 - [x] Pluggable serialization for primitives
 - [x] Protobuf abstract control for grouping and visibility
 - [x] Thrift abstract control for grouping and visibility
-- [ ] Protobuf complex types
+- [x] Protobuf complex types
   - [x] Repeated fields
   - [x] Nested messages
   - [x] Enums
