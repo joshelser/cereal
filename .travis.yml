@@ -5,4 +5,4 @@ jdk:
 script: mvn verify
 
 after_success:
-    - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=${coveralls_token}
+  - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report -DrepoToken=${coveralls_token} -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID -Dtest=foo -DfailIfNoTests=false
